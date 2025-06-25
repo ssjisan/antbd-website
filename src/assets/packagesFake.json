@@ -1,0 +1,74 @@
+[
+  {
+    "title": "PACKAGE-1",
+    "mbps": 16,
+    "price": 500,
+    "uploadSpeed": 16,
+    "downloadSpeed": 16,
+    "showAsFamous": false
+  },
+  {
+    "title": "PACKAGE-2",
+    "mbps": 20,
+    "price": 650,
+    "uploadSpeed": 20,
+    "downloadSpeed": 20,
+    "showAsFamous": true
+  },
+  {
+    "title": "PACKAGE-3",
+    "mbps": 40,
+    "price": 750,
+    "uploadSpeed": 40,
+    "downloadSpeed": 40,
+    "showAsFamous": false
+  },
+  {
+    "title": "PACKAGE-4",
+    "mbps": 50,
+    "price": 950,
+    "uploadSpeed": 50,
+    "downloadSpeed": 50,
+    "showAsFamous": true
+  },
+  {
+    "title": "PACKAGE-5",
+    "mbps": 60,
+    "price": 1250,
+    "uploadSpeed": 60,
+    "downloadSpeed": 60,
+    "showAsFamous": false
+  },
+  {
+    "title": "PACKAGE-6",
+    "mbps": 80,
+    "price": 2000,
+    "uploadSpeed": 80,
+    "downloadSpeed": 80,
+    "showAsFamous": false
+  },
+  {
+    "title": "PACKAGE-7",
+    "mbps": 90,
+    "price": 3000,
+    "uploadSpeed": 90,
+    "downloadSpeed": 90,
+    "showAsFamous": true
+  },
+  {
+    "title": "PACKAGE-8",
+    "mbps": 100,
+    "price": 4000,
+    "uploadSpeed": 100,
+    "downloadSpeed": 100,
+    "showAsFamous": false
+  },
+  {
+    "title": "ZOOM",
+    "mbps": 70,
+    "price": 1500,
+    "uploadSpeed": 70,
+    "downloadSpeed": 70,
+    "showAsFamous": false
+  }
+]
