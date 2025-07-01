@@ -62,7 +62,7 @@ export default function HappyclientSlider() {
               height: "100%",
               zIndex: 2,
               background:
-                "linear-gradient(90deg, #F2F4F8 0%, rgba(242, 244, 248, 0) 100%)",
+                "linear-gradient(90deg,rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0) 100%)",
               pointerEvents: "none",
             }}
           />
@@ -79,7 +79,7 @@ export default function HappyclientSlider() {
               height: "100%",
               zIndex: 2,
               background:
-                "linear-gradient(270deg, #F2F4F8 0%, rgba(242, 244, 248, 0) 100%)",
+                "linear-gradient(270deg,rgb(255, 255, 255) 0%, rgba(242, 244, 248, 0) 100%)",
               pointerEvents: "none",
             }}
           />

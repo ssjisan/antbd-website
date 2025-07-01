@@ -112,7 +112,7 @@ export default function FirstPackage() {
               >
                 <path
                   d="M0 0H264V68C264 90.0914 246.091 108 224 108H0V0Z"
-                  fill="#F2F4F8"
+                  fill="#FFF"
                 />
               </svg>
             </Box>
@@ -132,7 +132,7 @@ export default function FirstPackage() {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path d="M40 0C17.9086 0 0 17.9086 0 40V0H40Z" fill="#F2F4F8" />
+                <path d="M40 0C17.9086 0 0 17.9086 0 40V0H40Z" fill="#FFF" />
               </svg>
             </Box>
 
@@ -151,7 +151,7 @@ export default function FirstPackage() {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path d="M40 0C17.9086 0 0 17.9086 0 40V0H40Z" fill="#F2F4F8" />
+                <path d="M40 0C17.9086 0 0 17.9086 0 40V0H40Z" fill="#FFF" />
               </svg>
             </Box>
           </Box>

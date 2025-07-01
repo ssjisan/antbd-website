@@ -1,86 +1,111 @@
-import { Box, Container, Grid } from "@mui/material";
-import { keyframes } from "@emotion/react";
+import {
+  Box,
+  Button,
+  Stack,
+  Container,
+  Typography,
+  Autocomplete,
+  TextField,
+} from "@mui/material";
+import CoverageAnimation from "../Common/CoverageAnimation";
+import { useState } from "react";
 
-// Ripple animation
-const ripple = keyframes`
-  0% {
-    transform: scale(0.8);
-    opacity: 0.9;
-  }
-  70% {
-    transform: scale(2.4);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(2.4);
-    opacity: 0;
-  }
-`;
+// Dummy Data
+const districts = [
+  "Dhaka",
+  "Chattogram",
+  "Rajshahi",
+  "Khulna",
+  "Barisal",
+  "Sylhet",
+  "Rangpur",
+];
+
+const policeStationsByDistrict = {
+  Dhaka: ["Dhanmondi", "Mirpur", "Gulshan"],
+  Chattogram: ["Pahartali", "Kotwali", "Panchlaish"],
+  Rajshahi: ["Boalia", "Rajpara", "Motihar"],
+  Khulna: ["Khalishpur", "Daulatpur", "Sonadanga"],
+  Barisal: ["Kotwali", "Airport", "Bakerganj"],
+  Sylhet: ["Kotwali", "Airport", "Beanibazar"],
+  Rangpur: ["Kotwali", "Gangachara", "Pirganj"],
+};
 
 export default function CheckCoverage() {
+  const [district, setDistrict] = useState(null);
+  const [policeStation, setPoliceStation] = useState(null);
+
   return (
     <Container sx={{ pt: "64px", pb: "64px" }}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={12} md={5} lg={5}></Grid>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 4,
+          borderRadius: "32px",
+          overflow: "hidden",
+        }}
+      >
+        {/* Form Card */}
+        <Stack
+          sx={{
+            p: 4,
+            width: { xs: "100%", sm: "100%", md: "64%" },
+          }}
+          gap="64px"
+        >
+          <Stack gap="4px">
+            <Typography variant="h3">Check Coverage</Typography>
+            <Typography variant="h6" color="text.secondary">
+              Find out if we’re available in your area today.
+            </Typography>
+          </Stack>
 
-        <Grid item xs={12} sm={12} md={7} lg={7}>
-          <Box
-            sx={{
-              width: "100%",
-              height: { xs: "100%", sm: "100%", md: "560px" }, // responsive map height
-              position: "relative",
-            }}
-          >
-            <Box
-              component="img"
-              src="/Map.svg"
-              alt="Map"
-              sx={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
+          <Stack gap={"16px"}>
+            {/* District Autocomplete */}
+            <Autocomplete
+              options={districts}
+              value={district}
+              onChange={(event, newValue) => {
+                setDistrict(newValue);
+                setPoliceStation(null); // reset police station on district change
               }}
+              renderInput={(params) => (
+                <TextField {...params} label="District" />
+              )}
+              fullWidth
             />
 
-            {/* Pin + Ripple */}
-            <Box
-              sx={{
-                position: "absolute",
-                bottom: { xs: "120px", sm: "180px", md: "220px" }, // adjusted per screen
-                right: { xs: "80px", sm: "160px", md: "256px" },  // maintain relative positioning
-                rotate: "-26deg",
-                width: "40px",
-                height: "40px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+            {/* Police Station Autocomplete */}
+            <Autocomplete
+              disabled={!district}
+              options={policeStationsByDistrict[district] || []}
+              value={policeStation}
+              onChange={(event, newValue) => {
+                setPoliceStation(newValue);
               }}
+              renderInput={(params) => (
+                <TextField {...params} label="Police Station" />
+              )}
+              fullWidth
+            />
+
+            {/* Submit Button */}
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ width: "100%", maxWidth: "140px" }}
             >
-              <Box
-                sx={{
-                  position: "absolute",
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
-                  backgroundColor: "rgba(233, 80, 9, 1)",
-                  animation: `${ripple} 1.8s infinite ease-out`,
-                }}
-              />
-              <Box
-                component="img"
-                src="/Pin.svg"
-                alt="Pin"
-                sx={{
-                  position: "relative",
-                  zIndex: 1,
-                  width: "80px",
-                  height: "auto",
-                }}
-              />
-            </Box>
-          </Box>
-        </Grid>
-      </Grid>
+              Submit
+            </Button>
+          </Stack>
+        </Stack>
+
+        {/* Animation */}
+        <CoverageAnimation />
+      </Box>
     </Container>
   );
 }

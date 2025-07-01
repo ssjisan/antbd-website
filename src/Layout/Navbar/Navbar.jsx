@@ -25,6 +25,10 @@ export default function Navbar() {
     setOpen(open);
   };
 
+  const goToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const drawerContent = (
     <Box sx={{ width: 250, p: 2 }}>
       <Stack spacing={2}>
@@ -34,8 +38,11 @@ export default function Navbar() {
             <Box
               key={data.id}
               component={Link}
-              to={data.path}
-              onClick={toggleDrawer(false)}
+              to={data.link}
+              onClick={() => {
+                goToTop();
+                setOpen(false);
+              }}
               sx={{
                 p: "8px 12px",
                 borderRadius: "8px",
@@ -43,10 +50,6 @@ export default function Navbar() {
                 backgroundColor: isActive ? "primary.light" : "transparent",
                 color: isActive ? "primary.main" : "text.primary",
                 transition: "all 0.2s ease-in-out",
-                "&:hover": {
-                  backgroundColor: "primary.light",
-                  color: "primary.main",
-                },
               }}
             >
               <Typography fontWeight={isActive ? 700 : 500}>
@@ -56,14 +59,24 @@ export default function Navbar() {
           );
         })}
         <Button variant="contained" size="small">
-          Sign in
+          Self Portal
         </Button>
       </Stack>
     </Box>
   );
 
   return (
-    <Box sx={{ borderBottom: "1px solid rgba(145, 142, 175, 0.24)" }}>
+    <Box
+      sx={{
+        position: "sticky",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 111,
+        backgroundColor: "background.paper",
+        borderBottom: "1px solid rgba(145, 142, 175, 0.24)",
+      }}
+    >
       <Container>
         <Stack
           justifyContent="space-between"
@@ -75,6 +88,7 @@ export default function Navbar() {
           <Box
             component="a"
             href="/"
+            onClick={goToTop}
             sx={{
               display: "flex",
               alignItems: "center",
@@ -99,17 +113,20 @@ export default function Navbar() {
                 <Box
                   key={data.id}
                   component={Link}
-                  to={data.path}
+                  to={data.link}
+                  onClick={goToTop}
                   sx={{
                     p: "8px 16px",
                     borderRadius: "8px",
                     textDecoration: "none",
-                    backgroundColor: isActive ? "primary.light" : "transparent",
+                    backgroundColor: isActive
+                      ? "primary.light"
+                      : "transparent",
                     color: isActive ? "primary.main" : "text.primary",
                     transition: "all 0.2s ease-in-out",
                     "&:hover": {
-                      backgroundColor: "primary.light",
-                      color: "primary.main",
+                      backgroundColor: "background.onHover",
+                      color: "text.primary",
                     },
                   }}
                 >
@@ -121,10 +138,10 @@ export default function Navbar() {
             })}
           </Stack>
 
-          {/* Sign in button for md and up */}
+          {/* Self Portal button for md and up */}
           <Box sx={{ display: { xs: "none", md: "block" } }}>
             <Button variant="contained" size={isMdUp ? "small" : "large"}>
-              Sign in
+              Self Portal
             </Button>
           </Box>
 

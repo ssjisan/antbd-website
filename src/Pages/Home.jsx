@@ -7,18 +7,24 @@ import Matrix from "../Components/Common/Matrix";
 import SwitchingRequest from "../Components/Home/SwitchingRequest";
 import CheckCoverage from "../Components/Home/CheckCoverage";
 import HappyclientSlider from "../Components/Common/HappyclientSlider";
+import NeedHelp from "../Components/Home/NeedHelp";
+import Footer from "../Layout/Footer/Footer";
+import FaQ from "../Components/Common/FaQ";
 
 export default function Home() {
   return (
     <>
       <Navbar />
       <HeroSection />
-      <Matrix/>
-      <FirstPackage/>
+      <Matrix />
+      <FirstPackage />
       <Package />
-      <SwitchingRequest/>
-      <HappyclientSlider/>
-      <CheckCoverage/>
+      <SwitchingRequest />
+      <HappyclientSlider />
+      <CheckCoverage />
+      <FaQ/>
+      <NeedHelp />
+      <Footer />
       <WhatsAppButton />
     </>
   );

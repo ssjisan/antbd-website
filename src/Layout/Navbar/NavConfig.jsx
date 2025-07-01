@@ -24,11 +24,6 @@ const main = [
     title: "Help & Support",
     link: "/help-support",
   },
-  {
-    id: 6,
-    title: "Contact",
-    link: "/contact",
-  },
 ];
 
 export { main };

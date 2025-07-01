@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material"
-import { CallBasic, SMS } from "../../assets/Icons";
+// import { CallBasic, SMS } from "../../assets/Icons";
 
 export default function RequestProject() {
     const PointSx = {
@@ -12,13 +12,13 @@ export default function RequestProject() {
         <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <Box sx={PointSx}>
                 <Box>
-                    <SMS />
+                    {/* <SMS /> */}
                 </Box>
                 <Typography variant="subtitle1" color="text.secondary">info@posb-bd.com</Typography>
             </Box>
             <Box sx={PointSx}>
                 <Box>
-                    <CallBasic />
+                    {/* <CallBasic /> */}
                 </Box>
                 <Typography variant="subtitle1" color="text.secondary">+880-1740-559555, +880-1716-281682</Typography>
             </Box>

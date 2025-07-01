@@ -50,7 +50,8 @@ export function palette() {
       disabled: alpha(grey[900], 0.24),
     },
     background: {
-      default: "#F2F4F8", // 💡 Set your desired background color
+      default: "#FFF", // 💡 Set your desired background color
+      onHover: grey[100]
     },
   };
 }

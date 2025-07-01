@@ -1,20 +1,15 @@
-import { Box, Typography } from "@mui/material"
-import { LocationBasic } from "../../assets/Icons";
+import { Stack, Typography } from "@mui/material";
+// import { LocationBasic } from "../../assets/Icons";
 
 export default function OtherLinks() {
-    const ContainerSx = {
-        display: "flex",
-        alignItems: "flex-start",
-        gap: "16px",
-        flexShrink: "0"
-    }
-    return (
-        <Box sx={ContainerSx} >
-            <Box>
-                <LocationBasic />
-            </Box>
-            <Typography variant="subtitle1" color="text.secondary">Health and Hope Hospital 152/1/H, Green road, Panthopath(Green road Panthopath junction), Dhaka-1205</Typography>
-        </Box>
-    )
+  return (
+    <Stack gap="24px">
+      <Typography variant="h6">Useful links</Typography>
+      <Stack gap="8px" flexDirection="column">
+        <Typography color="text.secondary">Pay bill</Typography>
+        <Typography color="text.secondary">My Account</Typography>
+        <Typography color="text.secondary">Request a connection</Typography>
+      </Stack>
+    </Stack>
+  );
 }
-
