@@ -21,7 +21,7 @@ export default function NeedHelp() {
               justifyContent="center"
               alignItems="center"
             >
-              <img src="n1.png" alt="request" width="100%"/>
+              <img src="n1.webp" alt="request" width="100%"/>
             </Stack>
             <Stack
               gap="12px"
@@ -62,7 +62,7 @@ export default function NeedHelp() {
               justifyContent="center"
               alignItems="center"
             >
-              <img src="n2.png" alt="request" width="100%"/>
+              <img src="n2.webp" alt="request" width="100%"/>
             </Stack>
             <Stack
               gap="12px"
@@ -103,7 +103,7 @@ export default function NeedHelp() {
               justifyContent="center"
               alignItems="center"
             >
-              <img src="n3.png" alt="request"  width="100%"/>
+              <img src="n3.webp" alt="request"  width="100%"/>
             </Stack>
             <Stack
               gap="12px"
