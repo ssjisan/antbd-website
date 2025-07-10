@@ -16,13 +16,13 @@ export default function Home() {
     <>
       <Navbar />
       <HeroSection />
+      <CheckCoverage />
       <Matrix />
       <FirstPackage />
       <Package />
       <SwitchingRequest />
       <HappyclientSlider />
-      <CheckCoverage />
-      <FaQ/>
+      <FaQ />
       <NeedHelp />
       <Footer />
       <WhatsAppButton />

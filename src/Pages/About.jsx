@@ -8,17 +8,23 @@ import WhatsAppButton from "../Components/Common/WhatsAppButton";
 import MdMessage from "../Components/About/MdMessage";
 import SwitchingRequest from "../Components/Home/SwitchingRequest";
 import NeedHelp from "../Components/Home/NeedHelp";
+import LicensingMemberships from "../Components/About/LicensingMemberships";
+import Timeline from "../Components/About/Timeline";
+import TechnicalDifferentiators from "../Components/About/TechnicalDifferentiators";
 
 export default function About() {
   return (
     <>
       <Navbar />
       <Herosection />
+      <Timeline/>
+      <TechnicalDifferentiators/>
       <MdMessage />
       <HappyclientSlider />
       <Vision />
       <SwitchingRequest />
       <Mission />
+      <LicensingMemberships/>
       <NeedHelp />
       <Footer />
       <WhatsAppButton />

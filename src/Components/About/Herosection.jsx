@@ -18,7 +18,7 @@ export default function Herosection() {
           />
         </Box>
         <Matrix />
-        <Typography variant="h4" sx={{ width: "100%", fontWeight: 600 }}>
+        <Typography variant="h4" sx={{ width: "100%", fontWeight: 500 }}>
           <Box component="span" sx={{ color: "text.primary" }}>
             Since 2001, we have been the leading name in the Bangladesh
             broadband internet service providers community.For 22 years, we have

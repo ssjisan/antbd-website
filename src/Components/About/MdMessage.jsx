@@ -17,7 +17,7 @@ export default function MdMessage() {
             }}
           >
             <img
-              src="https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg"
+              src="md.jpg"
               alt="Sujon"
               width="100%"
               height="100%"

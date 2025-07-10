@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import Error404 from "../Components/Common/Error404";
 import Package from "../Pages/package";
 import About from "../Pages/About";
+import Coverage from "../Pages/Coverage";
 
 export default function MainRoute() {
   return (
@@ -36,6 +37,7 @@ export default function MainRoute() {
         <Route path="/" element={<Home />} />
         <Route path="/package" element={<Package />} />
         <Route path="/about" element={<About />} />
+        <Route path="/coverage" element={<Coverage />} />
         <Route path="*" element={<Error404 />} /> {/* 404 Catch-All Route */}
       </Routes>
     </>

@@ -1,6 +1,6 @@
 import HappyclientSlider from "../Components/Common/HappyclientSlider";
 import WhatsAppButton from "../Components/Common/WhatsAppButton";
-import FirstPackage from "../Components/Home/FirstPackage";
+import HeroSection from "../Components/Packages/HeroSection";
 import NeedHelp from "../Components/Home/NeedHelp";
 import PackagesPlan from "../Components/Packages/PackagesPlan";
 import Footer from "../Layout/Footer/Footer";
@@ -10,7 +10,7 @@ export default function Package() {
   return (
     <>
       <Navbar />
-      <FirstPackage />
+      <HeroSection/>
       <PackagesPlan />
       <HappyclientSlider />
       <NeedHelp />
