@@ -119,9 +119,7 @@ export default function Navbar() {
                     p: "8px 16px",
                     borderRadius: "8px",
                     textDecoration: "none",
-                    backgroundColor: isActive
-                      ? "primary.light"
-                      : "transparent",
+                    backgroundColor: isActive ? "primary.light" : "transparent",
                     color: isActive ? "primary.main" : "text.primary",
                     transition: "all 0.2s ease-in-out",
                     "&:hover": {

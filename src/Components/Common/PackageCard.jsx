@@ -33,83 +33,71 @@ export default function PackageCard({ pkg }) {
         },
       }}
     >
-      {/* Top-right Title Badge with SVG at top-left */}
+      {/* Top-right Title Badge with full SVG on top-left and manually positioned text */}
       <Box
         sx={{
           position: "absolute",
           top: 0,
           right: 0,
-          height: "36px",
-          width: "110px",
-          fontSize: "14px",
-          fontWeight: 600,
-          px: "12px",
-          py: "4px",
+          height: "56px", // match SVG height
+          width: "140px", // match SVG width
           color: "#fff",
           zIndex: 1,
           borderBottomLeftRadius: "12px",
-          display: "flex", // ✅ Flexbox enabled
-          alignItems: "center", // ✅ Vertical centering
-          justifyContent: "center", // ✅ Horizontal centering
+          overflow: "visible",
         }}
       >
-        {/* Background SVG shape on top-left */}
+        {/* Full SVG placed absolutely on top-left */}
         <Box
           sx={{
             position: "absolute",
             top: 0,
-            left: -20,
-            width: "20px",
-            height: "20px",
+            left: 0,
+            width: "140px",
+            height: "56px",
+            pointerEvents: "none",
             zIndex: -1,
           }}
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M20 20C20 8.95431 11.0457 0 0 0L20 0V20Z" fill="#008641" />
-          </svg>
-        </Box>
-
-        {/* Bottom-right shape */}
-        <Box
-          sx={{
-            position: "absolute",
-            top: 36,
-            right: 0,
-            width: "20px",
-            height: "20px",
-            zIndex: -1,
-          }}
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M20 20C20 8.95431 11.0457 0 0 0L20 0V20Z" fill="#008641" />
-          </svg>
-        </Box>
-
-        {/* Solid background */}
-        <Box
-          sx={{
-            backgroundColor: "success.main",
-            position: "absolute",
-            inset: 0,
-            zIndex: -2,
-            borderBottomLeftRadius: "12px",
+          dangerouslySetInnerHTML={{
+            __html: `
+        <svg width="140" height="56" viewBox="0 0 140 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0C11.0457 0 20 8.95431 20 20V0H0Z" fill="url(#paint0_linear_714_1076)"/>
+          <path d="M120 36C131.046 36 140 44.9543 140 56V36H120Z" fill="url(#paint1_linear_714_1076)"/>
+          <path d="M20 0H140V36H28C23.5817 36 20 32.4183 20 28V0Z" fill="url(#paint2_linear_714_1076)"/>
+          <defs>
+            <linearGradient id="paint0_linear_714_1076" x1="0" y1="28" x2="140" y2="28" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#008641"/>
+              <stop offset="1" stop-color="#18A25B"/>
+            </linearGradient>
+            <linearGradient id="paint1_linear_714_1076" x1="0" y1="28" x2="140" y2="28" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#008641"/>
+              <stop offset="1" stop-color="#18A25B"/>
+            </linearGradient>
+            <linearGradient id="paint2_linear_714_1076" x1="0" y1="28" x2="140" y2="28" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#008641"/>
+              <stop offset="1" stop-color="#18A25B"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      `,
           }}
         />
 
-        {/* Title text */}
-        {pkg.title}
+        {/* Manually positioned title text */}
+        <Box
+          sx={{
+            position: "relative", // relative to this Box container
+            top: "8px", // adjust vertical position
+            left: "12px", // adjust horizontal position
+            fontSize: "14px",
+            fontWeight: 600,
+            userSelect: "none",
+            pointerEvents: "none", // prevent interference with mouse
+            whiteSpace: "nowrap",
+          }}
+        >
+          {pkg.title}
+        </Box>
       </Box>
 
       {/* Title & Price */}

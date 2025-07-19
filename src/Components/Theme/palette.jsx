@@ -5,8 +5,12 @@ export const grey = {
   500: "#919EAB",
   900: "#111827",
 };
-
 export const primary = {
+  light: "#E6F3EC",
+  main: "#008641",
+  dark: "#005228",
+};
+export const secondary = {
   light: "#FFDBDD",
   main: "#ED1B24",
   dark: "#C20008",
@@ -34,6 +38,7 @@ export const warning = {
 
 const base = {
   primary,
+  secondary,
   grey,
   success,
   error,
@@ -51,7 +56,7 @@ export function palette() {
     },
     background: {
       default: "#FFF", // 💡 Set your desired background color
-      onHover: grey[100]
+      onHover: grey[100],
     },
   };
 }

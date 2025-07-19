@@ -8,9 +8,9 @@ export default function Herosection() {
         <Typography variant="h2" sx={{ width: "100%", maxWidth: "780px" }}>
           Leading Name in The Bangladesh Broadband Internet Service Providers
         </Typography>
-        <Box sx={{ borderRadius: "40px", overflow: "hidden",width:"100%", height: "560px"  }}>
+        <Box sx={{ borderRadius: "40px", overflow: "hidden",width:"100%", height: "420px"  }}>
           <img
-            src="https://cdn.pixabay.com/photo/2020/04/08/02/57/switch-5015530_1280.jpg"
+            src="about.jpg"
             alt="bg"
             width="100%"
             height="100%"

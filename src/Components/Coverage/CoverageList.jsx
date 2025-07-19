@@ -1,118 +1,76 @@
-import { useEffect, useState, useRef } from "react";
-import { Grid, Box, Typography, Stack, Tabs, Tab } from "@mui/material";
+import { Box, Grid, Stack, Tabs, Tab, Typography } from "@mui/material";
 import PropTypes from "prop-types";
+import { useRef } from "react";
 
-export default function CoverageList({ coverageAreas, selected, setSelected }) {
-  const [cityFilter, setCityFilter] = useState("dhaka");
+export default function CoverageList({
+  zones = [],
+  selectedZone,
+  setSelectedZone,
+  areas = [],
+  selectedArea,
+  setSelectedArea,
+}) {
   const userHasSelected = useRef(false);
 
-  // Only dhaka and chattogram tabs now
-  const fixedTabs = ["dhaka", "chattogram"];
-
-  // Auto-select Shantinagar or Halishahar depending on city tab
-  useEffect(() => {
-    let targetName = null;
-
-    if (cityFilter === "chattogram") {
-      targetName = "Halishahar";
-    } else if (cityFilter === "dhaka") {
-      targetName = "Shantinagar";
-    }
-
-    const target = coverageAreas.find((area) => area.name === targetName);
-    const currentSelectedArea = coverageAreas.find(
-      (area) => area.id === selected
-    );
-    const currentCity = currentSelectedArea?.city?.toLowerCase();
-
-    if (target && (!userHasSelected.current || currentCity !== cityFilter)) {
-      setSelected(target.id);
-      userHasSelected.current = false;
-    }
-  }, [cityFilter, coverageAreas, selected, setSelected]);
-
-  // Filter and sort coverage areas based on city
-  const filteredAreas = coverageAreas
-    .filter((area) => area.city.toLowerCase() === cityFilter)
-    .sort((a, b) => {
-      if (cityFilter === "dhaka") {
-        if (a.name === "Shantinagar") return -1;
-        if (b.name === "Shantinagar") return 1;
-      }
-      if (cityFilter === "chattogram") {
-        if (a.name === "Halishahar") return -1;
-        if (b.name === "Halishahar") return 1;
-      }
-      return 0;
-    });
+  const filteredAreas = areas.filter((area) => area.zone === selectedZone);
 
   return (
     <Box>
-      {/* City Tabs */}
+      {/* Zone Tabs */}
       <Tabs
-        value={cityFilter}
-        onChange={(e, newValue) => setCityFilter(newValue)}
+        value={selectedZone}
+        onChange={(e, newValue) => setSelectedZone(newValue)}
         sx={{ mb: 3, borderRadius: "8px", px: 3 }}
         variant="scrollable"
         scrollButtons="auto"
         TabIndicatorProps={{ style: { display: "none" } }}
       >
-        {fixedTabs.map((city) => {
-          const isActive = cityFilter === city;
-          return (
-            <Tab
-              key={city}
-              label={city.charAt(0).toUpperCase() + city.slice(1)}
-              value={city}
-              disableRipple
-              sx={{
-                textTransform: "capitalize",
-                fontWeight: 600,
-                mx: 1,
-                my: 0.5,
-                borderRadius: "12px",
-                px: "24px",
-                py: "12px",
-                minHeight: "unset",
-                minWidth: "unset",
-                color: isActive ? "#fff" : "#008641",
-                backgroundColor: isActive ? "#008641" : "#CBE2DA",
-                transition: "all 0.3s ease",
-                "&:hover": {
-                  backgroundColor: isActive ? "#008641" : "#d5d5d5",
-                },
-                "&.Mui-selected": {
-                  color: "#fff",
-                },
-              }}
-            />
-          );
-        })}
+        {zones.map((zone) => (
+          <Tab
+            key={zone._id}
+            label={zone.name}
+            value={zone._id}
+            disableRipple
+            sx={{
+              textTransform: "capitalize",
+              fontWeight: 600,
+              mx: 1,
+              my: 0.5,
+              borderRadius: "12px",
+              px: "24px",
+              py: "12px",
+              minHeight: "unset",
+              minWidth: "unset",
+              color: selectedZone === zone._id ? "#fff" : "#008641",
+              backgroundColor:
+                selectedZone === zone._id ? "#008641" : "#CBE2DA",
+              transition: "all 0.3s ease",
+              "&:hover": {
+                backgroundColor:
+                  selectedZone === zone._id ? "#008641" : "#d5d5d5",
+              },
+              "&.Mui-selected": {
+                color: "#fff",
+              },
+            }}
+          />
+        ))}
       </Tabs>
 
-      {/* Area Grid */}
-      <Grid
-        container
-        spacing={2}
-        sx={{
-          pl: { xs: "32px", sm: 0 }, // apply padding-left on xs, remove it on sm+
-          p: { xs: "32px", sm: "32px" }, // apply full padding on sm+
-        }}
-      >
+      {/* Area Cards */}
+      <Grid container spacing={2} px={3}>
         {filteredAreas.map((area) => {
-          const isSelected = selected === area.id;
+          const isSelected =
+            selectedArea?._id === area._id ||
+            selectedArea?.id === area._id ||
+            selectedArea?._id === area.id;
 
           return (
-            <Grid item xs={12} sm={6} md={12} lg={4} key={area.id}>
+            <Grid item xs={12} sm={6} md={12} lg={4} key={area._id || area.id}>
               <Stack
                 onClick={() => {
-                  setSelected(area.id);
+                  setSelectedArea(area);
                   userHasSelected.current = true;
-
-                  // Update city tab if clicked card's city differs (shouldn't happen here because filtered)
-                  if (area.city.toLowerCase() !== cityFilter) {
-                    setCityFilter(area.city.toLowerCase());
-                  }
                 }}
                 sx={{
                   borderRadius: "12px",
@@ -153,8 +111,8 @@ export default function CoverageList({ coverageAreas, selected, setSelected }) {
                   }}
                 >
                   <img
-                    src={area.image}
-                    alt={area.name}
+                    src={area?.coverPhoto?.url}
+                    alt={area.areaName}
                     style={{
                       width: "100%",
                       height: "100%",
@@ -165,7 +123,7 @@ export default function CoverageList({ coverageAreas, selected, setSelected }) {
                 </Box>
                 <Stack spacing={0.5} mt={1} sx={{ p: "8px" }}>
                   <Typography variant="h6" fontWeight={600}>
-                    {area.name}
+                    {area.areaName}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {area.address}
@@ -181,15 +139,10 @@ export default function CoverageList({ coverageAreas, selected, setSelected }) {
 }
 
 CoverageList.propTypes = {
-  coverageAreas: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-      name: PropTypes.string.isRequired,
-      address: PropTypes.string.isRequired,
-      image: PropTypes.string.isRequired,
-      city: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  selected: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  setSelected: PropTypes.func.isRequired,
+  zones: PropTypes.array.isRequired,
+  selectedZone: PropTypes.string.isRequired,
+  setSelectedZone: PropTypes.func.isRequired,
+  areas: PropTypes.array,
+  selectedArea: PropTypes.object,
+  setSelectedArea: PropTypes.func,
 };

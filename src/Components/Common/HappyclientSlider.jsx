@@ -85,7 +85,6 @@ export default function HappyclientSlider() {
           />
         )}
 
-        {/* Slider */}
         <Box
           ref={sliderRef}
           onMouseEnter={handleMouseEnter}

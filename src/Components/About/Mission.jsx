@@ -1,72 +1,81 @@
 import { Grid, Container, Typography, Stack, Box } from "@mui/material";
 
-const SVGMask = () => (
-  <svg
-    width="0"
-    height="0"
-    style={{ position: "absolute", left: "-9999px", top: 0 }}
-    aria-hidden="true"
-    focusable="false"
-  >
-    <defs>
-      <mask
-        id="customMask"
-        maskUnits="userSpaceOnUse"
-        x="0"
-        y="0"
-        width="560"
-        height="380"
-      >
-        <rect width="560" height="380" fill="black" />
-        <g transform="translate(560 0) scale(-1 1)">
-          <path
-            d="M0 250V30C0 13.4315 13.4314 0 30 0H530C546.569 0 560 13.4314 560 30V350.074C560 366.643 546.569 380.074 530 380.074H130C113.431 380.074 100 366.643 100 350.074V340C100 306.863 73.1371 280 40 280H30C13.4315 280 0 266.569 0 250Z"
-            fill="white"
-          />
-        </g>
-      </mask>
-    </defs>
-  </svg>
-);
-
-export default function Vision() {
+export default function Mission() {
   return (
     <Container sx={{ py: 8, position: "relative" }}>
-      <SVGMask />
       <Grid container spacing={4} alignItems="center">
-        {/* Responsive SVG Image */}
+        {/* Image + SVG + Red Box */}
         <Grid item xs={12} md={6}>
-          <Box sx={{ width: "100%", maxWidth: 560, mx: "auto" }}>
+          <Box
+            sx={{
+              width: "100%",
+              maxWidth: 560,
+              mx: "auto",
+              position: "relative",
+            }}
+          >
+            {/* Image */}
+            <Box
+              component="img"
+              src="mission.png"
+              alt="Mission"
+              sx={{
+                width: "100%",
+                height: "auto",
+                borderRadius: "20px",
+                display: "block",
+              }}
+            />
+
+            {/* SVG in bottom right */}
             <Box
               component="svg"
-              viewBox="0 0 560 380"
-              sx={{ width: "100%", height: "auto", display: "block" }}
               xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 150 150"
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                right: 0,
+                width: "150px",
+                height: "150px",
+                zIndex: 2,
+              }}
             >
-              <defs>
-                <mask
-                  id="customMaskInline"
-                  maskUnits="userSpaceOnUse"
-                  x="0"
-                  y="0"
-                  width="560"
-                  height="380"
-                >
-                  <rect width="560" height="380" fill="black" />
-                  <g transform="translate(560 0) scale(-1 1)">
-                    <path
-                      d="M0 250V30C0 13.4315 13.4314 0 30 0H530C546.569 0 560 13.4314 560 30V350.074C560 366.643 546.569 380.074 530 380.074H130C113.431 380.074 100 366.643 100 350.074V340C100 306.863 73.1371 280 40 280H30C13.4315 280 0 266.569 0 250Z"
-                      fill="white"
-                    />
-                  </g>
-                </mask>
-              </defs>
-              <image
-                href="mission.png"
-                width="560"
-                height="380"
-                mask="url(#customMaskInline)"
-                preserveAspectRatio="xMidYMid slice"
+              <path
+                d="M120 30C136.569 30 150 16.5685 150 0V30H120Z"
+                fill="white"
+              />
+              <path
+                d="M30 60C30 43.4315 43.4315 30 60 30H150V130C150 141.046 141.046 150 130 150H30V60Z"
+                fill="white"
+              />
+              <path
+                d="M0 150C16.5685 150 30 136.569 30 120V150H0Z"
+                fill="white"
+              />
+            </Box>
+
+            {/* Red box in bottom right */}
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                right: 0,
+                width: "100px",
+                height: "100px",
+                borderRadius: "20px",
+                backgroundColor: "#EFEFEF",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 3,
+              }}
+            >
+              <Box
+                component="img"
+                src="/amar_internet_antbd.png"
+                alt="ANTBD"
+                sx={{ width: "80px", height: "auto" }}
               />
             </Box>
           </Box>

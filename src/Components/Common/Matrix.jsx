@@ -13,7 +13,7 @@ export default function Matrix() {
       <Grid container>
         <Grid item xs={6} sm={6} md={3} lg={3}>
           <Stack gap="0px" sx={{ textAlign: "center" }} justifyContent="center">
-            <Typography variant="h2" sx={{fontWeight:"900 !important"}}>
+            <Typography variant="h2" sx={{ fontWeight: "900 !important" }}>
               {inView ? (
                 <CountUp end={32} duration={2} separator="," suffix="k+" />
               ) : (
@@ -28,7 +28,7 @@ export default function Matrix() {
 
         <Grid item xs={6} sm={6} md={3} lg={3}>
           <Stack gap="0px" sx={{ textAlign: "center" }} justifyContent="center">
-            <Typography variant="h2" sx={{fontWeight:"900 !important"}}>
+            <Typography variant="h2" sx={{ fontWeight: "900 !important" }}>
               {inView ? <CountUp end={20} duration={2} suffix="+" /> : "0"}
             </Typography>
             <Typography variant="h5" color="text.secondary">
@@ -39,7 +39,7 @@ export default function Matrix() {
 
         <Grid item xs={6} sm={6} md={3} lg={3}>
           <Stack gap="0px" sx={{ textAlign: "center" }} justifyContent="center">
-            <Typography variant="h2" sx={{fontWeight:"900 !important"}}>
+            <Typography variant="h2" sx={{ fontWeight: "900 !important" }}>
               {inView ? <CountUp end={32} duration={2} suffix="+" /> : "0"}
             </Typography>
             <Typography variant="h5" color="text.secondary">
@@ -50,7 +50,7 @@ export default function Matrix() {
 
         <Grid item xs={6} sm={6} md={3} lg={3}>
           <Stack gap="0px" sx={{ textAlign: "center" }} justifyContent="center">
-            <Typography variant="h2" sx={{fontWeight:"900 !important"}}>
+            <Typography variant="h2" sx={{ fontWeight: "900 !important" }}>
               {inView ? <CountUp end={300} duration={2} suffix="+" /> : "0"}
             </Typography>
             <Typography variant="h5" color="text.secondary">

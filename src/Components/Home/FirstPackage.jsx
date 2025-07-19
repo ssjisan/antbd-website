@@ -32,7 +32,7 @@ export default function FirstPackage() {
               </Stack>
               <Stack gap="16px">
                 <Stack flexDirection="row" alignItems="center" gap="8px">
-                  <Typography color="error">
+                  <Typography color="secondary">
                     <Box
                       component="span"
                       sx={{
@@ -50,7 +50,9 @@ export default function FirstPackage() {
                       Mbps
                     </Box>
                   </Typography>
-                  <Box sx={{ width: "80px", height: "80px", overflow:"visible" }}>
+                  <Box
+                    sx={{ width: "80px", height: "80px", overflow: "visible" }}
+                  >
                     <img
                       src="/rocket.gif"
                       alt="rocket"
@@ -58,7 +60,7 @@ export default function FirstPackage() {
                         width: "64px",
                         height: "64px",
                         objectFit: "cover",
-                        rotate:"6deg"
+                        rotate: "6deg",
                       }}
                     />
                   </Box>
@@ -69,11 +71,7 @@ export default function FirstPackage() {
                 </Typography>
               </Stack>
             </Stack>
-            <Button
-              color="error"
-              variant="contained"
-              sx={{ width: "180px" }}
-            >
+            <Button color="primary" variant="contained" sx={{ width: "180px" }}>
               Request Now
             </Button>
           </Stack>

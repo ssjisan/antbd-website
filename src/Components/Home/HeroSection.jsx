@@ -45,7 +45,7 @@ export default function HeroSection() {
                 display: "flex",
                 alignItems: "center",
                 gap: 1,
-                color: "primary.main",
+                color: "secondary.main",
               }}
             >
               <Box component="span" sx={{ fontSize: 32, lineHeight: 1 }}>
@@ -79,7 +79,8 @@ export default function HeroSection() {
                 transform: "scale(1)",
                 "&:hover": {
                   transform: "scale(0.9)",
-                  border: `1px solid ${theme.palette.primary.dark}`,
+                background: `${theme.palette.secondary.dark}`,
+                  border: `1px solid ${theme.palette.secondary.dark}`,
                 },
                 width: "max-content",
               })}
