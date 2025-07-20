@@ -1,10 +1,10 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import HalfRadialBarChart from "./HalfRadialBarChart";
 import {
+  ConnectionType,
   Download,
   Installation,
   Setup,
-  Support,
   Upload,
 } from "../../assets/Icons/Package/Icons";
 import PropTypes from "prop-types";
@@ -96,7 +96,7 @@ export default function PackageCard({ pkg }) {
             whiteSpace: "nowrap",
           }}
         >
-          {pkg.title}
+          {pkg.packageName}
         </Box>
       </Box>
 
@@ -108,7 +108,7 @@ export default function PackageCard({ pkg }) {
           </Box>
           <br />
           <Box component="span" fontSize="24px" fontWeight={700}>
-            {pkg.mbps} Mbps
+            {pkg.maxDownloadSpeed} Mbps
           </Box>
         </Typography>
         <Typography sx={{ textAlign: "left" }} color="primary">
@@ -128,7 +128,7 @@ export default function PackageCard({ pkg }) {
       </Stack>
 
       {/* Chart */}
-      <HalfRadialBarChart speed={pkg.mbps} />
+      <HalfRadialBarChart speed={pkg.maxDownloadSpeed} />
 
       {/* Upload/Download */}
       <Stack
@@ -139,39 +139,99 @@ export default function PackageCard({ pkg }) {
       >
         <Stack justifyContent="center" alignItems="center" gap="8px">
           <Download size="24px" color="#292D32" />
-          <Typography variant="body1">{pkg.downloadSpeed} Mbps</Typography>
+          <Typography variant="body1">{pkg.maxDownloadSpeed} Mbps</Typography>
         </Stack>
         <Stack justifyContent="center" alignItems="center" gap="8px">
           <Upload size="24px" color="#292D32" />
-          <Typography variant="body1">{pkg.uploadSpeed} Mbps</Typography>
+          <Typography variant="body1">{pkg.maxUploadSpeed} Mbps</Typography>
         </Stack>
       </Stack>
 
-      {/* Features */}
       <Stack flexDirection="column" gap="16px" mb={4}>
-        {[Setup, Installation, Support].map((Icon, index) => (
-          <Stack flexDirection="row" key={index}>
-            <Stack
-              justifyContent="center"
-              alignItems="center"
-              sx={{ width: "40px", height: "40px" }}
-            >
-              <Icon size="24px" />
-            </Stack>
-            <Stack
-              justifyContent="flex-start"
-              alignItems="flex-start"
-              sx={{ ml: 2 }}
-            >
-              <Typography variant="subtitle1" color="text.secondary">
-                Setup charge
-              </Typography>
-              <Typography variant="h6" fontWeight={700}>
-                1000 tk Fiber connection
-              </Typography>
-            </Stack>
+        <Stack flexDirection="row">
+          <Stack
+            justifyContent="center"
+            alignItems="center"
+            sx={{ width: "40px", height: "40px" }}
+          >
+            <ConnectionType size="24px" />
           </Stack>
-        ))}
+          <Stack
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            sx={{ ml: 2 }}
+          >
+            <Typography variant="subtitle1" color="text.secondary">
+              Connection Type
+            </Typography>
+            <Typography variant="h6" fontWeight={700}>
+              {Array.isArray(pkg.connectionType)
+                ? pkg.connectionType.includes(0) &&
+                  pkg.connectionType.includes(1)
+                  ? "CAT-5 / Fiber"
+                  : pkg.connectionType.includes(0)
+                  ? "CAT-5"
+                  : pkg.connectionType.includes(1)
+                  ? "Fiber"
+                  : "Unknown"
+                : pkg.connectionType === 0
+                ? "CAT-5"
+                : pkg.connectionType === 1
+                ? "Fiber"
+                : "Unknown"}
+            </Typography>
+          </Stack>
+        </Stack>
+        <Stack flexDirection="row">
+          <Stack
+            justifyContent="center"
+            alignItems="center"
+            sx={{ width: "40px", height: "40px" }}
+          >
+            <Setup size="24px" />
+          </Stack>
+          <Stack
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            sx={{ ml: 2 }}
+          >
+            <Typography variant="subtitle1" color="text.secondary">
+              Setup charge
+            </Typography>
+            <Typography variant="h6" fontWeight={700}>
+              {Array.isArray(pkg.connectionType)
+                ? pkg.connectionType.includes(1)
+                  ? `${pkg.setupCharge} tk/ Fiber`
+                  : "Free setup"
+                : pkg.connectionType === 1
+                ? `${pkg.setupCharge} tk/ Fiber`
+                : pkg.connectionType === 0
+                ? "Free setup"
+                : "Free setup"}
+            </Typography>
+          </Stack>
+        </Stack>
+        <Stack flexDirection="row">
+          <Stack
+            justifyContent="center"
+            alignItems="center"
+            sx={{ width: "40px", height: "40px" }}
+          >
+            <Installation size="24px" />
+          </Stack>
+          <Stack
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            sx={{ ml: 2 }}
+          >
+            <Typography variant="subtitle1" color="text.secondary">
+              Free installation
+            </Typography>
+            <Typography variant="h6" fontWeight={700}>
+              Wifi router, TV
+            </Typography>
+          </Stack>
+        </Stack>
       </Stack>
 
       {/* Request Button */}
@@ -192,11 +252,15 @@ export default function PackageCard({ pkg }) {
 
 PackageCard.propTypes = {
   pkg: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    mbps: PropTypes.number.isRequired,
+    packageName: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
-    uploadSpeed: PropTypes.number.isRequired,
-    downloadSpeed: PropTypes.number.isRequired,
-    showAsFamous: PropTypes.bool,
+    maxDownloadSpeed: PropTypes.number.isRequired,
+    maxUploadSpeed: PropTypes.number.isRequired,
+    connectionType: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.arrayOf(PropTypes.number),
+    ]).isRequired,
+    setupCharge: PropTypes.number.isRequired,
+    popUp: PropTypes.bool,
   }).isRequired,
 };

@@ -1,8 +1,27 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Container, Grid, Stack, Typography } from "@mui/material";
-import packagesFake from "../../assets/packagesFake.json"; // adjust path as needed
 import PackageCard from "../Common/PackageCard";
 
 export default function PackagesPlan() {
+  const [packages, setPackages] = useState([]);
+  const [loading, setLoading] = useState(true); // optional: for showing loader
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const res = await axios.get("/all-packages"); // ✅ Update if full path needed
+        setPackages(res.data.packages || []);
+      } catch (error) {
+        console.error("Failed to load packages:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPackages();
+  }, []);
+
   return (
     <Container sx={{ pt: "64px", pb: "64px" }}>
       <Stack
@@ -10,7 +29,7 @@ export default function PackagesPlan() {
         sx={{
           mb: "40px",
           maxWidth: "456px",
-          mx: "auto", // 🔥 centers the Stack horizontally
+          mx: "auto",
           textAlign: "center",
         }}
         alignItems="center"
@@ -23,19 +42,29 @@ export default function PackagesPlan() {
       </Stack>
 
       <Grid container rowSpacing={6} columnSpacing={3}>
-        {packagesFake.map((pkg) => (
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={6}
-            lg={4}
-            key={pkg.title}
-            sx={{ display: "flex", justifyContent: "center" }}
-          >
-            <PackageCard pkg={pkg} />
-          </Grid>
-        ))}
+        {loading ? (
+          <Typography variant="body1" sx={{ mx: "auto" }}>
+            Loading...
+          </Typography>
+        ) : packages.length > 0 ? (
+          packages.map((pkg) => (
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={6}
+              lg={4}
+              key={pkg._id} // 🔄 changed from title to _id
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
+              <PackageCard pkg={pkg} />
+            </Grid>
+          ))
+        ) : (
+          <Typography variant="body1" sx={{ mx: "auto" }}>
+            No packages found.
+          </Typography>
+        )}
       </Grid>
     </Container>
   );

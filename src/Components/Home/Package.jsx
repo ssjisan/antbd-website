@@ -1,10 +1,42 @@
-import { Button, Container, Grid, Stack, Typography } from "@mui/material";
-import "react-circular-progressbar/dist/styles.css";
-import packagesFake from "../../assets/packagesFake.json"; // adjust path as needed
+import { useEffect, useState } from "react";
+import axios from "axios";
+import {
+  Button,
+  Container,
+  Grid,
+  Stack,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import PackageCard from "../Common/PackageCard";
 
 export default function Package() {
-  const famousPackages = packagesFake.filter((pkg) => pkg.showAsFamous);
+  const [packages, setPackages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
+  const loadPackages = async () => {
+  try {
+    const res = await axios.get("/popup-packages");
+
+    console.log("Response from /popup-packages:", res.data);
+
+    if (Array.isArray(res.data)) {
+      setPackages(res.data);
+    } else {
+      console.error("Expected array but got:", res.data);
+      setPackages([]);
+    }
+  } catch (error) {
+    console.error("Error loading popup packages:", error);
+    setPackages([]);
+  } finally {
+    setLoading(false);
+  }
+};
+
+  useEffect(() => {
+    loadPackages();
+  }, []);
 
   return (
     <Container sx={{ pt: "64px", pb: "64px" }}>
@@ -12,21 +44,27 @@ export default function Package() {
         Choose your broadband package
       </Typography>
 
-      <Grid container spacing={3}>
-        {famousPackages.map((pkg) => (
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={6}
-            lg={4}
-            key={pkg.title}
-            sx={{ display: "flex", justifyContent: "center" }}
-          >
-            <PackageCard pkg={pkg} />
-          </Grid>
-        ))}
-      </Grid>
+      {loading ? (
+        <Stack alignItems="center" justifyContent="center" sx={{ mt: 6 }}>
+          <CircularProgress />
+        </Stack>
+      ) : (
+        <Grid container spacing={3}>
+          {packages.map((pkg) => (
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={6}
+              lg={4}
+              key={pkg._id || pkg.packageName}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
+              <PackageCard pkg={pkg} />
+            </Grid>
+          ))}
+        </Grid>
+      )}
 
       {/* Bottom Note */}
       <Stack sx={{ mt: "64px", width: "100%" }} gap="16px" alignItems="center">
