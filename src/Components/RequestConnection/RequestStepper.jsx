@@ -1,19 +1,13 @@
+import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 
-const steps = [
-  "Check coverage",
-  "Choose package",
-  "Details",
-  "Review & submit",
-];
-
-export default function RequestStepper() {
+export default function RequestStepper({ activeStep, steps }) {
   return (
     <Box sx={{ width: "100%", mb: "40px" }}>
-      <Stepper activeStep={1} alternativeLabel>
+      <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
@@ -23,3 +17,8 @@ export default function RequestStepper() {
     </Box>
   );
 }
+
+RequestStepper.propTypes = {
+  activeStep: PropTypes.number.isRequired,
+  steps: PropTypes.arrayOf(PropTypes.string).isRequired,
+};

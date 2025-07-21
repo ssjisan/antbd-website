@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 
-const CoverageAnimation = forwardRef(({ setAddress }, ref) => {
+const CoverageAnimation = forwardRef(({ setAddress, setSelectedLatLng }, ref) => {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
 
@@ -27,8 +27,11 @@ const CoverageAnimation = forwardRef(({ setAddress }, ref) => {
 
     mapRef.current.setView([lat, lng], 20);
 
-    // ✅ Notify parent with the address
+    // Notify parent with the address
     if (setAddress) setAddress(address);
+
+    // NEW: Notify parent with the lat/lng as well
+    if (setSelectedLatLng) setSelectedLatLng({ lat, lng });
   };
 
   // Initialize map
@@ -65,7 +68,7 @@ const CoverageAnimation = forwardRef(({ setAddress }, ref) => {
     };
   }, []);
 
-  // Expose handleClick to parent (for GPS access)
+  // Expose handleClick to parent (for GPS access or programmatic click)
   useImperativeHandle(ref, () => ({
     handleClick,
   }));
@@ -102,7 +105,7 @@ const CoverageAnimation = forwardRef(({ setAddress }, ref) => {
           right: 0,
           bottom: 0,
           left: 0,
-          pointerEvents: "none", // ✅ allows interaction with map
+          pointerEvents: "none", // allows interaction with map
           background: {
             xs: "linear-gradient(360deg, rgba(255, 255, 255, 0) 50%, #FFFFFF 100%)",
             md: "linear-gradient(269.58deg, rgba(255, 255, 255, 0) 61.98%, #FFFFFF 94.88%)",
@@ -115,7 +118,10 @@ const CoverageAnimation = forwardRef(({ setAddress }, ref) => {
 });
 
 CoverageAnimation.displayName = "CoverageAnimation";
+
 CoverageAnimation.propTypes = {
-  setAddress: PropTypes.func.isRequired, // mark required if you want
+  setAddress: PropTypes.func.isRequired,
+  setSelectedLatLng: PropTypes.func, // new prop to receive selected lat/lng
 };
+
 export default CoverageAnimation;

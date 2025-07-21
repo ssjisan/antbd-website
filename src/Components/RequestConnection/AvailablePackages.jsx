@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import axios from "axios";
-import PackageCard from "../Common/PackageCard"; // your card component
 import { ArrowRight } from "../../assets/Icons/Common/Icons";
 import PackageDetails from "./PackageDetails";
 
@@ -10,6 +9,7 @@ export default function AvailablePackages() {
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
+  const [selectedId, setSelectedId] = useState(null); // 🆕 selected radio
 
   useEffect(() => {
     const fetchPackages = async () => {
@@ -35,104 +35,137 @@ export default function AvailablePackages() {
     setSelectedPackage(null);
   };
 
+  const handleSelect = (pkgId) => {
+    setSelectedId(pkgId);
+  };
+
   if (loading) return <Typography>Loading packages...</Typography>;
 
   return (
     <Box sx={{ p: "48px 24px" }}>
       <Grid container rowSpacing={4} columnSpacing={4}>
-        {packages.map((pkg) => (
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={4}
-            lg={4}
-            key={pkg.packageName}
-            sx={{ display: "flex", justifyContent: "center" }}
-          >
-            <Box
-              sx={{
-                position: "relative",
-                p: "24px 16px",
-                border: "1px solid #918EAF3D",
-                overflow: "hidden",
-                borderRadius: "12px",
-                textAlign: "center",
-                width: "100%",
-                background: "#FFF",
-              }}
+        {packages.map((pkg) => {
+          const isSelected = selectedId === pkg._id;
+          return (
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={6}
+              lg={4}
+              key={pkg._id}
+              sx={{ display: "flex", justifyContent: "center" }}
+              onClick={() => handleSelect(pkg._id)} // 📌 Select on click
             >
-              <Stack
-                justifyContent="space-between"
-                flexDirection="row"
-                alignItems="center"
-              >
-                <Typography
-                  sx={{
-                    fontSize: "16px !important",
-                    fontWeight: "700 !important",
-                  }}
-                >
-                  {pkg.packageName}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "16px !important",
-                    fontWeight: "400 !important",
-                  }}
-                  color="text.secondary"
-                >
-                  ৳{pkg.price}/month
-                </Typography>
-              </Stack>
-              <Stack
-                flexDirection="column"
-                gap="8px"
-                justifyContent="space-between"
-                sx={{ my: "16px" }}
-              >
-                <Stack
-                  flexDirection="row"
-                  gap="8px"
-                  alignItems="center"
-                  sx={{ p: "2px" }}
-                >
-                  ✔️
-                  <Typography variant="h6">
-                    Speed {pkg.maxDownloadSpeed}Mbps max
-                  </Typography>
-                </Stack>
-                <Stack
-                  flexDirection="row"
-                  gap="8px"
-                  alignItems="center"
-                  sx={{ p: "2px" }}
-                >
-                  ✔️
-                  <Typography variant="h6">
-                    Installation charge{" "}
-                    {pkg.setupCharge ? `${pkg.setupCharge} taka` : "Free"}
-                  </Typography>
-                </Stack>
-              </Stack>
-              <Stack
-                flexDirection="row"
-                gap="4px"
-                alignItems="center"
+              <Box
                 sx={{
-                  pt: "16px",
-                  borderTop: "1px solid #918EAF3D",
+                  position: "relative",
+                  p: "24px 16px",
+                  border: isSelected
+                    ? "1.5px solid #008641"
+                    : "1.5px solid #918EAF3D",
+                  borderRadius: "12px",
+                  overflow: "hidden",
+                  textAlign: "center",
+                  width: "100%",
+                  background: "#FFF",
                   cursor: "pointer",
                 }}
-                justifyContent="flex-end"
-                onClick={() => handleOpenDetails(pkg)}
               >
-                <Typography color="secondary">Package details</Typography>
-                <ArrowRight size="16px" color="#ED1B24" />
-              </Stack>
-            </Box>
-          </Grid>
-        ))}
+                <Stack
+                  justifyContent="space-between"
+                  flexDirection="row"
+                  alignItems="center"
+                >
+                  <Stack gap="8px" alignItems="center" flexDirection="row">
+                    <Stack
+                      sx={{
+                        width: "20px",
+                        height: "20px",
+                        borderRadius: "20px",
+                        border: isSelected
+                          ? "2px solid #008641"
+                          : "2px solid grey",
+                      }}
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      {isSelected && (
+                        <Box
+                          sx={{
+                            width: "8px",
+                            height: "8px",
+                            borderRadius: "50%",
+                            backgroundColor: "#008641",
+                          }}
+                        />
+                      )}
+                    </Stack>
+                    <Typography
+                      sx={{
+                        fontSize: "16px !important",
+                        fontWeight: "700 !important",
+                      }}
+                    >
+                      {pkg.packageName}
+                    </Typography>
+                  </Stack>
+                  <Typography
+                    sx={{
+                      fontSize: "16px !important",
+                      fontWeight: "400 !important",
+                    }}
+                    color="text.secondary"
+                  >
+                    ৳{pkg.price}/month
+                  </Typography>
+                </Stack>
+                <Stack flexDirection="column" gap="8px" sx={{ my: "16px" }}>
+                  <Stack flexDirection="row" gap="8px" alignItems="center">
+                    ✔️
+                    <Typography variant="h6">
+                      Speed {pkg.maxDownloadSpeed}Mbps max
+                    </Typography>
+                  </Stack>
+                  <Stack flexDirection="row" gap="8px" alignItems="center">
+                    ✔️
+                    <Typography variant="h6">
+                      Installation charge{" "}
+                      {pkg.setupCharge ? `${pkg.setupCharge} taka` : "Free"}
+                    </Typography>
+                  </Stack>
+                </Stack>
+                <Stack
+                  flexDirection="row"
+                  gap="4px"
+                  alignItems="center"
+                  sx={{
+                    pt: "16px",
+                    borderTop: "1px solid #918EAF3D",
+                  }}
+                  justifyContent="flex-end"
+                >
+                  <Stack
+                    flexDirection="row"
+                    gap="4px"
+                    onClick={(e) => {
+                      e.stopPropagation(); // prevent selecting
+                      handleOpenDetails(pkg);
+                    }}
+                  >
+                    <Typography
+                      color="primary"
+                      sx={{ fontSize: "12px !important" }}
+                    >
+                      Package details
+                    </Typography>
+                    <ArrowRight size="16px" color="#008641" />
+                  </Stack>
+                </Stack>
+              </Box>
+            </Grid>
+          );
+        })}
       </Grid>
 
       {openModal && selectedPackage && (

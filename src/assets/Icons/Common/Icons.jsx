@@ -115,6 +115,36 @@ export const ArrowUp = ({ size, color }) => {
     </div>
   );
 };
+
+export const Close = ({ size, color }) => {
+  return (
+    <div
+      style={{
+        width: size,
+        height: size,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M18 6.00003L6 18M5.99995 5.99998L17.9999 17.9999"
+          stroke={color}
+          strokeWidth="2.5"
+          strokeLinecap="round"
+        />
+      </svg>
+    </div>
+  );
+};
+
 ArrowRight.propTypes = {
   color: PropTypes.string.isRequired,
   size: PropTypes.string.isRequired,
@@ -128,6 +158,10 @@ ArrowUp.propTypes = {
   size: PropTypes.string.isRequired,
 };
 ArrowDown.propTypes = {
+  color: PropTypes.string.isRequired,
+  size: PropTypes.string.isRequired,
+};
+Close.propTypes = {
   color: PropTypes.string.isRequired,
   size: PropTypes.string.isRequired,
 };
