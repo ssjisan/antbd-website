@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Container, Box, Button } from "@mui/material";
+import toast from "react-hot-toast";
+
 import Area from "./Area";
 import RequestStepper from "./RequestStepper";
 import AvailablePackages from "./AvailablePackages";
 import Details from "./Details";
 import Review from "./Review";
+import { DataContext } from "../../DataProcessing/DataProcessing";
 
 const steps = [
   "Check coverage",
@@ -15,26 +18,28 @@ const steps = [
 
 export default function RequestConnectionBody() {
   const [activeStep, setActiveStep] = useState(0);
-
-  // Function to go next step
-  const handleNext = () => {
-    if (activeStep < steps.length - 1) {
-      setActiveStep((prev) => prev + 1);
-    }
-  };
-
-  // Function to go back step
+  const areaRef = useRef(); // <-- Ref to Area component
+const { area } = useContext(DataContext);
   const handleBack = () => {
     if (activeStep > 0) {
       setActiveStep((prev) => prev - 1);
     }
   };
 
-  // Function to render the current step component
+  const handleNext = async () => {
+    if (activeStep === 0) {
+      // Step 0: Call checkAvailability from Area
+      const success = await areaRef.current?.checkAvailability();
+      if (!success) return; // Don't move forward if not successful
+    }
+
+    setActiveStep((prev) => prev + 1);
+  };
+
   const renderStepContent = (step) => {
     switch (step) {
       case 0:
-        return <Area />;
+        return <Area ref={areaRef} initialArea={area} />;
       case 1:
         return <AvailablePackages />;
       case 2:
@@ -50,11 +55,6 @@ export default function RequestConnectionBody() {
     <>
       <Container sx={{ pt: "64px", pb: "96px" }}>
         <RequestStepper activeStep={activeStep} steps={steps} />
-        <Box sx={{ mb: 2 }}>
-          Awesome! Antaranga Dot Com Limited is ready to serve you in your area.
-          You searched for: <strong>District - Barguna, Area - Amtali</strong>
-        </Box>
-
         {renderStepContent(activeStep)}
       </Container>
 
@@ -71,7 +71,9 @@ export default function RequestConnectionBody() {
         }}
       >
         <Container>
-          <Box sx={{ display: "flex", justifyContent: "flex-end", gap: "16px" }}>
+          <Box
+            sx={{ display: "flex", justifyContent: "flex-end", gap: "16px" }}
+          >
             <Button
               color="inherit"
               variant="soft"
@@ -85,7 +87,11 @@ export default function RequestConnectionBody() {
               sx={{ width: "240px" }}
               onClick={handleNext}
             >
-              {activeStep === steps.length - 1 ? "Place Order" : "Next"}
+              {activeStep === steps.length - 1
+                ? "Place Order"
+                : activeStep === 0
+                ? "Check & Next"
+                : "Next"}
             </Button>
           </Box>
         </Container>

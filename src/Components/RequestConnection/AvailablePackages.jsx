@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import axios from "axios";
 import { ArrowRight } from "../../assets/Icons/Common/Icons";
 import PackageDetails from "./PackageDetails";
@@ -9,8 +9,8 @@ export default function AvailablePackages() {
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
-  const [selectedId, setSelectedId] = useState(null); // 🆕 selected radio
-
+  const [selectedId, setSelectedId] = useState(null);
+  
   useEffect(() => {
     const fetchPackages = async () => {
       try {
@@ -35,14 +35,29 @@ export default function AvailablePackages() {
     setSelectedPackage(null);
   };
 
-  const handleSelect = (pkgId) => {
-    setSelectedId(pkgId);
-  };
-
   if (loading) return <Typography>Loading packages...</Typography>;
 
   return (
     <Box sx={{ p: "48px 24px" }}>
+      <Stack
+        sx={{
+          mb: 2,
+          border: "1px solid primary.light",
+          p: 2,
+          textAlign: "center",
+          borderRadius: "16px",
+          backgroundColor: "primary.light",
+        }}
+        gap="8px"
+      >
+        <Typography variant="h6" color="primary">
+          🎉 Awesome! Antaranga Dot Com Limited is ready to serve you in your
+          area. <br />
+          {/* You searched for: <strong>{coverageLocation.areaName}</strong> */}
+        </Typography>
+        <Button>Change location</Button>
+      </Stack>
+
       <Grid container rowSpacing={4} columnSpacing={4}>
         {packages.map((pkg) => {
           const isSelected = selectedId === pkg._id;
@@ -55,7 +70,7 @@ export default function AvailablePackages() {
               lg={4}
               key={pkg._id}
               sx={{ display: "flex", justifyContent: "center" }}
-              onClick={() => handleSelect(pkg._id)} // 📌 Select on click
+              // onClick={() => handleSelect(pkg._id)}
             >
               <Box
                 sx={{

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import {
   Container,
   Typography,
@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { GPS } from "../../assets/Icons/Home/Icons"; // Your GPS icon
 import CoverageAnimation from "../Common/CoverageAnimation";
+import { DataContext } from "../../DataProcessing/DataProcessing";
 
 export default function CheckCoverage() {
   const mapRef = useRef(null);
@@ -21,6 +22,8 @@ export default function CheckCoverage() {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedLatLng, setSelectedLatLng] = useState(null);
+  const { area, setArea } = useContext(DataContext);
+  console.log("area", area);
 
   // Search input handler
   const handleInputChange = (e) => {
@@ -79,7 +82,9 @@ export default function CheckCoverage() {
         } else {
           setSelectedLatLng({ lat: latitude, lng: longitude });
         }
-        setSearchQuery(`Current location: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}`);
+        setSearchQuery(
+          `Current location: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}`
+        );
       },
       () => {
         toast.error("Permission denied or failed to get location.");
@@ -103,6 +108,11 @@ export default function CheckCoverage() {
       const data = res.data;
       if (data.success) {
         toast.success(data.message);
+        setArea({
+          areaName: searchQuery,
+          lat: selectedLatLng.lat,
+          lng: selectedLatLng.lng,
+        });
       } else {
         toast.error(data.message);
       }
@@ -162,7 +172,10 @@ export default function CheckCoverage() {
                       px: 2,
                       py: 1,
                       cursor: "pointer",
-                      borderBottom: idx < suggestions.length - 1 ? "1px solid #eee" : "none",
+                      borderBottom:
+                        idx < suggestions.length - 1
+                          ? "1px solid #eee"
+                          : "none",
                       "&:hover": { backgroundColor: "#f5f5f5" },
                     }}
                   >
@@ -192,7 +205,11 @@ export default function CheckCoverage() {
         </Grid>
 
         <Grid item xs={12} sm={12} md={8} lg={8}>
-          <CoverageAnimation ref={mapRef} setSelectedLatLng={setSelectedLatLng} setAddress={setSearchQuery} />
+          <CoverageAnimation
+            ref={mapRef}
+            setSelectedLatLng={setSelectedLatLng}
+            setAddress={setSearchQuery}
+          />
         </Grid>
       </Grid>
     </Container>

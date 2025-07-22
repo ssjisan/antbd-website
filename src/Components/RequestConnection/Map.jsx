@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 
-const CoverageAnimation = forwardRef(({ setAddress, setSelectedLatLng }, ref) => {
+const Map = forwardRef(({ setAddress, setSelectedLatLng }, ref) => {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
 
@@ -114,11 +114,11 @@ const CoverageAnimation = forwardRef(({ setAddress, setSelectedLatLng }, ref) =>
   );
 });
 
-CoverageAnimation.displayName = "CoverageAnimation";
+Map.displayName = "Map";
 
-CoverageAnimation.propTypes = {
+Map.propTypes = {
   setAddress: PropTypes.func.isRequired,
   setSelectedLatLng: PropTypes.func, // new prop to receive selected lat/lng
 };
 
-export default CoverageAnimation;
+export default Map;

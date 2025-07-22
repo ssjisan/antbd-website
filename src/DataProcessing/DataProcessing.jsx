@@ -3,6 +3,7 @@ import { createContext } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import AuthProvider from "./Components/AuthProvider";
+import OrderProcess from "./Components/OrderProcess";
 export const DataContext = createContext();
 
 export default function DataProcessing({ children }) {
@@ -12,12 +13,16 @@ export default function DataProcessing({ children }) {
   axios.defaults.baseURL = process.env.REACT_APP_SERVER_API;
   axios.defaults.headers.common["Authorization"] = auth?.token;
 
+  const { area, setArea } = OrderProcess();
+
   return (
     <DataContext.Provider
       value={{
         auth,
         setAuth,
-        // Events
+        // Request
+        area,
+        setArea,
       }}
     >
       {children}
