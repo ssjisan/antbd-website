@@ -152,3 +152,45 @@ body {
   object-fit: cover;
   border-radius: 50%;
 }
+.chat-widget {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.chat-button {
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  cursor: pointer;
+}
+
+.chat-popup {
+  display: none;
+  position: absolute;
+  bottom: 60px;
+  right: 0;
+  background-color: white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  padding: 10px;
+  z-index: 10000;
+}
+
+.chat-popup.active {
+  display: block;
+}
+
+.chat-option {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.chat-option img {
+  width: 24px;
+  margin-right: 8px;
+}

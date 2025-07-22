@@ -13,7 +13,8 @@ export default function DataProcessing({ children }) {
   axios.defaults.baseURL = process.env.REACT_APP_SERVER_API;
   axios.defaults.headers.common["Authorization"] = auth?.token;
 
-  const { area, setArea } = OrderProcess();
+  const { area, setArea, packageId, setPackageId, formData, setFormData } =
+    OrderProcess();
 
   return (
     <DataContext.Provider
@@ -23,6 +24,10 @@ export default function DataProcessing({ children }) {
         // Request
         area,
         setArea,
+        packageId,
+        setPackageId,
+        formData,
+        setFormData,
       }}
     >
       {children}

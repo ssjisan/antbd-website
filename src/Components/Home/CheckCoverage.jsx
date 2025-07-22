@@ -15,6 +15,7 @@ import axios from "axios";
 import { GPS } from "../../assets/Icons/Home/Icons"; // Your GPS icon
 import CoverageAnimation from "../Common/CoverageAnimation";
 import { DataContext } from "../../DataProcessing/DataProcessing";
+import { useNavigate } from "react-router-dom";
 
 export default function CheckCoverage() {
   const mapRef = useRef(null);
@@ -22,8 +23,8 @@ export default function CheckCoverage() {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedLatLng, setSelectedLatLng] = useState(null);
-  const { area, setArea } = useContext(DataContext);
-  console.log("area", area);
+  const { setArea } = useContext(DataContext);
+  const navigate = useNavigate()
 
   // Search input handler
   const handleInputChange = (e) => {
@@ -108,6 +109,7 @@ export default function CheckCoverage() {
       const data = res.data;
       if (data.success) {
         toast.success(data.message);
+        navigate("/request-connection")
         setArea({
           areaName: searchQuery,
           lat: selectedLatLng.lat,

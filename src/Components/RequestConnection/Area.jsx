@@ -21,6 +21,7 @@ import {
   useRef,
   useState,
 } from "react";
+import PropTypes from "prop-types";
 
 const Area = forwardRef((props, ref) => {
   const { initialArea } = props;
@@ -34,22 +35,21 @@ const Area = forwardRef((props, ref) => {
   const [address, setAddress] = useState(initialArea?.address || "");
 
   useEffect(() => {
-  if (initialArea) {
-    const lat = parseFloat(initialArea.lat);
-    const lng = parseFloat(initialArea.lng);
-    setLatLng({ lat, lng });
-    setAddress(initialArea.areaName);
-    setSearchQuery(initialArea.areaName);
+    if (initialArea) {
+      const lat = parseFloat(initialArea.lat);
+      const lng = parseFloat(initialArea.lng);
+      setLatLng({ lat, lng });
+      setAddress(initialArea.areaName);
+      setSearchQuery(initialArea.areaName);
 
-    // Drop pin on the map
-    if (mapRef.current?.handleClick) {
-      mapRef.current.handleClick(lat, lng);
-    } else {
-      setSelectedLatLng({ lat, lng });
+      // Drop pin on the map
+      if (mapRef.current?.handleClick) {
+        mapRef.current.handleClick(lat, lng);
+      } else {
+        setSelectedLatLng({ lat, lng });
+      }
     }
-  }
-}, [initialArea]);
-
+  }, [initialArea]);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -132,6 +132,7 @@ const Area = forwardRef((props, ref) => {
           areaName: searchQuery,
           lat: selectedLatLng.lat,
           lng: selectedLatLng.lng,
+          zoneName: res.data.combinedAreaZone,
         });
         return true;
       } else {
@@ -224,5 +225,18 @@ const Area = forwardRef((props, ref) => {
 });
 
 Area.displayName = "Area";
+
+Area.propTypes = {
+  initialArea: PropTypes.shape({
+    lat: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    lng: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    areaName: PropTypes.string,
+    latLng: PropTypes.shape({
+      lat: PropTypes.number,
+      lng: PropTypes.number,
+    }),
+    address: PropTypes.string,
+  }),
+};
 
 export default Area;

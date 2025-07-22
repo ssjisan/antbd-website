@@ -9,30 +9,34 @@ import {
   CircularProgress,
 } from "@mui/material";
 import PackageCard from "../Common/PackageCard";
+import { Link } from "react-router-dom";
 
 export default function Package() {
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+  const goToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const loadPackages = async () => {
-  try {
-    const res = await axios.get("/popup-packages");
+    try {
+      const res = await axios.get("/popup-packages");
 
-    console.log("Response from /popup-packages:", res.data);
+      console.log("Response from /popup-packages:", res.data);
 
-    if (Array.isArray(res.data)) {
-      setPackages(res.data);
-    } else {
-      console.error("Expected array but got:", res.data);
+      if (Array.isArray(res.data)) {
+        setPackages(res.data);
+      } else {
+        console.error("Expected array but got:", res.data);
+        setPackages([]);
+      }
+    } catch (error) {
+      console.error("Error loading popup packages:", error);
       setPackages([]);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("Error loading popup packages:", error);
-    setPackages([]);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   useEffect(() => {
     loadPackages();
@@ -72,7 +76,13 @@ export default function Package() {
           Bill for 12 months and get a solid 10% discount with free fiber
           connection
         </Typography>
-        <Button variant="outlined" sx={{ width: "100%", maxWidth: "240px" }}>
+        <Button
+          variant="outlined"
+          sx={{ width: "100%", maxWidth: "240px" }}
+          onClick={goToTop}
+          component={Link}
+          to="/package"
+        >
           See all packages
         </Button>
       </Stack>

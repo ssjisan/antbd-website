@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import axios from "axios";
 import { ArrowRight } from "../../assets/Icons/Common/Icons";
 import PackageDetails from "./PackageDetails";
+import { DataContext } from "../../DataProcessing/DataProcessing";
 
 export default function AvailablePackages() {
   const [packages, setPackages] = useState([]);
@@ -10,7 +11,7 @@ export default function AvailablePackages() {
   const [openModal, setOpenModal] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
-  
+  const {setPackageId} = useContext(DataContext)
   useEffect(() => {
     const fetchPackages = async () => {
       try {
@@ -34,6 +35,16 @@ export default function AvailablePackages() {
     setOpenModal(false);
     setSelectedPackage(null);
   };
+
+  const handleSelect = (id) => {
+    setSelectedId(id);
+    localStorage.setItem("selectedPackageId", id);
+    setPackageId(id)
+  };
+  useEffect(() => {
+    const savedId = localStorage.getItem("selectedPackageId");
+    if (savedId) setSelectedId(savedId);
+  }, []);
 
   if (loading) return <Typography>Loading packages...</Typography>;
 
@@ -70,7 +81,7 @@ export default function AvailablePackages() {
               lg={4}
               key={pkg._id}
               sx={{ display: "flex", justifyContent: "center" }}
-              // onClick={() => handleSelect(pkg._id)}
+              onClick={() => handleSelect(pkg._id)}
             >
               <Box
                 sx={{

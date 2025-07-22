@@ -75,8 +75,8 @@ export default function HalfRadialBarChart({ speed }) {
         opacityTo: 1,
         stops: [0, 100],
         colorStops: [
-          { offset: 0, color: "#ED1B24", opacity: 1 },
-          { offset: 100, color: "#C20008", opacity: 1 },
+          { offset: 0, color: "#058c46", opacity: 1 },
+          { offset: 100, color: "#17a15a", opacity: 1 },
         ],
         gradientToColors: ["#C20008"],
       },

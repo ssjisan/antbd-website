@@ -1,9 +1,39 @@
 import { Container, Stack, Typography, TextField } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { DataContext } from "../../DataProcessing/DataProcessing";
 
 export default function Details() {
-  const { formData, updateField } = useContext(DataContext);
+  const { formData, setFormData, area } = useContext(DataContext);
+
+  useEffect(() => {
+    if (area) {
+      let updatedData = { ...formData };
+
+      if (area.areaName && formData.area !== area.areaName) {
+        updatedData.area = area.areaName;
+      }
+
+      if (area.zoneName && formData.zone !== area.zoneName) {
+        updatedData.zone = area.zoneName;
+      }
+
+      // Only update if something changed
+      if (
+        updatedData.area !== formData.area ||
+        updatedData.zone !== formData.zone
+      ) {
+        setFormData(updatedData);
+      }
+    }
+  }, [area]);
+
+  // Handles each field update
+  const updateField = (field, value) => {
+    setFormData({
+      ...formData,
+      [field]: value,
+    });
+  };
 
   return (
     <Container
@@ -54,6 +84,7 @@ export default function Details() {
           label="Zone"
           variant="outlined"
           fullWidth
+          disabled
           value={formData.zone}
           onChange={(e) => updateField("zone", e.target.value)}
         />
@@ -63,7 +94,6 @@ export default function Details() {
           fullWidth
           disabled
           value={formData.area}
-          onChange={(e) => updateField("area", e.target.value)}
         />
         <TextField
           label="Full Address"

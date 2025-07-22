@@ -8,8 +8,17 @@ import {
   Upload,
 } from "../../assets/Icons/Package/Icons";
 import PropTypes from "prop-types";
+import { useContext } from "react";
+import { DataContext } from "../../DataProcessing/DataProcessing";
+import { useNavigate } from "react-router-dom";
 
 export default function PackageCard({ pkg }) {
+  const { setPackageId } = useContext(DataContext);
+  const navigate = useNavigate();
+  const handleRequestClick = () => {
+    setPackageId(pkg._id); // Save package ID to context
+    navigate("/request-connection");
+  };
   return (
     <Box
       sx={{
@@ -243,6 +252,7 @@ export default function PackageCard({ pkg }) {
           transition: "all 0.3s ease-in-out",
           fontWeight: 600,
         }}
+        onClick={handleRequestClick}
       >
         Request now
       </Button>
@@ -252,6 +262,7 @@ export default function PackageCard({ pkg }) {
 
 PackageCard.propTypes = {
   pkg: PropTypes.shape({
+    _id:PropTypes.string.isRequired,
     packageName: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     maxDownloadSpeed: PropTypes.number.isRequired,

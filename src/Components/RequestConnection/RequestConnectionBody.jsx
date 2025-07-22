@@ -1,13 +1,14 @@
 import { useContext, useRef, useState } from "react";
 import { Container, Box, Button } from "@mui/material";
-import toast from "react-hot-toast";
-
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import Area from "./Area";
 import RequestStepper from "./RequestStepper";
 import AvailablePackages from "./AvailablePackages";
 import Details from "./Details";
 import Review from "./Review";
 import { DataContext } from "../../DataProcessing/DataProcessing";
+import toast from "react-hot-toast";
 
 const steps = [
   "Check coverage",
@@ -18,19 +19,75 @@ const steps = [
 
 export default function RequestConnectionBody() {
   const [activeStep, setActiveStep] = useState(0);
-  const areaRef = useRef(); // <-- Ref to Area component
-const { area } = useContext(DataContext);
+  const areaRef = useRef();
+  const { area, packageId, formData, setArea, setPackageId, setFormData } =
+    useContext(DataContext);
+  const navigate = useNavigate();
+
   const handleBack = () => {
     if (activeStep > 0) {
       setActiveStep((prev) => prev - 1);
     }
   };
 
+  const clearAllData = () => {
+    setArea({
+      areaName: "",
+      lat: null,
+      lng: null,
+      zoneName: "",
+    });
+    setPackageId(null);
+    setFormData({
+      name: "",
+      mobile: "",
+      email: "",
+      zone: "",
+      area: "",
+      fullAddress: "",
+    });
+    localStorage.removeItem("areaInfo");
+    localStorage.removeItem("selectedPackageId");
+    localStorage.removeItem("formData");
+  };
+
+  const handlePlaceOrder = async () => {
+    const payload = {
+      name: formData.name,
+      mobile: formData.mobile,
+      email: formData.email,
+      zone: formData.zone,
+      area: formData.area,
+      fullAddress: formData.fullAddress,
+      areaInfo: area,
+      packageId: packageId,
+    };
+
+    try {
+      await axios.post("/connection-request", payload);
+      toast.success("Order placed successfully!");
+
+      clearAllData();
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+    } catch (error) {
+      console.error("Failed to place order:", error);
+      toast.error("Failed to place order. Please try again.");
+    }
+  };
+
   const handleNext = async () => {
     if (activeStep === 0) {
-      // Step 0: Call checkAvailability from Area
       const success = await areaRef.current?.checkAvailability();
-      if (!success) return; // Don't move forward if not successful
+      if (!success) return; // don't proceed if area check fails
+    }
+
+    if (activeStep === steps.length - 1) {
+      // Last step, place order
+      await handlePlaceOrder();
+      return;
     }
 
     setActiveStep((prev) => prev + 1);

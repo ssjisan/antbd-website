@@ -1,6 +1,5 @@
 import Navbar from "../Layout/Navbar/Navbar";
 import HeroSection from "../Components/Home/HeroSection";
-import WhatsAppButton from "../Components/Common/WhatsAppButton";
 import Package from "../Components/Home/Package";
 import FirstPackage from "../Components/Home/FirstPackage";
 import Matrix from "../Components/Common/Matrix";
@@ -10,6 +9,7 @@ import HappyclientSlider from "../Components/Common/HappyclientSlider";
 import NeedHelp from "../Components/Home/NeedHelp";
 import Footer from "../Layout/Footer/Footer";
 import FaQ from "../Components/Common/FaQ";
+import ChatWidget from "../Components/Common/ChatWidget";
 
 export default function Home() {
   return (
@@ -25,7 +25,7 @@ export default function Home() {
       <FaQ />
       <NeedHelp />
       <Footer />
-      <WhatsAppButton />
+      <ChatWidget />
     </>
   );
 }
