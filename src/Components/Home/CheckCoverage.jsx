@@ -114,6 +114,7 @@ export default function CheckCoverage() {
           areaName: searchQuery,
           lat: selectedLatLng.lat,
           lng: selectedLatLng.lng,
+          zoneName: res.data.combinedAreaZone,
         });
       } else {
         toast.error(data.message);

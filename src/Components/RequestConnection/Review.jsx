@@ -226,7 +226,7 @@ export default function Review() {
                   textAlign: "center",
                 }}
               >
-                <Typography variant="body1">
+                <Typography variant="h5" sx={{fontWeight:"700 !important"}}>
                   🎁 Pay 3 months in advance and get free setup!
                 </Typography>
               </Stack>

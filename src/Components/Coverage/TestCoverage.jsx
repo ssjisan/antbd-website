@@ -1,274 +1,231 @@
 import { useEffect, useRef, useState } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import "leaflet-draw";
-import "leaflet-draw/dist/leaflet.draw.css";
 
-// Point-in-Polygon check (Ray Casting)
-function isPointInPolygon(point, vs) {
-  const x = point[0],
-    y = point[1];
-  let inside = false;
-  for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
-    const xi = vs[i][0],
-      yi = vs[i][1];
-    const xj = vs[j][0],
-      yj = vs[j][1];
-
-    const intersect =
-      yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
-    if (intersect) inside = !inside;
-  }
-  return inside;
-}
-
-export default function TestCoverage() {
+export default function GoogleSearchMap() {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
-  const drawnItemsRef = useRef(null);
+  const infoWindowRef = useRef(null);
+  const autocompleteService = useRef(null);
+  const geocoder = useRef(null);
 
-  const [searchQuery, setSearchQuery] = useState("");
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
-    const map = L.map("map").setView([22.353, 91.8325], 15);
-    mapRef.current = map;
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "&copy; OpenStreetMap contributors",
-    }).addTo(map);
-
-    const drawnItems = new L.FeatureGroup();
-    drawnItemsRef.current = drawnItems;
-    map.addLayer(drawnItems);
-
-    const drawControl = new L.Control.Draw({
-      draw: {
-        polygon: true,
-        marker: false,
-        circle: false,
-        rectangle: false,
-        polyline: false,
-        circlemarker: false,
-      },
-      edit: {
-        featureGroup: drawnItems,
-        remove: true,
-      },
-    });
-
-    map.addControl(drawControl);
-
-    // Load saved polygons
-    const savedPolygons = localStorage.getItem("coveragePolygons");
-    if (savedPolygons) {
-      const polygons = JSON.parse(savedPolygons);
-      polygons.forEach((coords) => {
-        const polygon = L.polygon(
-          coords.map(([lat, lng]) => [lat, lng]),
-          {
-            color: "blue",
-            fillOpacity: 0.2,
-          }
-        );
-        polygon.addTo(drawnItems);
-      });
+    if (!window.google) {
+      const script = document.createElement("script");
+      script.src =
+        "https://maps.googleapis.com/maps/api/js?key=AIzaSyDo6tI6z6qCTkXDp-pSl8F22SvsvNR1rOA&libraries=places";
+      script.async = true;
+      script.defer = true;
+      script.onload = () => setMapLoaded(true);
+      document.body.appendChild(script);
+    } else {
+      setMapLoaded(true);
     }
-
-    const savePolygonsToStorage = () => {
-      const allPolygons = [];
-      drawnItems.eachLayer((layer) => {
-        if (layer instanceof L.Polygon) {
-          const coords = layer
-            .getLatLngs()[0]
-            .map((latlng) => [latlng.lat, latlng.lng]);
-          allPolygons.push(coords);
-        }
-      });
-      localStorage.setItem("coveragePolygons", JSON.stringify(allPolygons));
-    };
-
-    map.on("draw:created", function (e) {
-      const layer = e.layer;
-      drawnItems.addLayer(layer);
-      savePolygonsToStorage();
-    });
-
-    map.on("draw:deleted", savePolygonsToStorage);
-    map.on("draw:edited", savePolygonsToStorage);
-
-    return () => map.remove();
   }, []);
 
-  const checkInsideAnyPolygon = ([lng, lat]) => {
-    let inside = false;
-    drawnItemsRef.current.eachLayer((layer) => {
-      if (layer instanceof L.Polygon) {
-        const latLngs = layer.getLatLngs()[0];
-        const polygonCoords = latLngs.map((latlng) => [latlng.lng, latlng.lat]);
-        if (isPointInPolygon([lng, lat], polygonCoords)) {
-          inside = true;
-        }
-      }
-    });
-    return inside;
-  };
+  useEffect(() => {
+    if (!mapLoaded) return;
 
-  const handleInputChange = (e) => {
+    const map = new window.google.maps.Map(document.getElementById("map"), {
+      center: { lat: 23.8103, lng: 90.4125 },
+      zoom: 13,
+    });
+
+    mapRef.current = map;
+    geocoder.current = new window.google.maps.Geocoder();
+
+    if (!autocompleteService.current && window.google?.maps?.places) {
+      autocompleteService.current =
+        new window.google.maps.places.AutocompleteService();
+    }
+
+    // Drop pin manually by clicking map
+    map.addListener("click", (e) => {
+      const location = e.latLng;
+      dropMarker(location);
+      getPlaceNameFromCoords(location);
+    });
+  }, [mapLoaded]);
+
+  const handleSearchChange = (e) => {
     const value = e.target.value;
-    setSearchQuery(value);
-    if (value.length >= 5) {
-      fetchSuggestions(value);
+    setSearchInput(value);
+
+    if (value.length > 0 && autocompleteService.current) {
+      autocompleteService.current.getPlacePredictions(
+        { input: value },
+        (predictions, status) => {
+          if (
+            status === window.google.maps.places.PlacesServiceStatus.OK &&
+            predictions
+          ) {
+            setSuggestions(predictions.slice(0, 5));
+          } else {
+            setSuggestions([]);
+          }
+        }
+      );
     } else {
       setSuggestions([]);
     }
   };
 
-  const fetchSuggestions = async (query) => {
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-      query
-    )}`;
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      setSuggestions(data.slice(0, 5));
-    } catch (err) {
-      console.error("Suggestion error:", err);
-      setSuggestions([]);
-    }
+  const handleSelectPlace = (placeId, name) => {
+    const service = new window.google.maps.places.PlacesService(mapRef.current);
+
+    service.getDetails({ placeId }, (place, status) => {
+      if (
+        status === window.google.maps.places.PlacesServiceStatus.OK &&
+        place.geometry
+      ) {
+        const location = place.geometry.location;
+
+        dropMarker(location, name);
+        mapRef.current.panTo(location);
+        mapRef.current.setZoom(17);
+
+        setSearchInput(name);
+        setSuggestions([]);
+      }
+    });
   };
 
-  const handleSelectSuggestion = (place) => {
-    setSearchQuery(place.display_name);
-    setSuggestions([]);
+  const getPlaceNameFromCoords = (latLng) => {
+    if (!geocoder.current) return;
 
-    const lat = parseFloat(place.lat);
-    const lng = parseFloat(place.lon);
-    const latLng = L.latLng(lat, lng);
-
-    updateMapWithLocation(latLng, "Searched location");
+    geocoder.current.geocode({ location: latLng }, (results, status) => {
+      if (
+        status === window.google.maps.GeocoderStatus.OK &&
+        results &&
+        results[0]
+      ) {
+        const address = results[0].formatted_address;
+        setSearchInput(address);
+        showInfoWindow(latLng, address);
+      }
+    });
   };
 
-  const updateMapWithLocation = (latLng, label) => {
-    const lat = latLng.lat;
-    const lng = latLng.lng;
-
+  const dropMarker = (location, title = "Selected Location") => {
     if (markerRef.current) {
-      mapRef.current.removeLayer(markerRef.current);
+      markerRef.current.setMap(null);
     }
 
-    markerRef.current = L.marker(latLng)
-      .addTo(mapRef.current)
-      .bindPopup(label)
-      .openPopup();
+    markerRef.current = new window.google.maps.Marker({
+      map: mapRef.current,
+      position: location,
+      title,
+    });
 
-    mapRef.current.setView(latLng, 16);
+    showInfoWindow(location, title);
+  };
 
-    const isInside = checkInsideAnyPolygon([lng, lat]);
+  const showInfoWindow = (location, content) => {
+    if (infoWindowRef.current) {
+      infoWindowRef.current.close();
+    }
 
-    L.popup()
-      .setLatLng(latLng)
-      .setContent(
-        isInside
-          ? "✅ This location is inside the coverage area."
-          : "❌ This location is outside the coverage area."
-      )
-      .openOn(mapRef.current);
+    infoWindowRef.current = new window.google.maps.InfoWindow({
+      content,
+      position: location,
+    });
+
+    infoWindowRef.current.open(mapRef.current);
   };
 
   const handleUseMyLocation = () => {
     if (!navigator.geolocation) {
-      alert("Geolocation is not supported.");
+      alert("Geolocation not supported by your browser.");
       return;
     }
 
     navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        const latLng = L.latLng(lat, lng);
+      (position) => {
+        const location = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
 
-        // Reverse geocode to get address
-        try {
-          const res = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-          );
-          const data = await res.json();
-          if (data && data.display_name) {
-            setSearchQuery(data.display_name);
-          } else {
-            setSearchQuery(`${lat}, ${lng}`);
-          }
-        } catch (err) {
-          console.error("Reverse geocoding error:", err);
-          setSearchQuery(`${lat}, ${lng}`);
-        }
-
-        updateMapWithLocation(latLng, "Your current location");
+        dropMarker(location);
+        mapRef.current.panTo(location);
+        mapRef.current.setZoom(17);
+        getPlaceNameFromCoords(location);
       },
       () => {
-        alert("Location access denied or failed.");
+        alert("Unable to retrieve your location.");
       }
     );
   };
 
   return (
     <div>
-      <h2>Coverage Check (Multiple Areas + GPS + Search)</h2>
+      <h2>Search Location (Map with Pin + My Location)</h2>
 
-      <div style={{ position: "relative", marginBottom: "10px" }}>
-        <input
-          type="text"
-          placeholder="Search location..."
-          value={searchQuery}
-          onChange={handleInputChange}
-          style={{ padding: "6px", width: "300px", marginRight: "10px" }}
-        />
-        <button onClick={handleUseMyLocation} style={{ padding: "6px 10px" }}>
-          Use My Location
-        </button>
+      <button
+        onClick={handleUseMyLocation}
+        style={{
+          marginBottom: "8px",
+          padding: "8px 12px",
+          borderRadius: "4px",
+          border: "1px solid #ccc",
+          cursor: "pointer",
+        }}
+      >
+        📍 Use My Location
+      </button>
 
-        {suggestions.length > 0 && (
-          <ul
+      <input
+        type="text"
+        value={searchInput}
+        onChange={handleSearchChange}
+        placeholder="Search for a place..."
+        style={{
+          padding: "8px",
+          width: "100%",
+          marginBottom: "5px",
+          boxSizing: "border-box",
+        }}
+      />
+
+      <ul
+        style={{
+          listStyle: "none",
+          margin: 0,
+          padding: 0,
+          maxHeight: "150px",
+          overflowY: "auto",
+          background: "#fff",
+          border: suggestions.length ? "1px solid #ccc" : "none",
+          borderRadius: "4px",
+          marginBottom: "10px",
+          position: "relative",
+          zIndex: 10,
+        }}
+      >
+        {suggestions.map((s) => (
+          <li
+            key={s.place_id}
+            onClick={() => handleSelectPlace(s.place_id, s.description)}
             style={{
-              position: "absolute",
-              top: "35px",
-              left: 0,
-              background: "#fff",
-              border: "1px solid #ccc",
-              width: "300px",
-              zIndex: 1000,
-              listStyle: "none",
-              padding: 0,
-              margin: 0,
-              maxHeight: "200px",
-              overflowY: "auto",
+              padding: "8px",
+              borderBottom: "1px solid #eee",
+              cursor: "pointer",
             }}
           >
-            {suggestions.map((s, i) => (
-              <li
-                key={i}
-                style={{
-                  padding: "8px",
-                  cursor: "pointer",
-                  borderBottom: "1px solid #eee",
-                }}
-                onClick={() => handleSelectSuggestion(s)}
-              >
-                {s.display_name}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+            {s.description}
+          </li>
+        ))}
+      </ul>
 
       <div
         id="map"
         style={{
           height: "500px",
           width: "100%",
+          borderRadius: "8px",
           border: "1px solid #ccc",
-          borderRadius: "6px",
         }}
       ></div>
     </div>

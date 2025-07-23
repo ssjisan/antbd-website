@@ -35,18 +35,27 @@ export default function CoverageMap({ selected }) {
 
     if (!selected?.polygons?.length) return;
 
-    const coords = selected.polygons[0]?.coordinates;
-    if (!coords || !Array.isArray(coords)) return;
+    // Create a feature group to manage all polygons and fit bounds
+    const featureGroup = L.featureGroup();
 
-    const latLngs = coords.map(([lat, lng]) => [lat, lng]);
+    selected.polygons.forEach((polygon) => {
+      const coords = polygon.coordinates;
+      if (!coords || !Array.isArray(coords)) return;
 
-    polygonLayer.current = L.polygon(latLngs, {
-      color: "#007bff",
-      fillOpacity: 0.3,
-    }).addTo(mapInstance.current);
+      const latLngs = coords.map(([lat, lng]) => [lat, lng]);
 
-    const bounds = polygonLayer.current.getBounds();
-    mapInstance.current.flyToBounds(bounds, {
+      const layer = L.polygon(latLngs, {
+        color: "#007bff",
+        fillOpacity: 0.3,
+      }).addTo(mapInstance.current);
+
+      featureGroup.addLayer(layer);
+    });
+
+    polygonLayer.current = featureGroup;
+
+    // Fit map bounds to all polygons
+    mapInstance.current.fitBounds(featureGroup.getBounds(), {
       animate: true,
       duration: 3,
     });

@@ -21,7 +21,8 @@ export default function PackagesPlan() {
 
     fetchPackages();
   }, []);
-
+  console.log(packages);
+  
   return (
     <Container sx={{ pt: "64px", pb: "64px" }}>
       <Stack

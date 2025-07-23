@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Container, Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -20,6 +20,9 @@ const steps = [
 export default function RequestConnectionBody() {
   const [activeStep, setActiveStep] = useState(0);
   const areaRef = useRef();
+  const [success, setSuccess] = useState(false);
+  const [redirectCountdown, setRedirectCountdown] = useState(10);
+
   const { area, packageId, formData, setArea, setPackageId, setFormData } =
     useContext(DataContext);
   const navigate = useNavigate();
@@ -66,12 +69,8 @@ export default function RequestConnectionBody() {
     try {
       await axios.post("/connection-request", payload);
       toast.success("Order placed successfully!");
-
       clearAllData();
-
-      setTimeout(() => {
-        navigate("/");
-      }, 1500);
+      setSuccess(true);
     } catch (error) {
       console.error("Failed to place order:", error);
       toast.error("Failed to place order. Please try again.");
@@ -81,17 +80,44 @@ export default function RequestConnectionBody() {
   const handleNext = async () => {
     if (activeStep === 0) {
       const success = await areaRef.current?.checkAvailability();
-      if (!success) return; // don't proceed if area check fails
+      if (!success) return;
     }
 
     if (activeStep === steps.length - 1) {
-      // Last step, place order
       await handlePlaceOrder();
       return;
     }
 
     setActiveStep((prev) => prev + 1);
   };
+
+  useEffect(() => {
+    const storedArea = JSON.parse(localStorage.getItem("areaInfo"));
+    const hasValidArea =
+      (area?.lat && area?.lng && area?.areaName) ||
+      (storedArea?.lat && storedArea?.lng && storedArea?.areaName);
+
+    if (hasValidArea) {
+      setActiveStep(1);
+    }
+  }, []);
+
+  // Countdown redirect effect
+  useEffect(() => {
+    if (!success) return;
+
+    const interval = setInterval(() => {
+      setRedirectCountdown((prev) => {
+        if (prev === 1) {
+          clearInterval(interval);
+          navigate("/");
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [success, navigate]);
 
   const renderStepContent = (step) => {
     switch (step) {
@@ -111,47 +137,86 @@ export default function RequestConnectionBody() {
   return (
     <>
       <Container sx={{ pt: "64px", pb: "96px" }}>
-        <RequestStepper activeStep={activeStep} steps={steps} />
-        {renderStepContent(activeStep)}
+        <RequestStepper
+          activeStep={activeStep}
+          steps={steps}
+          completedSteps={success ? [0, 1, 2, 3] : undefined}
+        />
+
+        {success ? (
+          <Box textAlign="center" mt={8}>
+            <img src="done.png" alt="success" width={280} />
+            <Box mt={2} fontSize={24} fontWeight={700}>
+              Your connection request has been submitted!
+            </Box>
+            <Box mt={1} color="text.secondary" fontSize={16}>
+              We will contact you shortly with confirmation.
+            </Box>
+            <Box mt={3} fontSize={14} color="text.secondary">
+              You will be redirected to the homepage in{" "}
+              <Box component="span" fontWeight={600} display="inline">
+                {redirectCountdown}
+              </Box>{" "}
+              seconds.
+            </Box>
+            <Button
+              variant="outlined"
+              sx={{ mt: 2 }}
+              onClick={() => navigate("/")}
+            >
+              Go to Homepage Now
+            </Button>
+          </Box>
+        ) : (
+          renderStepContent(activeStep)
+        )}
       </Container>
 
+      {/* Button Container (slides out when success) */}
       <Box
         sx={{
           position: "fixed",
-          bottom: 0,
+          bottom: success ? "-100px" : 0,
           left: 0,
           width: "100%",
           p: "16px",
           bgcolor: "white",
           boxShadow: "0 -2px 10px rgba(0,0,0,0.1)",
           zIndex: 1300,
+          transition: "bottom 0.3s ease-in-out",
         }}
       >
-        <Container>
-          <Box
-            sx={{ display: "flex", justifyContent: "flex-end", gap: "16px" }}
-          >
-            <Button
-              color="inherit"
-              variant="soft"
-              disabled={activeStep === 0}
-              onClick={handleBack}
+        {!success && (
+          <Container>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "16px",
+              }}
             >
-              Back
-            </Button>
-            <Button
-              variant="contained"
-              sx={{ width: "240px" }}
-              onClick={handleNext}
-            >
-              {activeStep === steps.length - 1
-                ? "Place Order"
-                : activeStep === 0
-                ? "Check & Next"
-                : "Next"}
-            </Button>
-          </Box>
-        </Container>
+              <Button
+                color="inherit"
+                variant="soft"
+                disabled={activeStep === 0}
+                onClick={handleBack}
+              >
+                Back
+              </Button>
+              <Button
+                variant="contained"
+                sx={{ width: "240px" }}
+                onClick={handleNext}
+              >
+                {activeStep === steps.length - 1
+                  ? "Place Order"
+                  : activeStep === 0
+                  ? "Check & Next"
+                  : "Next"}
+              </Button>
+            </Box>
+          </Container>
+        )}
       </Box>
     </>
   );
