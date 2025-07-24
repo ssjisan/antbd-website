@@ -1,77 +1,108 @@
-import { useEffect, useRef } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import "leaflet-draw";
-import "leaflet-draw/dist/leaflet.draw.css";
+import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 
+const loadGoogleMaps = (callback) => {
+  if (
+    typeof window.google === "object" &&
+    typeof window.google.maps === "object"
+  ) {
+    callback();
+    return;
+  }
+
+  const existingScript = document.querySelector("script[src*='maps.googleapis']");
+  if (existingScript) {
+    existingScript.addEventListener("load", callback);
+    return;
+  }
+
+  const script = document.createElement("script");
+  script.src =
+    "https://maps.googleapis.com/maps/api/js?key=AIzaSyDo6tI6z6qCTkXDp-pSl8F22SvsvNR1rOA&libraries=drawing,geometry,places";
+  script.async = true;
+  script.onload = callback;
+  document.head.appendChild(script);
+};
+
 export default function CoverageMap({ selected }) {
+  // eslint-disable-next-line
   const mapRef = useRef(null);
-  const mapInstance = useRef(null);
-  const polygonLayer = useRef(null);
+  const polygonsRef = useRef([]);
+  const [mapKey, setMapKey] = useState(0);
 
   useEffect(() => {
-    if (!mapRef.current || mapInstance.current) return;
-
-    mapInstance.current = L.map(mapRef.current, {
-      center: [23.7806, 90.4009],
-      zoom: 10,
-      zoomControl: true,
-    });
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "© OpenStreetMap contributors",
-    }).addTo(mapInstance.current);
-  }, []);
+    // Whenever 'selected' changes, trigger map re-render by changing mapKey
+    setMapKey((k) => k + 1);
+  }, [selected]);
 
   useEffect(() => {
-    if (!mapInstance.current) return;
-
-    // Remove existing polygon if any
-    if (polygonLayer.current) {
-      mapInstance.current.removeLayer(polygonLayer.current);
-      polygonLayer.current = null;
-    }
-
     if (!selected?.polygons?.length) return;
 
-    // Create a feature group to manage all polygons and fit bounds
-    const featureGroup = L.featureGroup();
+    const init = () => {
+      const container = document.getElementById("google-map-container");
+      if (!container) return;
 
-    selected.polygons.forEach((polygon) => {
-      const coords = polygon.coordinates;
-      if (!coords || !Array.isArray(coords)) return;
+      // Clear old polygons
+      polygonsRef.current.forEach((polygon) => polygon.setMap(null));
+      polygonsRef.current = [];
 
-      const latLngs = coords.map(([lat, lng]) => [lat, lng]);
+      // Create new map instance
+      const map = new window.google.maps.Map(container, {
+        center: { lat: 23.7806, lng: 90.4009 }, // default center
+        zoom: 10,
+        zoomControl: true,
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: false,
+      });
 
-      const layer = L.polygon(latLngs, {
-        color: "#007bff",
-        fillOpacity: 0.3,
-      }).addTo(mapInstance.current);
+      const bounds = new window.google.maps.LatLngBounds();
 
-      featureGroup.addLayer(layer);
-    });
+      selected.polygons.forEach((poly) => {
+        const path = poly.coordinates.map(([lat, lng]) => ({ lat, lng }));
 
-    polygonLayer.current = featureGroup;
+        const polygon = new window.google.maps.Polygon({
+          paths: path,
+          strokeColor: "#007bff",
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: "#007bff",
+          fillOpacity: 0.3,
+        });
 
-    // Fit map bounds to all polygons
-    mapInstance.current.fitBounds(featureGroup.getBounds(), {
-      animate: true,
-      duration: 3,
-    });
-  }, [selected]);
+        polygon.setMap(map);
+        polygonsRef.current.push(polygon);
+
+        path.forEach((point) => bounds.extend(point));
+      });
+
+      map.fitBounds(bounds);
+    };
+
+    if (
+      typeof window.google === "object" &&
+      typeof window.google.maps === "object"
+    ) {
+      init();
+    } else {
+      loadGoogleMaps(init);
+    }
+
+    // Cleanup polygons on unmount or before next run
+    return () => {
+      polygonsRef.current.forEach((polygon) => polygon.setMap(null));
+      polygonsRef.current = [];
+    };
+  }, [mapKey, selected]);
 
   return (
     <div
-      ref={mapRef}
-      style={{
-        width: "100%",
-        height: "100%",
-        borderRadius: "20px",
-      }}
+      id="google-map-container"
+      style={{ width: "100%", height: "100%", borderRadius: "20px" }}
     />
   );
 }
+
 CoverageMap.propTypes = {
   selected: PropTypes.shape({
     polygons: PropTypes.arrayOf(

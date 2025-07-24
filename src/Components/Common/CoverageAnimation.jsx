@@ -94,22 +94,6 @@ const CoverageAnimation = forwardRef(({ setAddress, setSelectedLatLng }, ref) =>
           zIndex: 0,
         }}
       />
-      {/* Gradient Overlay */}
-      {/* <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0,
-          pointerEvents: "none", // allows interaction with map
-          background: {
-            xs: "linear-gradient(360deg, rgba(255, 255, 255, 0) 50%, #FFFFFF 100%)",
-            md: "linear-gradient(269.58deg, rgba(255, 255, 255, 0) 61.98%, #FFFFFF 94.88%)",
-          },
-          zIndex: 1,
-        }}
-      /> */}
     </Box>
   );
 });

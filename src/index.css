@@ -194,3 +194,11 @@ body {
   width: 24px;
   margin-right: 8px;
 }
+
+
+
+.gmnoprint button {
+  width: 48px;
+  height: 48px;
+  font-size: 24px;
+}
