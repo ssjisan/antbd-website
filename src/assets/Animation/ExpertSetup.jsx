@@ -3,10 +3,9 @@ import { Box } from "@mui/material";
 export default function ExpertSetup() {
   return (
     <Box
-      position="relative"
-      width="100%"
-      height="296px"
-      sx={{ aspectRatio: "356 / 296" }}
+      component="svg"
+      viewBox="0 0 356 296"
+      preserveAspectRatio="xMidYMid meet"
     >
       <svg
         width="356"

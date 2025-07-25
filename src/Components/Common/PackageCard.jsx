@@ -61,33 +61,24 @@ export default function PackageCard({ pkg }) {
           sx={{
             position: "absolute",
             top: 0,
-            left: 0,
-            width: "140px",
+            right: 0,
+            width: "120px",
             height: "56px",
             pointerEvents: "none",
             zIndex: -1,
           }}
           dangerouslySetInnerHTML={{
             __html: `
-        <svg width="140" height="56" viewBox="0 0 140 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 0C11.0457 0 20 8.95431 20 20V0H0Z" fill="url(#paint0_linear_714_1076)"/>
-          <path d="M120 36C131.046 36 140 44.9543 140 56V36H120Z" fill="url(#paint1_linear_714_1076)"/>
-          <path d="M20 0H140V36H28C23.5817 36 20 32.4183 20 28V0Z" fill="url(#paint2_linear_714_1076)"/>
-          <defs>
-            <linearGradient id="paint0_linear_714_1076" x1="0" y1="28" x2="140" y2="28" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#008641"/>
-              <stop offset="1" stop-color="#18A25B"/>
-            </linearGradient>
-            <linearGradient id="paint1_linear_714_1076" x1="0" y1="28" x2="140" y2="28" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#008641"/>
-              <stop offset="1" stop-color="#18A25B"/>
-            </linearGradient>
-            <linearGradient id="paint2_linear_714_1076" x1="0" y1="28" x2="140" y2="28" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#008641"/>
-              <stop offset="1" stop-color="#18A25B"/>
-            </linearGradient>
-          </defs>
-        </svg>
+        <svg width="120" height="36" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 0H120V36H8C3.58172 36 0 32.4183 0 28V0Z" fill="url(#paint0_linear_714_1076)"/>
+<defs>
+<linearGradient id="paint0_linear_714_1076" x1="-20" y1="28" x2="120" y2="28" gradientUnits="userSpaceOnUse">
+<stop stop-color="#008641"/>
+<stop offset="1" stop-color="#18A25B"/>
+</linearGradient>
+</defs>
+</svg>
+
       `,
           }}
         />
@@ -262,7 +253,7 @@ export default function PackageCard({ pkg }) {
 
 PackageCard.propTypes = {
   pkg: PropTypes.shape({
-    _id:PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
     packageName: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     maxDownloadSpeed: PropTypes.number.isRequired,

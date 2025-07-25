@@ -1,34 +1,9 @@
-import  { useEffect, useRef } from "react";
-
 export default function EnjoyInternet() {
-  const finallyRef = useRef(null);
-  const enjoyRef = useRef(null);
-
-  useEffect(() => {
-    const animate = () => {
-      if (finallyRef.current && enjoyRef.current) {
-        finallyRef.current.classList.remove("bounce-finally");
-        enjoyRef.current.classList.remove("bounce-enjoy");
-
-        // Force reflow
-        void finallyRef.current.offsetWidth;
-
-        finallyRef.current.classList.add("bounce-finally");
-        enjoyRef.current.classList.add("bounce-enjoy");
-      }
-    };
-
-    animate(); // run once at start
-    const interval = setInterval(animate, 4000); // every 20s
-    return () => clearInterval(interval);
-  }, []);
-
+ 
   return (
     <div
       style={{
-        maxWidth: "356px",
         width: "100%",
-        height: "296px",
         margin: "0 auto",
         position: "relative",
         overflow: "hidden",
@@ -778,22 +753,22 @@ export default function EnjoyInternet() {
         </g>
       </svg>
       <div
-  style={{
-    maxWidth: "356px",
-    width: "100%",
-    height: "296px",
-    margin: "0 auto",
-    position: "relative",
-    overflow: "hidden",
-  }}
->
-  {/* ...existing animated buttons and content here... */}
+        style={{
+          maxWidth: "356px",
+          width: "100%",
+          height: "296px",
+          margin: "0 auto",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        {/* ...existing animated buttons and content here... */}
 
-  {/* 👉 New circle div with image */}
-  <div className="image-wrapper">
-    <img src="/3.png" alt="Decorative" className="circle-image" />
-  </div>
-</div>
+        {/* 👉 New circle div with image */}
+        <div className="image-wrapper">
+          <img src="/3.png" alt="Decorative" className="circle-image" />
+        </div>
+      </div>
 
       <div
         style={{
@@ -806,7 +781,7 @@ export default function EnjoyInternet() {
         }}
       >
         {/* Finally */}
-        <div ref={finallyRef} className="static-finally">
+        <div  className="static-finally">
           Finally
         </div>
 
@@ -832,9 +807,7 @@ export default function EnjoyInternet() {
         >
           Connected...
         </div>
-
-        {/* & Enjoy */}
-        <div ref={enjoyRef} className="static-enjoy">
+        <div className="static-enjoy">
           & Enjoy.
         </div>
       </div>

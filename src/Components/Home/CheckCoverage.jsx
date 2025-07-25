@@ -1,22 +1,24 @@
 import { useContext, useRef, useState, useEffect } from "react";
-import { Container, Typography, TextField, Button, Stack } from "@mui/material";
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Stack,
+  Box,
+} from "@mui/material";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { GPS } from "../../assets/Icons/Home/Icons"; // Your GPS icon
+import { GPS } from "../../assets/Icons/Home/Icons";
 import { DataContext } from "../../DataProcessing/DataProcessing";
 import { useNavigate } from "react-router-dom";
-import MapCoverage from "../Common/MapCoverage";
-
-const GOOGLE_MAPS_API_KEY = "AIzaSyDo6tI6z6qCTkXDp-pSl8F22SvsvNR1rOA";
 
 export default function CheckCoverage() {
+  const { setArea } = useContext(DataContext);
   const mapRef = useRef(null);
   const [googleMap, setGoogleMap] = useState(null);
-  const polygonsRef = useRef([]);
-  const [polygonData, setPolygonData] = useState([]);
-
-  // Search state
-  const [searchInput, setSearchInput] = useState("");
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const autocompleteServiceRef = useRef(null);
@@ -24,40 +26,18 @@ export default function CheckCoverage() {
   const searchMarkerRef = useRef(null);
   const geocoderRef = useRef(null);
   const mapClickListenerRef = useRef(null);
-
-  // ============================ Initialize Map + Drawing + Load Polygons ============================ //
-  useEffect(() => {
-    if (window.google && googleMap) {
-      const saved = localStorage.getItem("savedPolygons");
-      if (saved) {
-        const pathsArray = JSON.parse(saved);
-        setPolygonData(pathsArray); // Update display list
-        pathsArray.forEach((path) => {
-          const polygon = new window.google.maps.Polygon({
-            paths: path,
-            map: googleMap,
-            editable: false,
-            strokeColor: "#FF0000",
-            fillColor: "#FF0000",
-            strokeWeight: 2,
-            clickable: false, // allow clicks to pass through polygon for marker drop
-          });
-          polygonsRef.current.push(polygon);
-        });
-      }
-    }
-  }, [googleMap]);
+  const [selectedLatLng, setSelectedLatLng] = useState(null);
 
   // ============================ Init Google Map and Services ============================
   useEffect(() => {
     const script = document.createElement("script");
     script.src =
-      "https://maps.googleapis.com/maps/api/js?key=AIzaSyDo6tI6z6qCTkXDp-pSl8F22SvsvNR1rOA&libraries=drawing,geometry,places";
+      `https://maps.googleapis.com/maps/api/js?key=AIzaSyDo6tI6z6qCTkXDp-pSl8F22SvsvNR1rOA&libraries=drawing,geometry,places`;
     script.async = true;
     script.onload = () => {
       const mapOptions = {
         center: { lat: 23.8103, lng: 90.4125 },
-        zoom: 13,
+        zoom: 15,
         fullscreenControl: false,
         mapTypeControl: false,
         streetViewControl: false,
@@ -79,21 +59,21 @@ export default function CheckCoverage() {
   }, []);
 
   // ============================ Always listen for map clicks to drop pin ============================
+
   useEffect(() => {
     if (!googleMap) return;
 
-    // Remove previous listener if any
-    if (mapClickListenerRef.current) {
-      window.google.maps.event.removeListener(mapClickListenerRef.current);
-      mapClickListenerRef.current = null;
-    }
-
-    // Add listener for map clicks (always active)
-    mapClickListenerRef.current = googleMap.addListener("click", (e) => {
+    const handleMapClick = (e) => {
       const latLng = e.latLng;
       if (!latLng) return;
 
-      // Place or move marker
+      const position = {
+        lat: latLng.lat(),
+        lng: latLng.lng(),
+      };
+
+      setSelectedLatLng(position);
+
       if (searchMarkerRef.current) {
         searchMarkerRef.current.setPosition(latLng);
       } else {
@@ -104,24 +84,36 @@ export default function CheckCoverage() {
         });
       }
 
-      // Center and zoom map
       googleMap.panTo(latLng);
       googleMap.setZoom(15);
 
-      // Reverse geocode to get address
       if (geocoderRef.current) {
         geocoderRef.current.geocode({ location: latLng }, (results, status) => {
-          if (status === window.google.maps.GeocoderStatus.OK && results[0]) {
-            setSearchInput(results[0].formatted_address);
+          if (
+            status === window.google.maps.GeocoderStatus.OK &&
+            results?.[0]?.formatted_address
+          ) {
+            setSearchQuery(results[0].formatted_address);
             setSuggestions([]);
           } else {
-            setSearchInput("");
+            setSearchQuery("");
           }
         });
       }
-    });
+    };
 
-    // Cleanup listener on component unmount
+    // Remove previous listener if exists
+    if (mapClickListenerRef.current) {
+      window.google.maps.event.removeListener(mapClickListenerRef.current);
+    }
+
+    // Attach new listener
+    mapClickListenerRef.current = googleMap.addListener(
+      "click",
+      handleMapClick
+    );
+
+    // Cleanup on unmount
     return () => {
       if (mapClickListenerRef.current) {
         window.google.maps.event.removeListener(mapClickListenerRef.current);
@@ -133,7 +125,7 @@ export default function CheckCoverage() {
   // ============================ Search input change ============================
   const handleSearchChange = (e) => {
     const val = e.target.value;
-    setSearchInput(val);
+    setSearchQuery(val);
 
     if (!autocompleteServiceRef.current) return;
 
@@ -157,7 +149,7 @@ export default function CheckCoverage() {
 
   // ============================ When user clicks a suggestion ============================
   const handleSuggestionClick = (place) => {
-    setSearchInput(place.description);
+    setSearchQuery(place.description);
     setSuggestions([]);
     if (!placesServiceRef.current || !googleMap) return;
 
@@ -168,7 +160,10 @@ export default function CheckCoverage() {
         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
           if (result.geometry && result.geometry.location) {
             const location = result.geometry.location;
-
+            setSelectedLatLng({
+              lat: location.lat(),
+              lng: location.lng(),
+            });
             // Center and zoom map
             googleMap.panTo(location);
             googleMap.setZoom(15);
@@ -192,7 +187,7 @@ export default function CheckCoverage() {
   // ============================ Use My Location button click handler ============================
   const handleUseMyLocation = () => {
     if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser");
+      toast.error("Geolocation is not supported by your browser");
       return;
     }
     if (!googleMap || !geocoderRef.current) return;
@@ -207,7 +202,10 @@ export default function CheckCoverage() {
         // Center map & zoom
         googleMap.panTo(latLng);
         googleMap.setZoom(15);
-
+        setSelectedLatLng({
+          lat: latLng.lat(),
+          lng: latLng.lng(),
+        });
         // Place or move marker
         if (searchMarkerRef.current) {
           searchMarkerRef.current.setPosition(latLng);
@@ -222,136 +220,160 @@ export default function CheckCoverage() {
         // Reverse geocode to get address
         geocoderRef.current.geocode({ location: latLng }, (results, status) => {
           if (status === window.google.maps.GeocoderStatus.OK && results[0]) {
-            setSearchInput(results[0].formatted_address);
+            setSearchQuery(results[0].formatted_address);
             setSuggestions([]);
           } else {
-            setSearchInput("");
+            setSearchQuery("");
           }
         });
       },
       (error) => {
-        alert("Unable to retrieve your location: " + error.message);
+        toast.error("Unable to retrieve your location: " + error.message);
       }
     );
   };
 
-  
+  const handleCheckAvailability = async () => {
+    if (!selectedLatLng) {
+      toast.error("Please select a location first.");
+      return;
+    }
+const checking = toast.loading("Checking...");
+    try {
+      const res = await axios.post("/check-availability", {
+        lat: selectedLatLng.lat,
+        lng: selectedLatLng.lng,
+      });
+
+      const data = res.data;
+      if (data.success) {
+        toast.success(data.message);
+        navigate("/request-connection");
+        setArea({
+          areaName: searchQuery,
+          lat: selectedLatLng.lat,
+          lng: selectedLatLng.lng,
+          zoneName: res.data.combinedAreaZone,
+        });
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      console.error("Check availability error:", err);
+      const msg = err.response?.data?.message || "Something went wrong.";
+      toast.error(msg);
+    }
+    finally {
+      toast.dismiss(checking);
+    }
+  };
 
   return (
     <Container sx={{ pt: "64px", pb: "64px" }}>
-      <Stack alignItems="center">
-        <Stack gap={1} sx={{ mt: 6, width: "100%" }} alignItems="center">
+      <Stack alignItems="center" gap="24px">
+        <Stack gap={1} sx={{ my: 3, width: "100%" }} alignItems="center">
           <Typography variant="h3">Check Coverage</Typography>
           <Typography variant="h6" color="text.secondary">
             Find out if we’re available in your area today.
           </Typography>
         </Stack>
-      </Stack>
-      <div style={{ maxWidth: 900, margin: "auto", padding: 16 }}>
-        {/* Search Box */}
-        <div style={{ position: "relative", marginBottom: 10 }}>
-          <input
-            type="text"
-            placeholder="Search location (min 5 characters)..."
-            value={searchInput}
-            onChange={handleSearchChange}
-            style={{
-              width: "100%",
-              padding: "8px 36px 8px 12px",
-              fontSize: 16,
-              borderRadius: 4,
-              border: "1px solid #ccc",
-            }}
-          />
-          {/* Circular loading spinner */}
-          {loadingSuggestions && (
-            <div
-              style={{
-                position: "absolute",
-                right: 8,
-                top: "50%",
-                transform: "translateY(-50%)",
-                width: 20,
-                height: 20,
-                border: "3px solid #ccc",
-                borderTop: "3px solid #2196f3",
-                borderRadius: "50%",
-                animation: "spin 1s linear infinite",
-              }}
+        <Box
+          sx={{
+            width: { xs: "100%", sm: "100%", md: "60%", lg: "60%" },
+          }}
+        >
+          {/* Search Box */}
+          <Box style={{ position: "relative", marginBottom: 10 }}>
+            <TextField
+              type="text"
+              placeholder="Search location (min 5 characters)..."
+              value={searchQuery}
+              fullWidth
+              onChange={handleSearchChange}
             />
-          )}
+            {/* Circular loading spinner */}
+            {loadingSuggestions && (
+              <Box
+                style={{
+                  position: "absolute",
+                  right: 8,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  width: 20,
+                  height: 20,
+                  border: "3px solid #ccc",
+                  borderTop: "3px solid #2196f3",
+                  borderRadius: "50%",
+                  animation: "spin 1s linear infinite",
+                }}
+              />
+            )}
 
-          {/* Suggestions Dropdown */}
-          {suggestions.length > 0 && (
-            <ul
-              style={{
-                position: "absolute",
-                top: "calc(100% + 4px)",
-                left: 0,
-                right: 0,
-                backgroundColor: "#fff",
-                border: "1px solid #ccc",
-                borderRadius: 4,
-                maxHeight: 180,
-                overflowY: "auto",
-                zIndex: 1000,
-                margin: 0,
-                padding: 0,
-                listStyle: "none",
-              }}
+            {/* Suggestions Dropdown */}
+            {suggestions.length > 0 && (
+              <ul
+                style={{
+                  position: "absolute",
+                  top: "calc(100% + 4px)",
+                  left: 0,
+                  right: 0,
+                  backgroundColor: "#fff",
+                  border: "1px solid #ccc",
+                  borderRadius: 4,
+                  maxHeight: 180,
+                  overflowY: "auto",
+                  zIndex: 1000,
+                  margin: 0,
+                  padding: 0,
+                  listStyle: "none",
+                }}
+              >
+                {suggestions.map((place) => (
+                  <li
+                    key={place.place_id}
+                    onClick={() => handleSuggestionClick(place)}
+                    style={{
+                      padding: "8px 12px",
+                      cursor: "pointer",
+                      borderBottom: "1px solid #eee",
+                    }}
+                    onMouseDown={(e) => e.preventDefault()} // Prevent input blur on click
+                  >
+                    {place.description}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Box>
+
+          <Typography variant="h6" mb={2} sx={{ textAlign: "center" }}>
+            Click anywhere on the map to drop a pin, or use{" "}
+            <Button
+              onClick={handleUseMyLocation}
+              variant="contained"
+              color="secondary"
+              sx={{ mx: 1, minWidth: "auto", padding: "6px 12px" }}
             >
-              {suggestions.map((place) => (
-                <li
-                  key={place.place_id}
-                  onClick={() => handleSuggestionClick(place)}
-                  style={{
-                    padding: "8px 12px",
-                    cursor: "pointer",
-                    borderBottom: "1px solid #eee",
-                  }}
-                  onMouseDown={(e) => e.preventDefault()} // Prevent input blur on click
-                >
-                  {place.description}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        {/* Buttons */}
-        <div style={{ marginBottom: 10 }}>
+              <GPS color="#fff" size="20px" />
+            </Button>
+            to use your current location.
+          </Typography>
           
-          <button
-            onClick={handleUseMyLocation}
-            style={{
-              backgroundColor: "#007bff",
-              color: "#fff",
-              padding: "8px 16px",
-              border: "none",
-              borderRadius: 4,
-              cursor: "pointer",
-              marginLeft: 8,
-              marginRight: 8,
-            }}
-          >
-            Use My Location
-          </button>
-        </div>
-
-        {/* Google Map Container */}
-        <div
+        </Box>
+        <Button variant="contained" onClick={handleCheckAvailability}>
+            Check Availability
+          </Button>
+      </Stack>
+        <Box
           ref={mapRef}
-          style={{ width: "100%", height: "600px", border: "1px solid #ccc" }}
-        ></div>
-
-        {/* Spinner CSS */}
-        <style>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
-      </div>
+          sx={{
+            mt:"64px",
+            width: "100%",
+            height: "480px",
+            border: "1px solid #ccc",
+            borderRadius: "20px",
+          }}
+        ></Box>
     </Container>
   );
 }

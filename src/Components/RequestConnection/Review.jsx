@@ -6,22 +6,22 @@ import axios from "axios";
 export default function Review() {
   const [packageData, setPackageData] = useState(null);
 
-  const { packageId,formData } = useContext(DataContext);
+  const { packageId, formData } = useContext(DataContext);
 
   useEffect(() => {
-  if (!packageId) return;
+    if (!packageId) return;
 
-  const fetchPackage = async () => {
-    try {
-      const res = await axios.get(`/package/${packageId}`);
-      setPackageData(res.data);
-    } catch (err) {
-      console.error("Failed to fetch package", err);
-    }
-  };
+    const fetchPackage = async () => {
+      try {
+        const res = await axios.get(`/package/${packageId}`);
+        setPackageData(res.data);
+      } catch (err) {
+        console.error("Failed to fetch package", err);
+      }
+    };
 
-  fetchPackage();
-}, [packageId]);
+    fetchPackage();
+  }, [packageId]);
 
   return (
     <Container
@@ -218,15 +218,17 @@ export default function Review() {
                 </Typography>
               </Stack>
               <Stack
-                alignItems="center"
-                justifyContent="center"
                 sx={{
-                  p: "16px",
-                  backgroundColor: "#fefce8",
+                  mb: 2,
+                  border: "1px solid primary.light",
+                  p: 2,
                   textAlign: "center",
+                  borderRadius: "16px",
+                  backgroundColor: "primary.light",
                 }}
+                gap="8px"
               >
-                <Typography variant="h5" sx={{fontWeight:"700 !important"}}>
+                <Typography variant="h5" sx={{ fontWeight: "700 !important" }}>
                   🎁 Pay 3 months in advance and get free setup!
                 </Typography>
               </Stack>

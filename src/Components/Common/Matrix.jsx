@@ -10,7 +10,7 @@ export default function Matrix() {
 
   return (
     <Container ref={ref}>
-      <Grid container>
+      <Grid container rowSpacing={3} columnSpacing={4}>
         <Grid item xs={6} sm={6} md={3} lg={3}>
           <Stack gap="0px" sx={{ textAlign: "center" }} justifyContent="center">
             <Typography variant="h2" sx={{ fontWeight: "900 !important" }}>

@@ -1,4 +1,4 @@
-import { Container, Grid, Stack, Typography } from "@mui/material";
+import { Box, Container, Grid, Stack, Typography } from "@mui/material";
 import RequestConnection from "../../assets/Animation/RequestConnection";
 import EnjoyInternet from "../../assets/Animation/EnjoyInternet";
 import ExpertSetup from "../../assets/Animation/ExpertSetup";
@@ -12,7 +12,17 @@ export default function SwitchingRequest() {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={4} lg={4}>
           <Stack justifyContent="center" alignItems="center" sx={{border: "1px solid #918EAF3D", borderRadius:"16px"}}>
-            <RequestConnection />
+            <Box
+      sx={{
+        width: "100%",
+        position: "relative",
+        aspectRatio: "356 / 296",
+        maxWidth: "100%",
+        overflow: "hidden",
+      }}
+    >
+      <RequestConnection />
+    </Box>
             <Stack gap="8px" sx={{ p: "24px", width: "100%", }}>
               <Typography variant="h6" color="text.secondary">
                 STEP ONE
@@ -23,7 +33,18 @@ export default function SwitchingRequest() {
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4}>
           <Stack justifyContent="center" alignItems="center" sx={{border: "1px solid #918EAF3D", borderRadius:"16px"}}>
+            <Box
+      sx={{
+        width: "100%",
+        position: "relative",
+        aspectRatio: "356 / 296",
+        maxWidth: "100%",
+        overflow: "hidden",
+      }}
+    >
+
             <ExpertSetup />
+    </Box>
             <Stack gap="8px" sx={{ p: "24px", width: "100%", }}>
               <Typography variant="h6" color="text.secondary">
                 STEP TWO
@@ -34,7 +55,18 @@ export default function SwitchingRequest() {
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4}>
           <Stack justifyContent="center" alignItems="center" sx={{border: "1px solid #918EAF3D", borderRadius:"16px"}}>
+            <Box
+      sx={{
+        width: "100%",
+        position: "relative",
+        aspectRatio: "356 / 296",
+        maxWidth: "100%",
+        overflow: "hidden",
+      }}
+    >
+
             <EnjoyInternet />
+    </Box>
             <Stack gap="8px" sx={{ p: "24px", width: "100%", }}>
               <Typography variant="h6" color="text.secondary">
                 STEP THREE

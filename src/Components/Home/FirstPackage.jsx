@@ -98,7 +98,7 @@ export default function FirstPackage() {
               sx={{
                 position: "absolute",
                 top: 0,
-                left: 0,
+                left: 0,display: { xs: "none", sm: "block" },
               }}
             >
               <svg
@@ -120,7 +120,7 @@ export default function FirstPackage() {
               sx={{
                 position: "absolute",
                 top: "108px",
-                left: 0,
+                left: 0,display: { xs: "none", sm: "block" },
               }}
             >
               <svg
@@ -139,7 +139,7 @@ export default function FirstPackage() {
               sx={{
                 position: "absolute",
                 top: 0,
-                left: "264px",
+                left: "264px",display: { xs: "none", sm: "block" },
               }}
             >
               <svg

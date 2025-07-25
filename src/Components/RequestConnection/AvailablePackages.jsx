@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { Box, Grid, Stack, Typography } from "@mui/material";
 import axios from "axios";
 import { ArrowRight } from "../../assets/Icons/Common/Icons";
 import PackageDetails from "./PackageDetails";
@@ -11,7 +11,7 @@ export default function AvailablePackages() {
   const [openModal, setOpenModal] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
-  const {setPackageId} = useContext(DataContext)
+  const { setPackageId } = useContext(DataContext);
   useEffect(() => {
     const fetchPackages = async () => {
       try {
@@ -39,7 +39,7 @@ export default function AvailablePackages() {
   const handleSelect = (id) => {
     setSelectedId(id);
     localStorage.setItem("selectedPackageId", id);
-    setPackageId(id)
+    setPackageId(id);
   };
   useEffect(() => {
     const savedId = localStorage.getItem("selectedPackageId");
@@ -64,9 +64,7 @@ export default function AvailablePackages() {
         <Typography variant="h6" color="primary">
           🎉 Awesome! Antaranga Dot Com Limited is ready to serve you in your
           area. <br />
-          {/* You searched for: <strong>{coverageLocation.areaName}</strong> */}
         </Typography>
-        <Button>Change location</Button>
       </Stack>
 
       <Grid container rowSpacing={4} columnSpacing={4}>

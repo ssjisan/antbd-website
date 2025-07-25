@@ -6,7 +6,8 @@ import {
   Grid,
   Stack,
   Typography,
-  CircularProgress,
+  Box,
+  Skeleton,
 } from "@mui/material";
 import PackageCard from "../Common/PackageCard";
 import { Link } from "react-router-dom";
@@ -42,6 +43,35 @@ export default function Package() {
     loadPackages();
   }, []);
 
+  const PackageCardSkeleton = () => (
+    <Box
+      sx={{
+        width: 320,
+        borderRadius: 2,
+        p: 2,
+        bgcolor: "background.paper",
+      }}
+    >
+      <Skeleton variant="text" height={20} width="20%" />
+      <Skeleton variant="text" height={24} width="40%" />
+      <Skeleton variant="text" height={32} width="60%" />
+      <Skeleton
+        variant="rectangular"
+        height={140}
+        sx={{ borderRadius: 1, my: 2 }}
+      />
+      <Skeleton variant="text" height={20} width="20%" />
+      <Skeleton variant="text" height={24} width="40%" />
+      <Skeleton variant="text" height={32} width="60%" />
+      <Skeleton
+        variant="rectangular"
+        height={36}
+        width={"100%"}
+        sx={{ mt: 3, borderRadius: 1 }}
+      />
+    </Box>
+  );
+
   return (
     <Container sx={{ pt: "64px", pb: "64px" }}>
       <Typography variant="h3" mb={8} sx={{ textAlign: "center" }}>
@@ -49,9 +79,19 @@ export default function Package() {
       </Typography>
 
       {loading ? (
-        <Stack alignItems="center" justifyContent="center" sx={{ mt: 6 }}>
-          <CircularProgress />
-        </Stack>
+        Array.from(new Array(3)).map((_, idx) => (
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={6}
+            lg={4}
+            key={idx}
+            sx={{ display: "flex", justifyContent: "center" }}
+          >
+            <PackageCardSkeleton />
+          </Grid>
+        ))
       ) : (
         <Grid container spacing={3}>
           {packages.map((pkg) => (

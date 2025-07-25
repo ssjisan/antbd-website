@@ -1,92 +1,101 @@
+// MapCoverage.js
 import { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import { Box } from "@mui/material";
 
-export default function MapCoverage({ setSelectedLatLng, setAddress }) {
+export default function MapCoverage({
+  setGoogleMap,
+  setSelectedLatLng,
+  setSearchQuery,
+  setSuggestions,
+}) {
   const mapRef = useRef(null);
-  const markerRef = useRef(null);
+  const searchMarkerRef = useRef(null);
   const geocoderRef = useRef(null);
-
-  const placeMarkerAndGeocode = (latLng) => {
-    if (!mapRef.current) return;
-
-    if (markerRef.current) markerRef.current.setMap(null);
-
-    markerRef.current = new window.google.maps.Marker({
-      position: latLng,
-      map: mapRef.current,
-    });
-
-    mapRef.current.panTo(latLng);
-
-    geocoderRef.current.geocode({ location: latLng }, (results, status) => {
-      if (status === "OK" && results[0]) {
-        const address = results[0].formatted_address;
-        setAddress?.(address);
-        setSelectedLatLng?.({ lat: latLng.lat(), lng: latLng.lng() });
-      } else {
-        setAddress?.("Unknown location");
-        setSelectedLatLng?.({ lat: latLng.lat(), lng: latLng.lng() });
-      }
-    });
-  };
+  const mapClickListenerRef = useRef(null);
 
   useEffect(() => {
-    if (!mapRef.current && window.google) {
-      mapRef.current = new window.google.maps.Map(
-        document.getElementById("map-container"),
-        {
-          center: { lat: 23.8103, lng: 90.4125 },
-          zoom: 15,
-          disableDefaultUI: true,
-        }
-      );
-
+    const script = document.createElement("script");
+    script.src =
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyDo6tI6z6qCTkXDp-pSl8F22SvsvNR1rOA&libraries=drawing,geometry,places";
+    script.async = true;
+    script.onload = () => {
+      const map = new window.google.maps.Map(mapRef.current, {
+        center: { lat: 23.8103, lng: 90.4125 },
+        zoom: 15,
+        fullscreenControl: false,
+        mapTypeControl: false,
+        streetViewControl: false,
+        zoomControl: false,
+        scrollwheel: true,
+      });
+      setGoogleMap(map);
       geocoderRef.current = new window.google.maps.Geocoder();
 
-      mapRef.current.addListener("click", (e) => {
-        placeMarkerAndGeocode(e.latLng);
-      });
-    }
+      const handleMapClick = (e) => {
+        const latLng = e.latLng;
+        if (!latLng) return;
+
+        const position = {
+          lat: latLng.lat(),
+          lng: latLng.lng(),
+        };
+        setSelectedLatLng(position);
+
+        if (searchMarkerRef.current) {
+          searchMarkerRef.current.setPosition(latLng);
+        } else {
+          searchMarkerRef.current = new window.google.maps.Marker({
+            position: latLng,
+            map,
+            animation: window.google.maps.Animation.DROP,
+          });
+        }
+
+        map.panTo(latLng);
+        map.setZoom(15);
+
+        if (geocoderRef.current) {
+          geocoderRef.current.geocode({ location: latLng }, (results, status) => {
+            if (
+              status === window.google.maps.GeocoderStatus.OK &&
+              results?.[0]?.formatted_address
+            ) {
+              setSearchQuery(results[0].formatted_address);
+              setSuggestions([]);
+            } else {
+              setSearchQuery("");
+            }
+          });
+        }
+      };
+
+      mapClickListenerRef.current = map.addListener("click", handleMapClick);
+    };
 
     return () => {
-      if (markerRef.current) {
-        markerRef.current.setMap(null);
-        markerRef.current = null;
-      }
-      if (mapRef.current) {
-        window.google.maps.event.clearInstanceListeners(mapRef.current);
-        mapRef.current = null;
+      if (mapClickListenerRef.current) {
+        window.google.maps.event.removeListener(mapClickListenerRef.current);
+        mapClickListenerRef.current = null;
       }
     };
-  }, [setAddress, setSelectedLatLng]);
+  }, [setGoogleMap, setSelectedLatLng, setSearchQuery, setSuggestions]);
 
   return (
-    <Box
-      sx={{
-        position: "relative",
+    <div
+      ref={mapRef}
+      style={{
+        width: "100%",
         height: "480px",
+        border: "1px solid #ccc",
         borderRadius: "20px",
-        overflow: "hidden",
       }}
-    >
-      <Box
-        id="map-container"
-        sx={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          borderRadius: 2,
-          zIndex: 0,
-        }}
-      />
-    </Box>
+    ></div>
   );
 }
 
 MapCoverage.propTypes = {
-  setSelectedLatLng: PropTypes.func,
-  setAddress: PropTypes.func,
+  setGoogleMap: PropTypes.func.isRequired,
+  setSelectedLatLng: PropTypes.func.isRequired,
+  setSearchQuery: PropTypes.func.isRequired,
+  setSuggestions: PropTypes.func.isRequired,
 };

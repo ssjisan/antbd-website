@@ -6,7 +6,6 @@ import HappyclientSlider from "../Components/Common/HappyclientSlider";
 import Footer from "../Layout/Footer/Footer";
 import WhatsAppButton from "../Components/Common/WhatsAppButton";
 import MdMessage from "../Components/About/MdMessage";
-import SwitchingRequest from "../Components/Home/SwitchingRequest";
 import NeedHelp from "../Components/Home/NeedHelp";
 import LicensingMemberships from "../Components/About/LicensingMemberships";
 import Timeline from "../Components/About/Timeline";
@@ -22,7 +21,6 @@ export default function About() {
       <MdMessage />
       <HappyclientSlider />
       <Vision />
-      <SwitchingRequest />
       <Mission />
       <LicensingMemberships/>
       <NeedHelp />

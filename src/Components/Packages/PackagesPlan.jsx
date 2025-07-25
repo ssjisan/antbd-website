@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Container, Grid, Stack, Typography } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Stack,
+  Typography,
+  Skeleton,
+  Box,
+} from "@mui/material";
 import PackageCard from "../Common/PackageCard";
 
 export default function PackagesPlan() {
@@ -22,7 +29,37 @@ export default function PackagesPlan() {
     fetchPackages();
   }, []);
   console.log(packages);
-  
+
+  // Skeleton card component for loading state
+  const PackageCardSkeleton = () => (
+    <Box
+      sx={{
+        width: 320,
+        borderRadius: 2,
+        p: 2,
+        bgcolor: "background.paper",
+      }}
+    >
+      <Skeleton variant="text" height={20} width="20%" />
+      <Skeleton variant="text" height={24} width="40%" />
+      <Skeleton variant="text" height={32} width="60%" />
+      <Skeleton
+        variant="rectangular"
+        height={140}
+        sx={{ borderRadius: 1, my: 2 }}
+      />
+      <Skeleton variant="text" height={20} width="20%" />
+      <Skeleton variant="text" height={24} width="40%" />
+      <Skeleton variant="text" height={32} width="60%" />
+      <Skeleton
+        variant="rectangular"
+        height={36}
+        width={"100%"}
+        sx={{ mt: 3, borderRadius: 1 }}
+      />
+    </Box>
+  );
+
   return (
     <Container sx={{ pt: "64px", pb: "64px" }}>
       <Stack
@@ -42,11 +79,21 @@ export default function PackagesPlan() {
         </Typography>
       </Stack>
 
-      <Grid container rowSpacing={6} columnSpacing={3}>
+      <Grid container rowSpacing={6} columnSpacing={3} justifyContent="center">
         {loading ? (
-          <Typography variant="body1" sx={{ mx: "auto" }}>
-            Loading...
-          </Typography>
+          Array.from(new Array(3)).map((_, idx) => (
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={6}
+              lg={4}
+              key={idx}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
+              <PackageCardSkeleton />
+            </Grid>
+          ))
         ) : packages.length > 0 ? (
           packages.map((pkg) => (
             <Grid
@@ -62,7 +109,7 @@ export default function PackagesPlan() {
             </Grid>
           ))
         ) : (
-          <Typography variant="body1" sx={{ mx: "auto" }}>
+          <Typography variant="body1" sx={{ mt:"48px" }}>
             No packages found.
           </Typography>
         )}

@@ -1,114 +1,238 @@
 import {
+  forwardRef,
+  useContext,
+  useRef,
+  useState,
+  useEffect,
+  useImperativeHandle,
+} from "react";
+import {
   Container,
   Typography,
   TextField,
-  InputAdornment,
-  CircularProgress,
-  Box,
   Button,
   Stack,
+  Box,
 } from "@mui/material";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { GPS } from "../../assets/Icons/Home/Icons"; // Your GPS icon
-import Map from "./Map";
+import { GPS } from "../../assets/Icons/Home/Icons";
 import { DataContext } from "../../DataProcessing/DataProcessing";
-import {
-  forwardRef,
-  useContext,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
-import PropTypes from "prop-types";
-
 const Area = forwardRef((props, ref) => {
-  const { initialArea } = props;
+  const { setArea } = useContext(DataContext);
   const mapRef = useRef(null);
+  const [googleMap, setGoogleMap] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loadingSuggestions, setLoadingSuggestions] = useState(false);
+  const autocompleteServiceRef = useRef(null);
+  const placesServiceRef = useRef(null);
+  const searchMarkerRef = useRef(null);
+  const geocoderRef = useRef(null);
+  const mapClickListenerRef = useRef(null);
   const [selectedLatLng, setSelectedLatLng] = useState(null);
-  const { setArea } = useContext(DataContext);
-  const [latLng, setLatLng] = useState(initialArea?.latLng || null);
-  const [address, setAddress] = useState(initialArea?.address || "");
+
+  // ============================ Init Google Map and Services ============================
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src =
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyDo6tI6z6qCTkXDp-pSl8F22SvsvNR1rOA&libraries=drawing,geometry,places";
+    script.async = true;
+    script.onload = () => {
+      const mapOptions = {
+        center: { lat: 23.8103, lng: 90.4125 },
+        zoom: 15,
+        fullscreenControl: false,
+        mapTypeControl: false,
+        streetViewControl: false,
+        zoomControl: false,
+        scrollwheel: true,
+      };
+
+      const map = new window.google.maps.Map(mapRef.current, mapOptions);
+      setGoogleMap(map);
+
+      autocompleteServiceRef.current =
+        new window.google.maps.places.AutocompleteService();
+      placesServiceRef.current = new window.google.maps.places.PlacesService(
+        map
+      );
+      geocoderRef.current = new window.google.maps.Geocoder();
+    };
+    document.head.appendChild(script);
+  }, []);
+
+  // ============================ Always listen for map clicks to drop pin ============================
 
   useEffect(() => {
-    if (initialArea) {
-      const lat = parseFloat(initialArea.lat);
-      const lng = parseFloat(initialArea.lng);
-      setLatLng({ lat, lng });
-      setAddress(initialArea.areaName);
-      setSearchQuery(initialArea.areaName);
+    if (!googleMap) return;
 
-      // Drop pin on the map
-      if (mapRef.current?.handleClick) {
-        mapRef.current.handleClick(lat, lng);
+    const handleMapClick = (e) => {
+      const latLng = e.latLng;
+      if (!latLng) return;
+
+      const position = {
+        lat: latLng.lat(),
+        lng: latLng.lng(),
+      };
+
+      setSelectedLatLng(position);
+
+      if (searchMarkerRef.current) {
+        searchMarkerRef.current.setPosition(latLng);
       } else {
-        setSelectedLatLng({ lat, lng });
+        searchMarkerRef.current = new window.google.maps.Marker({
+          position: latLng,
+          map: googleMap,
+          animation: window.google.maps.Animation.DROP,
+        });
       }
-    }
-  }, [initialArea]);
 
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setSearchQuery(value);
-    if (value.length >= 5) {
-      fetchSuggestions(value);
-    } else {
-      setSuggestions([]);
-    }
-  };
+      googleMap.panTo(latLng);
+      googleMap.setZoom(15);
 
-  const fetchSuggestions = async (query) => {
-    setLoading(true);
-    try {
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          query
-        )}`
+      if (geocoderRef.current) {
+        geocoderRef.current.geocode({ location: latLng }, (results, status) => {
+          if (
+            status === window.google.maps.GeocoderStatus.OK &&
+            results?.[0]?.formatted_address
+          ) {
+            setSearchQuery(results[0].formatted_address);
+            setSuggestions([]);
+          } else {
+            setSearchQuery("");
+          }
+        });
+      }
+    };
+
+    // Remove previous listener if exists
+    if (mapClickListenerRef.current) {
+      window.google.maps.event.removeListener(mapClickListenerRef.current);
+    }
+
+    // Attach new listener
+    mapClickListenerRef.current = googleMap.addListener(
+      "click",
+      handleMapClick
+    );
+
+    // Cleanup on unmount
+    return () => {
+      if (mapClickListenerRef.current) {
+        window.google.maps.event.removeListener(mapClickListenerRef.current);
+        mapClickListenerRef.current = null;
+      }
+    };
+  }, [googleMap]);
+
+  // ============================ Search input change ============================
+  const handleSearchChange = (e) => {
+    const val = e.target.value;
+    setSearchQuery(val);
+
+    if (!autocompleteServiceRef.current) return;
+
+    if (val.length >= 5) {
+      setLoadingSuggestions(true);
+      autocompleteServiceRef.current.getPlacePredictions(
+        { input: val },
+        (predictions, status) => {
+          setLoadingSuggestions(false);
+          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+            setSuggestions(predictions);
+          } else {
+            setSuggestions([]);
+          }
+        }
       );
-      const data = await res.json();
-      setSuggestions(data.slice(0, 5));
-    } catch (err) {
-      console.error("Fetch error:", err);
+    } else {
       setSuggestions([]);
     }
-    setLoading(false);
   };
 
-  const handleSuggestionSelect = (place) => {
-    setSearchQuery(place.display_name);
+  // ============================ When user clicks a suggestion ============================
+  const handleSuggestionClick = (place) => {
+    setSearchQuery(place.description);
     setSuggestions([]);
-    const lat = parseFloat(place.lat);
-    const lng = parseFloat(place.lon);
-    if (mapRef.current?.handleClick) {
-      mapRef.current.handleClick(lat, lng);
-    } else {
-      setSelectedLatLng({ lat, lng });
-    }
+    if (!placesServiceRef.current || !googleMap) return;
+
+    // Get place details by place_id
+    placesServiceRef.current.getDetails(
+      { placeId: place.place_id, fields: ["geometry"] },
+      (result, status) => {
+        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+          if (result.geometry && result.geometry.location) {
+            const location = result.geometry.location;
+            setSelectedLatLng({
+              lat: location.lat(),
+              lng: location.lng(),
+            });
+            // Center and zoom map
+            googleMap.panTo(location);
+            googleMap.setZoom(15);
+
+            // Place or move the marker
+            if (searchMarkerRef.current) {
+              searchMarkerRef.current.setPosition(location);
+            } else {
+              searchMarkerRef.current = new window.google.maps.Marker({
+                position: location,
+                map: googleMap,
+                animation: window.google.maps.Animation.DROP,
+              });
+            }
+          }
+        }
+      }
+    );
   };
 
+  // ============================ Use My Location button click handler ============================
   const handleUseMyLocation = () => {
     if (!navigator.geolocation) {
-      toast.error("Geolocation not supported.");
+      toast.error("Geolocation is not supported by your browser");
       return;
     }
+    if (!googleMap || !geocoderRef.current) return;
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const { latitude, longitude } = position.coords;
-        if (mapRef.current?.handleClick) {
-          mapRef.current.handleClick(latitude, longitude);
-        } else {
-          setSelectedLatLng({ lat: latitude, lng: longitude });
-        }
-        setSearchQuery(
-          `Current location: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}`
+        const latLng = new window.google.maps.LatLng(
+          position.coords.latitude,
+          position.coords.longitude
         );
+
+        // Center map & zoom
+        googleMap.panTo(latLng);
+        googleMap.setZoom(15);
+        setSelectedLatLng({
+          lat: latLng.lat(),
+          lng: latLng.lng(),
+        });
+        // Place or move marker
+        if (searchMarkerRef.current) {
+          searchMarkerRef.current.setPosition(latLng);
+        } else {
+          searchMarkerRef.current = new window.google.maps.Marker({
+            position: latLng,
+            map: googleMap,
+            animation: window.google.maps.Animation.DROP,
+          });
+        }
+
+        // Reverse geocode to get address
+        geocoderRef.current.geocode({ location: latLng }, (results, status) => {
+          if (status === window.google.maps.GeocoderStatus.OK && results[0]) {
+            setSearchQuery(results[0].formatted_address);
+            setSuggestions([]);
+          } else {
+            setSearchQuery("");
+          }
+        });
       },
-      () => {
-        toast.error("Permission denied or failed to get location.");
+      (error) => {
+        toast.error("Unable to retrieve your location: " + error.message);
       }
     );
   };
@@ -151,92 +275,103 @@ const Area = forwardRef((props, ref) => {
   }));
 
   return (
-    <Container sx={{ pb: "64px" }}>
-      <Stack sx={{ my: 4 }} gap={3} position="relative">
-        <TextField
-          value={searchQuery}
-          size="small"
-          onChange={handleInputChange}
-          placeholder="Search a location..."
-          fullWidth
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                {loading && <CircularProgress size={20} />}
-              </InputAdornment>
-            ),
+    <Container sx={{ pt: "64px", pb: "64px" }}>
+      <Stack alignItems="center" gap="24px">
+        <Box
+          sx={{
+            width: { xs: "100%", sm: "100%", md: "60%", lg: "60%" },
           }}
-        />
-
-        {suggestions.length > 0 && (
-          <Box
-            sx={{
-              mt: 1,
-              border: "1px solid #ccc",
-              borderRadius: 1,
-              background: "#fff",
-              zIndex: 999,
-              position: "absolute",
-              width: "100%",
-              maxWidth: 500,
-              boxShadow: 2,
-            }}
-          >
-            {suggestions.map((s, idx) => (
+        >
+          {/* Search Box */}
+          <Box style={{ position: "relative", marginBottom: 10 }}>
+            <TextField
+              type="text"
+              placeholder="Search location (min 5 characters)..."
+              value={searchQuery}
+              fullWidth
+              onChange={handleSearchChange}
+            />
+            {/* Circular loading spinner */}
+            {loadingSuggestions && (
               <Box
-                key={idx}
-                onClick={() => handleSuggestionSelect(s)}
-                sx={{
-                  px: 2,
-                  py: 1,
-                  cursor: "pointer",
-                  borderBottom:
-                    idx < suggestions.length - 1 ? "1px solid #eee" : "none",
-                  "&:hover": { backgroundColor: "#f5f5f5" },
+                style={{
+                  position: "absolute",
+                  right: 8,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  width: 20,
+                  height: 20,
+                  border: "3px solid #ccc",
+                  borderTop: "3px solid #2196f3",
+                  borderRadius: "50%",
+                  animation: "spin 1s linear infinite",
+                }}
+              />
+            )}
+
+            {/* Suggestions Dropdown */}
+            {suggestions.length > 0 && (
+              <ul
+                style={{
+                  position: "absolute",
+                  top: "calc(100% + 4px)",
+                  left: 0,
+                  right: 0,
+                  backgroundColor: "#fff",
+                  border: "1px solid #ccc",
+                  borderRadius: 4,
+                  maxHeight: 180,
+                  overflowY: "auto",
+                  zIndex: 1000,
+                  margin: 0,
+                  padding: 0,
+                  listStyle: "none",
                 }}
               >
-                {s.display_name}
-              </Box>
-            ))}
+                {suggestions.map((place) => (
+                  <li
+                    key={place.place_id}
+                    onClick={() => handleSuggestionClick(place)}
+                    style={{
+                      padding: "8px 12px",
+                      cursor: "pointer",
+                      borderBottom: "1px solid #eee",
+                    }}
+                    onMouseDown={(e) => e.preventDefault()} // Prevent input blur on click
+                  >
+                    {place.description}
+                  </li>
+                ))}
+              </ul>
+            )}
           </Box>
-        )}
 
-        <Typography variant="h6" mb={2}>
-          Click anywhere on the map to drop a pin, or use{" "}
-          <Button
-            onClick={handleUseMyLocation}
-            variant="contained"
-            color="secondary"
-            sx={{ mx: 1, minWidth: "auto", padding: "6px 12px" }}
-          >
-            <GPS color="#fff" size="20px" />
-          </Button>
-          to use your current location.
-        </Typography>
+          <Typography variant="h6" mb={2} sx={{ textAlign: "center" }}>
+            Click anywhere on the map to drop a pin, or use{" "}
+            <Button
+              onClick={handleUseMyLocation}
+              variant="contained"
+              color="secondary"
+              sx={{ mx: 1, minWidth: "auto", padding: "6px 12px" }}
+            >
+              <GPS color="#fff" size="20px" />
+            </Button>
+            to use your current location.
+          </Typography>
+        </Box>
       </Stack>
-
-      <Map
+      <Box
         ref={mapRef}
-        setSelectedLatLng={setSelectedLatLng}
-        setAddress={setSearchQuery}
-      />
+        sx={{
+          mt: "64px",
+          width: "100%",
+          height: "480px",
+          border: "1px solid #ccc",
+          borderRadius: "20px",
+        }}
+      ></Box>
     </Container>
   );
 });
-
 Area.displayName = "Area";
-
-Area.propTypes = {
-  initialArea: PropTypes.shape({
-    lat: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    lng: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    areaName: PropTypes.string,
-    latLng: PropTypes.shape({
-      lat: PropTypes.number,
-      lng: PropTypes.number,
-    }),
-    address: PropTypes.string,
-  }),
-};
-
 export default Area;
