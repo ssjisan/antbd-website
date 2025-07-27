@@ -6,12 +6,15 @@ import {
   Button,
   Stack,
   Box,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { GPS } from "../../assets/Icons/Home/Icons";
 import { DataContext } from "../../DataProcessing/DataProcessing";
 import { useNavigate } from "react-router-dom";
+import { Search } from "../../assets/Icons/Common/Icons";
 
 export default function CheckCoverage() {
   const { setArea } = useContext(DataContext);
@@ -31,8 +34,7 @@ export default function CheckCoverage() {
   // ============================ Init Google Map and Services ============================
   useEffect(() => {
     const script = document.createElement("script");
-    script.src =
-      `https://maps.googleapis.com/maps/api/js?key=AIzaSyDo6tI6z6qCTkXDp-pSl8F22SvsvNR1rOA&libraries=drawing,geometry,places`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDo6tI6z6qCTkXDp-pSl8F22SvsvNR1rOA&libraries=drawing,geometry,places`;
     script.async = true;
     script.onload = () => {
       const mapOptions = {
@@ -41,8 +43,6 @@ export default function CheckCoverage() {
         fullscreenControl: false,
         mapTypeControl: false,
         streetViewControl: false,
-        zoomControl: false,
-        scrollwheel: true,
       };
 
       const map = new window.google.maps.Map(mapRef.current, mapOptions);
@@ -238,7 +238,7 @@ export default function CheckCoverage() {
       toast.error("Please select a location first.");
       return;
     }
-const checking = toast.loading("Checking...");
+    const checking = toast.loading("Checking...");
     try {
       const res = await axios.post("/check-availability", {
         lat: selectedLatLng.lat,
@@ -262,8 +262,7 @@ const checking = toast.loading("Checking...");
       console.error("Check availability error:", err);
       const msg = err.response?.data?.message || "Something went wrong.";
       toast.error(msg);
-    }
-    finally {
+    } finally {
       toast.dismiss(checking);
     }
   };
@@ -274,22 +273,50 @@ const checking = toast.loading("Checking...");
         <Stack gap={1} sx={{ my: 3, width: "100%" }} alignItems="center">
           <Typography variant="h3">Check Coverage</Typography>
           <Typography variant="h6" color="text.secondary">
-            Find out if we’re available in your area today.
+            Enter your address, or use the map&lsquo;s location icon to explore
+            coverage in your service area.
           </Typography>
         </Stack>
-        <Box
+        <Stack
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="center"
+          gap="8px"
           sx={{
-            width: { xs: "100%", sm: "100%", md: "60%", lg: "60%" },
+            width: { xs: "100%", sm: "100%", md: "80%", lg: "80%" },
           }}
         >
+          <IconButton
+            onClick={handleUseMyLocation}
+            variant="soft"
+            color="secondary"
+            size="large"
+          >
+            <GPS color="#ED1B24" size="24px" />
+          </IconButton>
           {/* Search Box */}
-          <Box style={{ position: "relative", marginBottom: 10 }}>
+          <Box style={{ position: "relative", width: "70%" }}>
             <TextField
               type="text"
               placeholder="Search location (min 5 characters)..."
               value={searchQuery}
               fullWidth
               onChange={handleSearchChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search color="black" size="20px" />
+                  </InputAdornment>
+                ),
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  if (suggestions.length > 0) {
+                    handleSuggestionClick(suggestions[0]); // Click on the first suggestion
+                  }
+                }
+              }}
             />
             {/* Circular loading spinner */}
             {loadingSuggestions && (
@@ -345,35 +372,21 @@ const checking = toast.loading("Checking...");
               </ul>
             )}
           </Box>
-
-          <Typography variant="h6" mb={2} sx={{ textAlign: "center" }}>
-            Click anywhere on the map to drop a pin, or use{" "}
-            <Button
-              onClick={handleUseMyLocation}
-              variant="contained"
-              color="secondary"
-              sx={{ mx: 1, minWidth: "auto", padding: "6px 12px" }}
-            >
-              <GPS color="#fff" size="20px" />
-            </Button>
-            to use your current location.
-          </Typography>
-          
-        </Box>
-        <Button variant="contained" onClick={handleCheckAvailability}>
+          <Button variant="contained" onClick={handleCheckAvailability}>
             Check Availability
           </Button>
+        </Stack>
       </Stack>
-        <Box
-          ref={mapRef}
-          sx={{
-            mt:"64px",
-            width: "100%",
-            height: "480px",
-            border: "1px solid #ccc",
-            borderRadius: "20px",
-          }}
-        ></Box>
+      <Box
+        ref={mapRef}
+        sx={{
+          mt: "48px",
+          width: "100%",
+          height: "480px",
+          border: "1px solid #ccc",
+          borderRadius: "20px",
+        }}
+      ></Box>
     </Container>
   );
 }

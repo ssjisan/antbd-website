@@ -8,17 +8,19 @@ import {
 } from "react";
 import {
   Container,
-  Typography,
   TextField,
-  Button,
   Stack,
   Box,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import toast from "react-hot-toast";
+import PropTypes from "prop-types";
 import axios from "axios";
 import { GPS } from "../../assets/Icons/Home/Icons";
 import { DataContext } from "../../DataProcessing/DataProcessing";
-const Area = forwardRef((props, ref) => {
+import { Search } from "../../assets/Icons/Common/Icons";
+const Area = forwardRef(({ initialArea }, ref) => {
   const { setArea } = useContext(DataContext);
   const mapRef = useRef(null);
   const [googleMap, setGoogleMap] = useState(null);
@@ -31,6 +33,40 @@ const Area = forwardRef((props, ref) => {
   const geocoderRef = useRef(null);
   const mapClickListenerRef = useRef(null);
   const [selectedLatLng, setSelectedLatLng] = useState(null);
+
+  useEffect(() => {
+    if (
+      googleMap &&
+      initialArea &&
+      initialArea.lat &&
+      initialArea.lng &&
+      initialArea.areaName
+    ) {
+      const latLng = new window.google.maps.LatLng(
+        initialArea.lat,
+        initialArea.lng
+      );
+
+      if (searchMarkerRef.current) {
+        searchMarkerRef.current.setPosition(latLng);
+      } else {
+        searchMarkerRef.current = new window.google.maps.Marker({
+          position: latLng,
+          map: googleMap,
+          animation: window.google.maps.Animation.DROP,
+        });
+      }
+
+      googleMap.panTo(latLng);
+      googleMap.setZoom(15);
+
+      setSearchQuery(initialArea.areaName);
+      setSelectedLatLng({
+        lat: initialArea.lat,
+        lng: initialArea.lng,
+      });
+    }
+  }, [googleMap, initialArea]);
 
   // ============================ Init Google Map and Services ============================
   useEffect(() => {
@@ -45,8 +81,6 @@ const Area = forwardRef((props, ref) => {
         fullscreenControl: false,
         mapTypeControl: false,
         streetViewControl: false,
-        zoomControl: false,
-        scrollwheel: true,
       };
 
       const map = new window.google.maps.Map(mapRef.current, mapOptions);
@@ -242,7 +276,7 @@ const Area = forwardRef((props, ref) => {
       toast.error("Please select a location first.");
       return false;
     }
-
+    const checking = toast.loading("Checking...");
     try {
       const res = await axios.post("/check-availability", {
         lat: selectedLatLng.lat,
@@ -267,6 +301,8 @@ const Area = forwardRef((props, ref) => {
       console.error("Check availability error:", err);
       toast.error(err.response?.data?.message || "Something went wrong.");
       return false;
+    } finally {
+      toast.dismiss(checking);
     }
   };
 
@@ -277,19 +313,45 @@ const Area = forwardRef((props, ref) => {
   return (
     <Container sx={{ pt: "64px", pb: "64px" }}>
       <Stack alignItems="center" gap="24px">
-        <Box
+        <Stack
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="center"
+          gap="8px"
           sx={{
-            width: { xs: "100%", sm: "100%", md: "60%", lg: "60%" },
+            width: { xs: "100%", sm: "100%", md: "80%", lg: "80%" },
           }}
         >
-          {/* Search Box */}
-          <Box style={{ position: "relative", marginBottom: 10 }}>
+          <IconButton
+            onClick={handleUseMyLocation}
+            variant="soft"
+            color="secondary"
+            size="large"
+          >
+            <GPS color="#ED1B24" size="24px" />
+          </IconButton>
+          <Box style={{ position: "relative", width: "70%" }}>
             <TextField
               type="text"
               placeholder="Search location (min 5 characters)..."
               value={searchQuery}
               fullWidth
               onChange={handleSearchChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search color="black" size="20px" />
+                  </InputAdornment>
+                ),
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  if (suggestions.length > 0) {
+                    handleSuggestionClick(suggestions[0]); // Click on the first suggestion
+                  }
+                }
+              }}
             />
             {/* Circular loading spinner */}
             {loadingSuggestions && (
@@ -345,25 +407,12 @@ const Area = forwardRef((props, ref) => {
               </ul>
             )}
           </Box>
-
-          <Typography variant="h6" mb={2} sx={{ textAlign: "center" }}>
-            Click anywhere on the map to drop a pin, or use{" "}
-            <Button
-              onClick={handleUseMyLocation}
-              variant="contained"
-              color="secondary"
-              sx={{ mx: 1, minWidth: "auto", padding: "6px 12px" }}
-            >
-              <GPS color="#fff" size="20px" />
-            </Button>
-            to use your current location.
-          </Typography>
-        </Box>
+        </Stack>
       </Stack>
       <Box
         ref={mapRef}
         sx={{
-          mt: "64px",
+          mt: "48px",
           width: "100%",
           height: "480px",
           border: "1px solid #ccc",
@@ -374,4 +423,13 @@ const Area = forwardRef((props, ref) => {
   );
 });
 Area.displayName = "Area";
+
+Area.propTypes = {
+  initialArea: PropTypes.shape({
+    lat: PropTypes.number,
+    lng: PropTypes.number,
+    areaName: PropTypes.string,
+  }),
+};
+
 export default Area;

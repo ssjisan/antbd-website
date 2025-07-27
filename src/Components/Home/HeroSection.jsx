@@ -79,7 +79,7 @@ export default function HeroSection() {
                 transform: "scale(1)",
                 "&:hover": {
                   transform: "scale(0.9)",
-                background: `${theme.palette.secondary.dark}`,
+                  background: `${theme.palette.secondary.dark}`,
                   border: `1px solid ${theme.palette.secondary.dark}`,
                 },
                 width: "max-content",
@@ -99,20 +99,23 @@ export default function HeroSection() {
               position: "relative",
               overflow: "hidden",
               borderRadius: 0,
+              backgroundColor: "#100122", // fallback color behind image
             }}
           >
             <Box
               component="img"
-              src="/bg.png"
+              src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753609124/website/section-images/home-hero_prfpn1.webp"
               alt="Hero Image"
               sx={{
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
                 display: "block",
+                position: "relative",
+                zIndex: 1,
               }}
             />
-            {/* Overlay */}
+            {/* Overlay for smooth blend into #100122 */}
             <Box
               sx={{
                 position: "absolute",
@@ -120,12 +123,13 @@ export default function HeroSection() {
                 right: 0,
                 width: "100%",
                 height: "100%",
+                zIndex: 2,
+                pointerEvents: "none",
                 background: {
                   xs: "linear-gradient(0.92deg, rgba(16, 1, 34, 0) 51.74%, #100122 96.24%)", // sm and below
                   sm: "linear-gradient(0.92deg, rgba(16, 1, 34, 0) 51.74%, #100122 96.24%)",
                   md: "linear-gradient(270.24deg, rgba(16, 1, 34, 0) 37.96%, #100122 93.03%)", // md and up
                 },
-                pointerEvents: "none",
               }}
             />
           </Grid>

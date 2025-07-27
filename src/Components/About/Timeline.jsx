@@ -1,34 +1,47 @@
 import { useState, useEffect, useRef } from "react";
 import { Box, Container, Grid, Stack, Typography } from "@mui/material";
 
+// Get the current year dynamically
+const currentYear = new Date().getFullYear();
+
 const timelineData = [
   {
     year: "2001",
     title: "Started our journey as a Cyber Café",
-    image: "cybercafe.jpg",
+    image:
+      "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753610992/website/section-images/cybercafe_rvqdfs.webp",
   },
   {
     year: "2008",
     title: "Became Category A ISP",
-    image: "categoryA.webp",
+    image:
+      "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753611095/website/section-images/categoryA_wwiwer.png",
   },
   {
     year: "2013",
     title: "Opened zonal offices in major districts",
-    image: "office.jpg",
+    image:
+      "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753610234/website/section-images/zonal_office_nj67ai.webp",
   },
   {
     year: "2015",
     title: "Reached full nationwide coverage",
-    image: "nationwide.jpg",
+    image:
+      "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753611050/website/section-images/nationwide_z0yukc.webp",
+  },
+  {
+    year: currentYear.toString(),
+    title: "Redefining What’s Possible.",
+    image:
+      "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753611646/website/section-images/current_nuixlr.webp",
   },
 ];
 
-const yearList = [2001, 2008, 2013, 2015];
+const yearList = timelineData.map((item) => parseInt(item.year));
 
 export default function Timeline() {
-  const [selectedYear, setSelectedYear] = useState(2001);
-  const [displayYear, setDisplayYear] = useState(2001);
+  const [selectedYear, setSelectedYear] = useState(yearList[0]);
+  const [displayYear, setDisplayYear] = useState(yearList[0]);
   const intervalRef = useRef(null);
 
   const current = timelineData.find(
@@ -68,14 +81,14 @@ export default function Timeline() {
   }, [selectedYear]);
 
   const startAutoSlide = () => {
-    stopAutoSlide(); // clear previous
+    stopAutoSlide();
     intervalRef.current = setInterval(() => {
       setSelectedYear((prev) => {
         const currentIndex = yearList.indexOf(prev);
         const nextIndex = (currentIndex + 1) % yearList.length;
         return yearList[nextIndex];
       });
-    }, 5000); // every 5 seconds
+    }, 5000);
   };
 
   const stopAutoSlide = () => {
@@ -86,7 +99,7 @@ export default function Timeline() {
 
   const handleYearClick = (year) => {
     setSelectedYear(year);
-    startAutoSlide(); // restart the timer
+    startAutoSlide();
   };
 
   return (
@@ -97,11 +110,11 @@ export default function Timeline() {
 
       <Grid container spacing={4} alignItems="center">
         {/* Left Image */}
-        <Grid item xs={12} sm={12} md={5} lg={5}>
+        <Grid item xs={12} sm={12} md={6} lg={6}>
           <Box display="flex" justifyContent="center" alignItems="center">
             <img
               src={current.image}
-              height="460"
+              height="380"
               style={{
                 width: "100%",
                 objectFit: "cover",
@@ -114,9 +127,11 @@ export default function Timeline() {
         </Grid>
 
         {/* Center Content */}
-        <Grid item xs={12} sm={12} md={5} lg={5}>
+        <Grid item xs={12} sm={12} md={4} lg={4}>
           <Stack
-            sx={{ pl: { md: "100px" }, mt: { xs: "32px", md: "0" } }}
+            sx={{
+              mt: { xs: "32px", md: "0" },
+            }}
             gap="12px"
           >
             <Typography
@@ -145,7 +160,23 @@ export default function Timeline() {
 
         {/* Right Year Buttons */}
         <Grid item xs={12} sm={12} md={2} lg={2}>
-          <Stack gap="12px">
+          <Stack
+            gap="12px"
+            flexDirection={{ xs: "row", sm: "row", md: "column", lg: "column" }}
+            alignItems={{
+              xs: "center",
+              sm: "center",
+              md: "flex-end",
+              lg: "flex-end",
+            }}
+            justifyContent={{
+              xs: "space-between",
+              sm:"space-between",
+              md: "flex-start",
+              lg: "flex-start",
+            }}
+            flexWrap={{ xs: "wrap", sm: "wrap", md: "nowrap", lg: "nowrap" }}
+          >
             {yearList.map((year) => {
               const isActive = selectedYear === year;
               return (
@@ -156,7 +187,7 @@ export default function Timeline() {
                   justifyContent="flex-end"
                   sx={{
                     cursor: "pointer",
-                    width: "100%",
+                    // width: "100%",
                   }}
                   onClick={() => handleYearClick(year)}
                   gap="8px"

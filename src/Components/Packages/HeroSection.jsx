@@ -100,25 +100,25 @@ export default function HeroSection() {
               </Stack>
 
               <Button
-              variant="contained"
-              sx={(theme) => ({
-                mt: 3,
-                borderRadius: 1,
-                padding: "10px 24px",
-                border: "1px solid #fff",
-                background: "transparent",
-                color: "#fff",
-                transition: "all 0.2s ease-in-out",
-                transform: "scale(1)",
-                "&:hover": {
-                  transform: "scale(0.9)",
-                  border: `1px solid ${theme.palette.primary.dark}`,
-                },
-                width: "max-content",
-              })}
-            >
-             Request Now
-            </Button>
+                variant="contained"
+                sx={(theme) => ({
+                  mt: 3,
+                  borderRadius: 1,
+                  padding: "10px 24px",
+                  border: "1px solid #fff",
+                  background: "transparent",
+                  color: "#fff",
+                  transition: "all 0.2s ease-in-out",
+                  transform: "scale(1)",
+                  "&:hover": {
+                    transform: "scale(0.9)",
+                    border: `1px solid ${theme.palette.primary.dark}`,
+                  },
+                  width: "max-content",
+                })}
+              >
+                Request Now
+              </Button>
             </Stack>
           </Grid>
 
@@ -132,17 +132,20 @@ export default function HeroSection() {
               position: "relative",
               overflow: "hidden",
               borderRadius: 0,
+              backgroundColor: "#100122", // fallback color behind image
             }}
           >
             <Box
               component="img"
-              src="/bg_payment.jpg"
+              src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753612728/website/section-images/bg_payment_wmfau9.webp"
               alt="Hero Image"
               sx={{
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
                 display: "block",
+                position: "relative",
+                zIndex: 1,
               }}
             />
             {/* Overlay */}
@@ -153,12 +156,13 @@ export default function HeroSection() {
                 right: 0,
                 width: "100%",
                 height: "100%",
-                background: {
-                  xs: "linear-gradient(0.92deg, rgba(16, 1, 34, 0) 51.74%, #100122 96.24%)",
-                  sm: "linear-gradient(0.92deg, rgba(16, 1, 34, 0) 51.74%, #100122 96.24%)",
-                  md: "linear-gradient(270.24deg, rgba(16, 1, 34, 0) 37.96%, #100122 93.03%)",
-                },
+                zIndex: 2,
                 pointerEvents: "none",
+                background: {
+                  xs: "linear-gradient(0.92deg, rgba(16, 1, 34, 0) 51.74%, #100122 96.24%)", // sm and below
+                  sm: "linear-gradient(0.92deg, rgba(16, 1, 34, 0) 51.74%, #100122 96.24%)",
+                  md: "linear-gradient(270.24deg, rgba(16, 1, 34, 0) 37.96%, #100122 93.03%)", // md and up
+                },
               }}
             />
           </Grid>
