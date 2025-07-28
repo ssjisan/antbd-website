@@ -9,7 +9,8 @@ export default function CoverageCompo() {
   const [areas, setAreas] = useState([]);
   const [selectedZone, setSelectedZone] = useState("");
   const [selectedArea, setSelectedArea] = useState(null);
-console.log(areas);
+  const [loadingZones, setLoadingZones] = useState(true);
+  const [loadingAreas, setLoadingAreas] = useState(true);
 
   // Load zones
   useEffect(() => {
@@ -24,6 +25,8 @@ console.log(areas);
         }
       } catch (error) {
         console.error("Failed to fetch zones:", error);
+      } finally {
+        setLoadingZones(false); // <== Add this
       }
     };
     fetchZones();
@@ -37,6 +40,8 @@ console.log(areas);
         setAreas(res.data || []);
       } catch (error) {
         console.error("Failed to fetch areas:", error);
+      } finally {
+        setLoadingAreas(false); // <== Add this
       }
     };
     fetchAreas();
@@ -61,6 +66,8 @@ console.log(areas);
             areas={areas}
             selectedArea={selectedArea}
             setSelectedArea={setSelectedArea}
+            isLoadingZones={loadingZones}
+            isLoadingAreas={loadingAreas}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
@@ -73,9 +80,7 @@ console.log(areas);
               p: "32px",
             }}
           >
-            <CoverageMap
-              selected={selectedArea}
-            />
+            <CoverageMap selected={selectedArea} loadingMap={loadingZones || loadingAreas}/>
           </Box>
         </Grid>
       </Grid>

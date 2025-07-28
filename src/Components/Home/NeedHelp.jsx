@@ -1,4 +1,11 @@
-import { Box, Container, Grid, Skeleton, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Grid,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 
 const HelpCard = ({ imageSrc, title, phoneText, description, linkText }) => {
@@ -40,7 +47,7 @@ const HelpCard = ({ imageSrc, title, phoneText, description, linkText }) => {
                 color: "#008641",
               }}
             >
-              0808 196 6262
+              09666 121 131
             </Box>
           </Typography>
         )}
@@ -85,7 +92,7 @@ export default function NeedHelp() {
           <HelpCard
             imageSrc="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753612954/website/section-images/n3_ngaju5.webp"
             title="For more help"
-            linkText="Visit our Help pages"
+            linkText="Visit our Help page"
           />
         </Grid>
       </Grid>

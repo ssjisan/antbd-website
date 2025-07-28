@@ -6,7 +6,6 @@ import {
   Button,
   Stack,
   Box,
-  InputAdornment,
   IconButton,
 } from "@mui/material";
 import toast from "react-hot-toast";
@@ -278,103 +277,129 @@ export default function CheckCoverage() {
           </Typography>
         </Stack>
         <Stack
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="center"
-          gap="8px"
-          sx={{
-            width: { xs: "100%", sm: "100%", md: "80%", lg: "80%" },
-          }}
+          direction={{ xs: "column", sm: "row" }}
+          spacing={2}
+          alignItems="stretch"
+          sx={{ width: {xs:"100%",sm:"100%",md:"100%",lg:"70%"} }}
         >
-          <IconButton
-            onClick={handleUseMyLocation}
-            variant="soft"
-            color="secondary"
-            size="large"
+          {/* GPS + Search Field - always in a row */}
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            sx={{ flex: 1 }}
           >
-            <GPS color="#ED1B24" size="24px" />
-          </IconButton>
-          {/* Search Box */}
-          <Box style={{ position: "relative", width: "70%" }}>
-            <TextField
-              type="text"
-              placeholder="Search location (min 5 characters)..."
-              value={searchQuery}
-              fullWidth
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Search color="black" size="20px" />
-                  </InputAdornment>
-                ),
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  if (suggestions.length > 0) {
-                    handleSuggestionClick(suggestions[0]); // Click on the first suggestion
+            {/* GPS Icon */}
+            <IconButton
+              onClick={handleUseMyLocation}
+              size="large"
+            >
+              <GPS size="24px" color="#ED1B24" />
+            </IconButton>
+
+            {/* Search Field */}
+            <Box sx={{ flexGrow: 1, position: "relative" }}>
+              <TextField
+                type="text"
+                placeholder="Search location (min 5 characters)..."
+                value={searchQuery}
+                fullWidth
+                onChange={handleSearchChange}
+                InputProps={{
+                  endAdornment: (
+                    <IconButton
+                      edge="end"
+                      onClick={() => {
+                        if (suggestions.length > 0) {
+                          handleSuggestionClick(suggestions[0]);
+                        }
+                      }}
+                      size="small"
+                    >
+                      <Search size="20px" color="#000" />
+                    </IconButton>
+                  ),
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    if (suggestions.length > 0) {
+                      handleSuggestionClick(suggestions[0]);
+                    }
                   }
-                }
-              }}
-            />
-            {/* Circular loading spinner */}
-            {loadingSuggestions && (
-              <Box
-                style={{
-                  position: "absolute",
-                  right: 8,
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  width: 20,
-                  height: 20,
-                  border: "3px solid #ccc",
-                  borderTop: "3px solid #2196f3",
-                  borderRadius: "50%",
-                  animation: "spin 1s linear infinite",
                 }}
               />
-            )}
 
-            {/* Suggestions Dropdown */}
-            {suggestions.length > 0 && (
-              <ul
-                style={{
-                  position: "absolute",
-                  top: "calc(100% + 4px)",
-                  left: 0,
-                  right: 0,
-                  backgroundColor: "#fff",
-                  border: "1px solid #ccc",
-                  borderRadius: 4,
-                  maxHeight: 180,
-                  overflowY: "auto",
-                  zIndex: 1000,
-                  margin: 0,
-                  padding: 0,
-                  listStyle: "none",
-                }}
-              >
-                {suggestions.map((place) => (
-                  <li
-                    key={place.place_id}
-                    onClick={() => handleSuggestionClick(place)}
-                    style={{
-                      padding: "8px 12px",
-                      cursor: "pointer",
-                      borderBottom: "1px solid #eee",
-                    }}
-                    onMouseDown={(e) => e.preventDefault()} // Prevent input blur on click
-                  >
-                    {place.description}
-                  </li>
-                ))}
-              </ul>
-            )}
+              {/* Spinner */}
+              {loadingSuggestions && (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    right: 40,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    width: 20,
+                    height: 20,
+                    border: "3px solid #ccc",
+                    borderTop: "3px solid #2196f3",
+                    borderRadius: "50%",
+                    animation: "spin 1s linear infinite",
+                  }}
+                />
+              )}
+
+              {/* Suggestions */}
+              {suggestions.length > 0 && (
+                <ul
+                  style={{
+                    position: "absolute",
+                    top: "calc(100% + 4px)",
+                    left: 0,
+                    right: 0,
+                    backgroundColor: "#fff",
+                    border: "1px solid #ccc",
+                    borderRadius: 4,
+                    maxHeight: 180,
+                    overflowY: "auto",
+                    zIndex: 1000,
+                    margin: 0,
+                    padding: 0,
+                    listStyle: "none",
+                  }}
+                >
+                  {suggestions.map((place) => (
+                    <li
+                      key={place.place_id}
+                      onClick={() => handleSuggestionClick(place)}
+                      onMouseDown={(e) => e.preventDefault()}
+                      style={{
+                        padding: "8px 12px",
+                        cursor: "pointer",
+                        borderBottom: "1px solid #eee",
+                      }}
+                    >
+                      {place.description}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Box>
+          </Stack>
+
+          {/* Check Availability Button */}
+          <Box sx={{ width: { xs: "100%", sm: "auto" } }}>
+            <Button
+              variant="contained"
+              onClick={handleCheckAvailability}
+              sx={{
+                height: "54px",
+                width: "100%",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Check Availability
+            </Button>
           </Box>
-          <Button variant="contained" onClick={handleCheckAvailability}>
-            Check Availability
-          </Button>
         </Stack>
       </Stack>
       <Box

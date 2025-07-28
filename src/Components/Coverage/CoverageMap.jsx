@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
+import { Skeleton } from "@mui/material";
 
 const loadGoogleMaps = (callback) => {
   if (
@@ -10,7 +11,9 @@ const loadGoogleMaps = (callback) => {
     return;
   }
 
-  const existingScript = document.querySelector("script[src*='maps.googleapis']");
+  const existingScript = document.querySelector(
+    "script[src*='maps.googleapis']"
+  );
   if (existingScript) {
     existingScript.addEventListener("load", callback);
     return;
@@ -24,7 +27,7 @@ const loadGoogleMaps = (callback) => {
   document.head.appendChild(script);
 };
 
-export default function CoverageMap({ selected }) {
+export default function CoverageMap({ selected, loadingMap }) {
   // eslint-disable-next-line
   const mapRef = useRef(null);
   const polygonsRef = useRef([]);
@@ -94,7 +97,16 @@ export default function CoverageMap({ selected }) {
       polygonsRef.current = [];
     };
   }, [mapKey, selected]);
-
+  if (loadingMap) {
+    return (
+      <Skeleton
+        variant="rectangular"
+        width="100%"
+        height="100%"
+        sx={{ borderRadius: "20px" }}
+      />
+    );
+  }
   return (
     <div
       id="google-map-container"
@@ -113,4 +125,5 @@ CoverageMap.propTypes = {
       })
     ),
   }),
+  loadingMap: PropTypes.bool.isRequired,
 };

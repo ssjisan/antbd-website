@@ -17,12 +17,12 @@ export default function Mission() {
             {/* Image */}
             <Box
               component="img"
-              src="mission.png"
+              src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753685268/website/section-images/About/mission_wfx9au.webp"
               alt="Mission"
               sx={{
                 width: "100%",
                 height: "auto",
-                borderRadius: "20px",
+                borderRadius: "32px",
                 display: "block",
               }}
             />
@@ -89,12 +89,10 @@ export default function Mission() {
           >
             <Typography variant="h2">Our Mission</Typography>
             <Typography variant="h5" color="text.secondary">
-              Since the very beginning, our unwavering vision has been to become
-              the most trusted and advanced internet service provider in
-              Bangladesh. Driven by dedication and fueled by purpose, our team
-              works tirelessly — day and night, with heart and soul — to turn
-              that vision into reality. Every connection we build brings us one
-              step closer to a digitally empowered Bangladesh.
+              After providing service in only Dhaka city, we are now setting our
+              goal towards other districts. We have set up our base at
+              Chittagong and are working there. Soon, our mission is to connect
+              all other districts within a short period of time.
             </Typography>
           </Stack>
         </Grid>

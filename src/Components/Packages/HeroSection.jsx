@@ -1,4 +1,5 @@
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function HeroSection() {
   return (
@@ -101,6 +102,8 @@ export default function HeroSection() {
 
               <Button
                 variant="contained"
+                component={Link}
+                to="/request-connection"
                 sx={(theme) => ({
                   mt: 3,
                   borderRadius: 1,

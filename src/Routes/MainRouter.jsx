@@ -7,6 +7,7 @@ import About from "../Pages/About";
 import Coverage from "../Pages/Coverage";
 import RequestConnection from "../Pages/RequestConnection";
 import TestCoverage from "../Components/Coverage/TestCoverage";
+import HelpAndSupportPage from "../Pages/HelpAndSupportPage";
 
 export default function MainRoute() {
   return (
@@ -42,6 +43,8 @@ export default function MainRoute() {
         <Route path="/coverage" element={<Coverage />} />
         <Route path="/test" element={<TestCoverage />} />
         <Route path="/request-connection" element={<RequestConnection />} />
+        <Route path="/help-support" element={<HelpAndSupportPage />} />
+        
         <Route path="*" element={<Error404 />} /> {/* 404 Catch-All Route */}
       </Routes>
     </>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -8,9 +8,36 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import axios from "axios";
 
 export default function FirstPackage() {
   const [imageLoaded, setImageLoaded] = useState(false);
+  // eslint-disable-next-line
+  const [packages, setPackages] = useState([]);
+  // eslint-disable-next-line
+  const [loading, setLoading] = useState(true);
+  const [lowestPackage, setLowestPackage] = useState(null);
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const res = await axios.get("/all-packages");
+        const data = res.data?.packages || [];
+
+        setPackages(data);
+        if (data.length > 0) {
+          const sorted = [...data].sort((a, b) => a.price - b.price);
+          setLowestPackage(sorted[0]);
+        }
+      } catch (error) {
+        console.error("Failed to load packages:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPackages();
+  }, []);
 
   return (
     <Container sx={{ pt: "64px", pb: "64px" }}>
@@ -38,9 +65,10 @@ export default function FirstPackage() {
                   </Typography>
                 </Box>
                 <Typography variant="h2" color="error">
-                  ৳500
+                  ৳{lowestPackage?.price || "Loading..."}
                 </Typography>
               </Stack>
+
               <Stack gap="16px">
                 <Stack flexDirection="row" alignItems="center" gap="8px">
                   <Typography color="secondary">
@@ -52,7 +80,7 @@ export default function FirstPackage() {
                         lineHeight: 1,
                       }}
                     >
-                      10
+                      {lowestPackage?.maxDownloadSpeed || "--"}
                     </Box>
                     <Box
                       component="span"
@@ -76,13 +104,20 @@ export default function FirstPackage() {
                     />
                   </Box>
                 </Stack>
+
                 <Typography variant="h5">
                   Explore high-speed fiber internet packages for binging,
                   streaming, gaming and working.
                 </Typography>
               </Stack>
             </Stack>
-            <Button color="primary" variant="contained" sx={{ width: "180px" }}>
+
+            <Button
+              color="primary"
+              variant="contained"
+              sx={{ width: "180px" }}
+              href="/request-connection" // ✅ For navigation
+            >
               Request Now
             </Button>
           </Stack>
@@ -108,7 +143,10 @@ export default function FirstPackage() {
             )}
 
             <img
-              src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753614181/website/section-images/first-package_sdcyhf.webp"
+              src={
+                lowestPackage?.image ||
+                "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753614181/website/section-images/first-package_sdcyhf.webp"
+              }
               alt="first_package"
               style={{
                 objectFit: "cover",
@@ -119,7 +157,7 @@ export default function FirstPackage() {
               onLoad={() => setImageLoaded(true)}
             />
 
-            {/* SVG 1 — Body at Top Left */}
+            {/* Decorative SVGs */}
             {imageLoaded && (
               <>
                 <Box
@@ -144,7 +182,6 @@ export default function FirstPackage() {
                   </svg>
                 </Box>
 
-                {/* SVG 2 — Round at Left (top: 108px) */}
                 <Box
                   sx={{
                     position: "absolute",
@@ -167,7 +204,6 @@ export default function FirstPackage() {
                   </svg>
                 </Box>
 
-                {/* SVG 3 — Round at Top Right (left: 264px) */}
                 <Box
                   sx={{
                     position: "absolute",

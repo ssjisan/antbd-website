@@ -28,7 +28,6 @@ export default function PackagesPlan() {
 
     fetchPackages();
   }, []);
-  console.log(packages);
 
   // Skeleton card component for loading state
   const PackageCardSkeleton = () => (

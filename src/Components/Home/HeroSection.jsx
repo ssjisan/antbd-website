@@ -1,6 +1,10 @@
 import { Grid, Box, Button, Container, Typography } from "@mui/material";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function HeroSection() {
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
   return (
     <Container sx={{ py: { xs: 3, sm: 3, md: 6 }, position: "relative" }}>
       <Box
@@ -13,12 +17,12 @@ export default function HeroSection() {
         }}
       >
         <Grid container sx={{ height: "100%" }}>
-          {/* Left Text Section - 40% */}
+          {/* Left Text Section */}
           <Grid
             item
             xs={12}
             sm={12}
-            md={5} // roughly 40% of 12
+            md={5}
             sx={{
               color: "#fff",
               p: 6,
@@ -68,6 +72,8 @@ export default function HeroSection() {
 
             <Button
               variant="contained"
+              component={Link}
+              to="/request-connection"
               sx={(theme) => ({
                 mt: 3,
                 borderRadius: 1,
@@ -89,33 +95,62 @@ export default function HeroSection() {
             </Button>
           </Grid>
 
-          {/* Right Image Section - 60% */}
+          {/* Right Video Section */}
           <Grid
             item
             xs={12}
             sm={12}
-            md={7} // roughly 60% of 12
+            md={7}
             sx={{
               position: "relative",
               overflow: "hidden",
               borderRadius: 0,
-              backgroundColor: "#100122", // fallback color behind image
+              backgroundColor: "#100122",
             }}
           >
+            {/* Background placeholder while video loads */}
             <Box
-              component="img"
-              src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753609124/website/section-images/home-hero_prfpn1.webp"
-              alt="Hero Image"
+              sx={{
+                width: "100%",
+                height: "100%",
+                backgroundImage:
+                  "url('https://via.placeholder.com/800x600/100122/ffffff?text=Loading...')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                zIndex: 1,
+                opacity: videoLoaded ? 0 : 1,
+                transition: "opacity 0.5s ease-in-out",
+              }}
+            />
+
+            {/* Video */}
+            <Box
+              component="video"
+              autoPlay
+              muted
+              loop
+              playsInline
+              onCanPlayThrough={() => setVideoLoaded(true)}
               sx={{
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
                 display: "block",
+                zIndex: 2,
                 position: "relative",
-                zIndex: 1,
               }}
-            />
-            {/* Overlay for smooth blend into #100122 */}
+            >
+              <source
+                src="https://res.cloudinary.com/dr0jcn0ds/video/upload/v1753629181/website/26619-359604050_small_wnrcju.mp4"
+                type="video/mp4"
+              />
+              Your browser does not support the video tag.
+            </Box>
+
+            {/* Gradient Overlay */}
             <Box
               sx={{
                 position: "absolute",
@@ -123,12 +158,12 @@ export default function HeroSection() {
                 right: 0,
                 width: "100%",
                 height: "100%",
-                zIndex: 2,
+                zIndex: 3,
                 pointerEvents: "none",
                 background: {
-                  xs: "linear-gradient(0.92deg, rgba(16, 1, 34, 0) 51.74%, #100122 96.24%)", // sm and below
+                  xs: "linear-gradient(0.92deg, rgba(16, 1, 34, 0) 51.74%, #100122 96.24%)",
                   sm: "linear-gradient(0.92deg, rgba(16, 1, 34, 0) 51.74%, #100122 96.24%)",
-                  md: "linear-gradient(270.24deg, rgba(16, 1, 34, 0) 37.96%, #100122 93.03%)", // md and up
+                  md: "linear-gradient(270.24deg, rgba(16, 1, 34, 0) 37.96%, #100122 93.03%)",
                 },
               }}
             />
