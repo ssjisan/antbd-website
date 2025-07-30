@@ -4,7 +4,6 @@ import Mission from "../Components/About/Mission";
 import Navbar from "./../Layout/Navbar/Navbar";
 import HappyclientSlider from "../Components/Common/HappyclientSlider";
 import Footer from "../Layout/Footer/Footer";
-import WhatsAppButton from "../Components/Common/WhatsAppButton";
 import MdMessage from "../Components/About/MdMessage";
 import NeedHelp from "../Components/Home/NeedHelp";
 import LicensingMemberships from "../Components/About/LicensingMemberships";
@@ -25,7 +24,6 @@ export default function About() {
       <LicensingMemberships/>
       <NeedHelp />
       <Footer />
-      <WhatsAppButton />
     </>
   );
 }

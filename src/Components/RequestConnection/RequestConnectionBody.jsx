@@ -145,14 +145,14 @@ export default function RequestConnectionBody() {
 
         {success ? (
           <Box textAlign="center" mt={8}>
-            <img src="done.png" alt="success" width={280} />
+            <img src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753901430/website/section-images/done_slrps4.png" alt="success" width={280} />
             <Box mt={2} fontSize={24} fontWeight={700}>
               Your connection request has been submitted!
             </Box>
             <Box mt={1} color="text.secondary" fontSize={16}>
               We will contact you shortly with confirmation.
             </Box>
-            <Box mt={3} fontSize={14} color="text.secondary">
+            <Box mt={3} fontSize={16} color="text.primary">
               You will be redirected to the homepage in{" "}
               <Box component="span" fontWeight={600} display="inline">
                 {redirectCountdown}

@@ -9,31 +9,31 @@ const timelineData = [
     year: "2001",
     title: "Started our journey as a Cyber Café",
     image:
-      "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753610992/website/section-images/cybercafe_rvqdfs.webp",
+      "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753610992/website/section-images/About/cybercafe_rvqdfs.webp",
   },
   {
     year: "2008",
     title: "Became Category A ISP",
     image:
-      "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753611095/website/section-images/categoryA_wwiwer.png",
+      "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753611095/website/section-images/About/categoryA_wwiwer.png",
   },
   {
     year: "2013",
     title: "Opened zonal offices in major districts",
     image:
-      "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753610234/website/section-images/zonal_office_nj67ai.webp",
+      "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753610234/website/section-images/About/zonal_office_nj67ai.webp",
   },
   {
     year: "2015",
     title: "Reached full nationwide coverage",
     image:
-      "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753611050/website/section-images/nationwide_z0yukc.webp",
+      "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753611050/website/section-images/About/nationwide_z0yukc.webp",
   },
   {
     year: currentYear.toString(),
     title: "Redefining What’s Possible.",
     image:
-      "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753611646/website/section-images/current_nuixlr.webp",
+      "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753611646/website/section-images/About/current_nuixlr.webp",
   },
 ];
 

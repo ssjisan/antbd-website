@@ -766,7 +766,7 @@ export default function EnjoyInternet() {
 
         {/* 👉 New circle div with image */}
         <div className="image-wrapper">
-          <img src="/3.png" alt="Decorative" className="circle-image" />
+          <img src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753901546/website/section-images/3_jwa80t.png" alt="Decorative" className="circle-image" />
         </div>
       </div>
 

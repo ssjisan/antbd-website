@@ -31,7 +31,7 @@ export default function Herosection() {
           )}
 
           <img
-            src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753609185/website/section-images/about_tiv6ay.webp"
+            src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753609185/website/section-images/About/about_tiv6ay.webp"
             alt="bg"
             width="100%"
             height="100%"

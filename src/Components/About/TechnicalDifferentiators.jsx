@@ -55,11 +55,12 @@ export default function TechnicalDifferentiators() {
   }
   useEffect(() => {
     const interval = setInterval(() => {
-      handleNext(); // move to next every 5s
+      setCurrentIndex((prev) => (prev + 1) % total); // ✅ functional update
     }, 5000);
 
     return () => clearInterval(interval); // cleanup on unmount
-  }, [currentIndex]);
+  }, []); // ✅ run only once on mount
+
   return (
     <Box
       sx={{
@@ -81,7 +82,10 @@ export default function TechnicalDifferentiators() {
           opacity: 0.15,
         }}
       >
-        <img src="bgsvg.png" style={{ width: "100%", objectFit: "cover" }} />
+        <img
+          src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753900926/website/section-images/About/bgsvg_iev8oz.png"
+          style={{ width: "100%", objectFit: "cover" }}
+        />
       </Box>
 
       <Container sx={{ position: "relative", zIndex: 1 }}>
