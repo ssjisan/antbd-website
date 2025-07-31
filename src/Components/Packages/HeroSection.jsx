@@ -1,7 +1,34 @@
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function HeroSection() {
+  // eslint-disable-next-line
+    const [packages, setPackages] = useState([]);
+    // eslint-disable-next-line
+    const [loading, setLoading] = useState(true);
+     const [lowestPackage, setLowestPackage] = useState(null);
+  useEffect(() => {
+      const fetchPackages = async () => {
+        try {
+          const res = await axios.get("/all-packages");
+          const data = res.data?.packages || [];
+  
+          setPackages(data);
+          if (data.length > 0) {
+            const sorted = [...data].sort((a, b) => a.price - b.price);
+            setLowestPackage(sorted[0]);
+          }
+        } catch (error) {
+          console.error("Failed to load packages:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchPackages();
+    }, []);
   return (
     <Container sx={{ py: { xs: 3, sm: 3, md: 6 }, position: "relative" }}>
       <Box
@@ -52,7 +79,7 @@ export default function HeroSection() {
                     </Typography>
                   </Box>
                   <Typography variant="h2" color="error">
-                    ৳500
+                    ৳{lowestPackage?.price || "Loading..."}
                   </Typography>
                 </Stack>
 
@@ -66,7 +93,7 @@ export default function HeroSection() {
                         lineHeight: 1,
                       }}
                     >
-                      10
+                      {lowestPackage?.maxDownloadSpeed || "--"}
                     </Box>
                     <Box
                       component="span"
