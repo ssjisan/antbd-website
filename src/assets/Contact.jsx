@@ -1,36 +1,34 @@
-const Contact = [
+const Contact  = [
   {
     id: 1,
-    question: "How can I reach Insighttech for support?",
+    question: "How long does it take to get a new connection?",
     answer:
-      "You can contact our support team through the contact form on our website. Alternatively, you can call our customer service hotline for immediate assistance.",
+      "Typically, a new connection is installed within 24 to 72 hours, depending on your location and availability.",
   },
   {
     id: 2,
-    question:
-      "What information should I include when submitting a contact form?",
+    question: "Can I get a static IP address?",
     answer:
-      "Please provide your name, email address, and a detailed description of your inquiry or issue in the contact form. This will help us assist you more effectively.",
+      "Yes, we offer static IP addresses for business users or special requirements like VPNs, servers, or remote access.",
   },
   {
     id: 3,
-    question: "What are your business hours for customer support?",
+    question: "What should I do if my internet keeps disconnecting?",
     answer:
-      "Our customer support team is available during regular business hours from 09.00 AM - 07.00 PM. We strive to respond to inquiries promptly.",
+      "Please check your cables and router. If the issue persists, contact our support team for immediate assistance.",
   },
   {
     id: 4,
-    question: "Do you have a physical office where I can visit?",
+    question: "Do you provide after-sales technical support?",
     answer:
-      "Yes, we have a physical office. You are welcome to visit us during our office hours. Our address is House-22, Road-6, Block-F, Banasree, Rampura, Dhaka-1219..",
+      "Absolutely. Our support team is available 24/7 to assist with any technical issues or service-related questions.",
   },
   {
     id: 5,
-    question:
-      "Is there a specific department I should contact for partnership opportunities?",
+    question: "Is there any installation charge?",
     answer:
-      "For partnership inquiries, please direct your communication to our partnerships department. You can mention 'Partnerships' in the subject line of the contact form.",
+      "Installation charges may vary depending on your package and location. Please contact us for a detailed breakdown.",
   },
 ];
 
-export { Contact };
+export { Contact  };

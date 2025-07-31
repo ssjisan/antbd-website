@@ -74,7 +74,7 @@ export default function MdMessage() {
               propelling the growth of the global internet economy.
             </Typography>
             <Stack gap="4px" sx={{ mt: "40px" }}>
-              <Typography variant="h4">Asadujjaman Sujon</Typography>
+              <Typography variant="h4">Asaduzzaman Sujon</Typography>
               <Typography variant="h5" color="text.secondary">
                 Managing Director
               </Typography>
