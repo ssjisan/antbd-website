@@ -177,12 +177,12 @@ export default function CoverageList({
         ) : (
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Typography
-                variant="h6"
-                color="text.secondary"
-                sx={{textAlign:"center", mt:5}}
-              >
-                🚫 No area covered yet.
-              </Typography>
+              variant="h6"
+              color="text.secondary"
+              sx={{ textAlign: "center", mt: 5 }}
+            >
+              🚫 No area covered yet.
+            </Typography>
           </Grid>
         )}
       </Grid>
