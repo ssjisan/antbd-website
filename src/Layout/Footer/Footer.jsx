@@ -59,7 +59,7 @@ export default function Footer() {
         </Box>
         <Box sx={BottomSx}>
           <Typography variant="body1">
-            © {currentYear} All Rights Reserved to ANTBD.
+            © {currentYear} All Rights Reserved to Antaranga Dot Com Limited.
           </Typography>
           <Typography variant="body1">
             Powered By{" "}

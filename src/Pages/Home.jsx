@@ -9,6 +9,7 @@ import HappyclientSlider from "../Components/Common/HappyclientSlider";
 import NeedHelp from "../Components/Home/NeedHelp";
 import Footer from "../Layout/Footer/Footer";
 import FaQ from "../Components/Common/FaQ";
+import ChatWoot from "../Components/Common/ChatWoot";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
       <FaQ />
       <NeedHelp />
       <Footer />
+      <ChatWoot/>
     </>
   );
 }

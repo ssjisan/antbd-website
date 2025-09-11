@@ -9,6 +9,7 @@ import NeedHelp from "../Components/Home/NeedHelp";
 import LicensingMemberships from "../Components/About/LicensingMemberships";
 import Timeline from "../Components/About/Timeline";
 import TechnicalDifferentiators from "../Components/About/TechnicalDifferentiators";
+import ChatWoot from "../Components/Common/ChatWoot";
 
 export default function About() {
   return (
@@ -24,6 +25,7 @@ export default function About() {
       <LicensingMemberships/>
       <NeedHelp />
       <Footer />
+      <ChatWoot/>
     </>
   );
 }

@@ -59,9 +59,6 @@ const HelpCard = ({ imageSrc, title, phoneText, description, linkText }) => {
             {linkText}
           </Typography>
         )}
-        <Typography variant="h6" color="text.secondary">
-          Monday to Friday, 9am - 8pm, weekends and bank holidays, 9am - 5pm.
-        </Typography>
       </Stack>
     </Stack>
   );
