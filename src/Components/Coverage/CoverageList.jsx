@@ -170,6 +170,7 @@ export default function CoverageList({
                       {area.address}
                     </Typography>
                   </Stack>
+                  
                 </Stack>
               </Grid>
             );

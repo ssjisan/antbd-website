@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-const HelpCard = ({ imageSrc, title, phoneText, description, linkText }) => {
+const HelpCard = ({ imageSrc, title, children }) => {
   const [imgLoaded, setImgLoaded] = useState(false);
 
   return (
@@ -21,6 +21,7 @@ const HelpCard = ({ imageSrc, title, phoneText, description, linkText }) => {
           boxShadow: "0px 0.86px 52.13px -8.57px #00000024",
           p: "32px 0px",
           borderRadius: "8px",
+          overflow:"hidden"
         }}
         justifyContent="center"
         alignItems="center"
@@ -37,28 +38,7 @@ const HelpCard = ({ imageSrc, title, phoneText, description, linkText }) => {
 
       <Stack gap="12px" justifyContent="center" sx={{ textAlign: "center" }}>
         <Typography variant="h4">{title}</Typography>
-        {phoneText && (
-          <Typography variant="h6" color="text.secondary">
-            Call us on{" "}
-            <Box
-              component="span"
-              sx={{
-                textDecoration: "underline",
-                color: "#008641",
-              }}
-            >
-              09666 121 131
-            </Box>
-          </Typography>
-        )}
-        {linkText && (
-          <Typography
-            variant="h6"
-            sx={{ textDecoration: "underline", color: "#008641" }}
-          >
-            {linkText}
-          </Typography>
-        )}
+        {children}
       </Stack>
     </Stack>
   );
@@ -71,26 +51,70 @@ export default function NeedHelp() {
         Need help?
       </Typography>
       <Grid container spacing={3}>
+        {/* 1️⃣ PHONE SUPPORT */}
         <Grid item xs={12} sm={12} md={4} lg={4}>
           <HelpCard
-            imageSrc="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753612957/website/section-images/n1_n5q65q.webp"
-            title="To get connected with us"
-            phoneText
-          />
+            imageSrc="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1760381316/website/section-images/n1_n5q65q.jpg"
+            title="Need help getting connected?"
+          >
+            <Typography variant="h6" color="text.secondary">
+              Call us at {" "}
+              <Box
+                component="a"
+                href="tel:09666121131"
+                sx={{
+                  textDecoration: "underline",
+                  color: "#008641",
+                  fontWeight: 600,
+                }}
+              >
+                09666 121 131
+              </Box>
+              <br />
+              for instant assistance.
+            </Typography>
+          </HelpCard>
         </Grid>
+
+        {/* 2️⃣ FACEBOOK MESSENGER */}
         <Grid item xs={12} sm={12} md={4} lg={4}>
           <HelpCard
-            imageSrc="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753612956/website/section-images/n2_acoi9g.webp"
-            title="For Customer Service"
-            phoneText
-          />
+            imageSrc="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1760382312/website/section-images/n2_acoi9g.png"
+            title="Prefer live chat support?"
+          >
+            <Typography variant="h6" color="text.secondary">
+              Chat with us on{" "}
+              <Box
+                component="a"
+                href="https://m.me/AntarangaDotCom"
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{
+                  textDecoration: "underline",
+                  color: "#008641",
+                  fontWeight: 600,
+                }}
+              >
+                Facebook Messenger
+              </Box>
+              <br />
+              for quick help.
+            </Typography>
+          </HelpCard>
         </Grid>
+
+        {/* 3️⃣ WEBSITE CHAT BOX */}
         <Grid item xs={12} sm={12} md={4} lg={4}>
           <HelpCard
-            imageSrc="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753612954/website/section-images/n3_ngaju5.webp"
-            title="For more help"
-            linkText="Visit our Help page"
-          />
+            imageSrc="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1760382264/website/section-images/n3_ngaju5.png"
+            title="Looking for more answers?"
+          >
+            <Typography variant="h6" color="text.secondary">
+              Use the chat box
+              in the bottom-left corner <br />
+              to talk with us.
+            </Typography>
+          </HelpCard>
         </Grid>
       </Grid>
     </Container>

@@ -275,12 +275,17 @@ export default function CheckCoverage() {
             Enter your address, or use the map&lsquo;s location icon to explore
             coverage in your service area.
           </Typography>
+          <Stack sx={{ mt: "24px" }}>
+            <Typography variant="h6" color="text.primary">
+              1. Search area 2. Check availibility 3. Submit order
+            </Typography>
+          </Stack>
         </Stack>
         <Stack
           direction={{ xs: "column", sm: "row" }}
           spacing={2}
           alignItems="stretch"
-          sx={{ width: {xs:"100%",sm:"100%",md:"100%",lg:"70%"} }}
+          sx={{ width: { xs: "100%", sm: "100%", md: "100%", lg: "70%" } }}
         >
           {/* GPS + Search Field - always in a row */}
           <Stack
@@ -290,12 +295,26 @@ export default function CheckCoverage() {
             sx={{ flex: 1 }}
           >
             {/* GPS Icon */}
-            <IconButton
+            <Stack
               onClick={handleUseMyLocation}
-              size="large"
+              flexDirection="row"
+              gap="8px"
+              alignItems="center"
+              style={{ cursor: "pointer" }}
             >
               <GPS size="24px" color="#ED1B24" />
-            </IconButton>
+              <Stack flexDirection="column" alignItems="flex-start">
+                <Typography sx={{ fontSize: "14px", fontWeight: 700 }}>
+                  Use my location
+                </Typography>
+                <Typography
+                  sx={{ fontSize: "12px", fontWeight: 400 }}
+                  color="text.secondary"
+                >
+                  (Recomended on mobile)
+                </Typography>
+              </Stack>
+            </Stack>
 
             {/* Search Field */}
             <Box sx={{ flexGrow: 1, position: "relative" }}>
