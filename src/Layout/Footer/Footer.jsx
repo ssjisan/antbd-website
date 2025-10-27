@@ -65,11 +65,11 @@ export default function Footer() {
             Powered By{" "}
             <Box component="span" sx={{ textDecoration: "underline" }}>
               <Link
-                to="https://insighttechglobal.com/"
+                to="https://codesenate.com"
                 target="_blank"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                Insighttech Global
+                CodeSenate
               </Link>
             </Box>
           </Typography>

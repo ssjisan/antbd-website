@@ -14,6 +14,7 @@ import { GPS } from "../../assets/Icons/Home/Icons";
 import { DataContext } from "../../DataProcessing/DataProcessing";
 import { useNavigate } from "react-router-dom";
 import { Search } from "../../assets/Icons/Common/Icons";
+import AnimatedSteps from "../Common/AnimatedSteps";
 
 export default function CheckCoverage() {
   const { setArea } = useContext(DataContext);
@@ -29,7 +30,6 @@ export default function CheckCoverage() {
   const geocoderRef = useRef(null);
   const mapClickListenerRef = useRef(null);
   const [selectedLatLng, setSelectedLatLng] = useState(null);
-
   // ============================ Init Google Map and Services ============================
   useEffect(() => {
     const script = document.createElement("script");
@@ -275,22 +275,18 @@ export default function CheckCoverage() {
             Enter your address, or use the map&lsquo;s location icon to explore
             coverage in your service area.
           </Typography>
-          <Stack sx={{ mt: "24px" }}>
-            <Typography variant="h6" color="text.primary">
-              1. Search area 2. Check availibility 3. Submit order
-            </Typography>
-          </Stack>
+          <AnimatedSteps />
         </Stack>
         <Stack
-          direction={{ xs: "column", sm: "row" }}
-          spacing={2}
+          direction={{ xs: "column", sm: "column", md: "row" }}
+          spacing={3}
           alignItems="stretch"
-          sx={{ width: { xs: "100%", sm: "100%", md: "100%", lg: "70%" } }}
+          sx={{ width: "100%" }}
         >
           {/* GPS + Search Field - always in a row */}
           <Stack
-            direction="row"
-            spacing={1}
+            direction={{ xs: "column", sm: "column", md: "row" }}
+            spacing={3}
             alignItems="center"
             sx={{ flex: 1 }}
           >
@@ -317,7 +313,7 @@ export default function CheckCoverage() {
             </Stack>
 
             {/* Search Field */}
-            <Box sx={{ flexGrow: 1, position: "relative" }}>
+            <Box sx={{ flexGrow: 1, position: "relative", width: {xs:"100%", sm:"100%",md:"60%",lg:"70%"} }}>
               <TextField
                 type="text"
                 placeholder="Search location (min 5 characters)..."
