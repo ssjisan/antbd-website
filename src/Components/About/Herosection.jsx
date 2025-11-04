@@ -41,14 +41,27 @@ export default function Herosection() {
             }}
             onLoad={() => setImgLoaded(true)}
           />
+          <img
+    src="antbd.png"
+    alt="Overlay Icon"
+    style={{
+      position: "absolute",
+      bottom: "20px",
+      right: "20px",
+      width: "24px",
+      height: "24px",
+      opacity: 1,
+      pointerEvents: "none",
+    }}
+  />
         </Box>
         <Matrix />
         <Typography variant="h4" sx={{ width: "100%", fontWeight: 500 }}>
           <Box component="span" sx={{ color: "text.primary" }}>
-            Since 2001, we have been the leading name in the Bangladesh broadband
-            internet service providers community.For 22 years, we have been
-            pursuing our goal towards a better and optimized internet service
-            provider all around Bangladesh.
+            Since 2001, we have been the leading name in the Bangladesh
+            broadband internet service providers community.For 22 years, we have
+            been pursuing our goal towards a better and optimized internet
+            service provider all around Bangladesh.
           </Box>{" "}
           <Box component="span" sx={{ color: "text.secondary" }}>
             In this process, we have already gained a lot of trust and love from

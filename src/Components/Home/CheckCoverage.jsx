@@ -270,10 +270,9 @@ export default function CheckCoverage() {
     <Container sx={{ pt: "64px", pb: "64px" }}>
       <Stack alignItems="center" gap="24px">
         <Stack gap={1} sx={{ my: 3, width: "100%" }} alignItems="center">
-          <Typography variant="h3">Check Coverage</Typography>
+          <Typography variant="h3">Check Coverage in your area</Typography>
           <Typography variant="h6" color="text.secondary">
-            Enter your address, or use the map&lsquo;s location icon to explore
-            coverage in your service area.
+            in easy 3 steps & get connected in minutes!
           </Typography>
           <AnimatedSteps />
         </Stack>
