@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "../Pages/Home";
 import { Toaster } from "react-hot-toast";
 import Error404 from "../Components/Common/Error404";
-import Package from "../Pages/package";
+import Package from "../Pages/Package";
 import About from "../Pages/About";
 import Coverage from "../Pages/Coverage";
 import RequestConnection from "../Pages/RequestConnection";
