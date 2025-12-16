@@ -7,15 +7,14 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   return {
     define: {
-      "process.env.REACT_APP_SERVER_API": JSON.stringify(
-        env.REACT_APP_SERVER_API
-      ),
+      "process.env.VITE_SERVER_API": JSON.stringify(env.VITE_SERVER_API),
     },
     plugins: [react()],
+    assetsInclude: ["**/*.lottie"],
     build: { chunkSizeWarningLimit: 3200 },
     server: {
-      host: true,           // Enables LAN access (0.0.0.0)
-      port: 5173,           // Or any port you want
+      host: true, // Enables LAN access (0.0.0.0)
+      port: 5173, // Or any port you want
     },
   };
 });

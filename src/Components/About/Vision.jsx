@@ -1,4 +1,11 @@
-import { Grid, Container, Typography, Stack, Box, Skeleton } from "@mui/material";
+import {
+  Grid,
+  Container,
+  Typography,
+  Stack,
+  Box,
+  Skeleton,
+} from "@mui/material";
 import { useState } from "react";
 
 export default function Vision() {
@@ -10,7 +17,7 @@ export default function Vision() {
         {/* Text Section */}
         <Grid item xs={12} md={6}>
           <Stack
-            sx={{ pr: { md: "100px" }, mt: { xs: "32px", md: "0" } }}
+            sx={{ pr: { md: "100px" }, mt: { xs: "32px", md: 0 } }}
             gap="24px"
           >
             <Typography variant="h2">Our Vision</Typography>
@@ -25,7 +32,7 @@ export default function Vision() {
           </Stack>
         </Grid>
 
-        {/* Image Section with Skeleton */}
+        {/* Image Section */}
         <Grid item xs={12} md={6}>
           <Box
             sx={{
@@ -33,8 +40,11 @@ export default function Vision() {
               maxWidth: 560,
               mx: "auto",
               position: "relative",
+              overflow: "hidden", // 🔥 important
+              borderRadius: "20px",
             }}
           >
+            {/* Skeleton */}
             {!imageLoaded && (
               <Skeleton
                 variant="rounded"
@@ -44,20 +54,20 @@ export default function Vision() {
               />
             )}
 
+            {/* Image */}
             <Box
               component="img"
               src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753685268/website/section-images/About/vision_odqcwk.webp"
-              alt="Mission"
+              alt="Vision"
               onLoad={() => setImageLoaded(true)}
               sx={{
                 width: "100%",
                 height: "auto",
-                borderRadius: "20px",
                 display: imageLoaded ? "block" : "none",
               }}
             />
 
-            {/* SVG in bottom left */}
+            {/* SVG Cut Shape (Seam-Free) */}
             {imageLoaded && (
               <>
                 <Box
@@ -66,14 +76,20 @@ export default function Vision() {
                   viewBox="0 0 150 150"
                   sx={{
                     position: "absolute",
-                    bottom: 0,
-                    left: 0,
+                    bottom: "-1px", // 🔥 seam fix
+                    left: "-1px", // 🔥 seam fix
                     width: "150px",
                     height: "150px",
                     zIndex: 2,
+                    display: "block",
+                    shapeRendering: "crispEdges",
+                    pointerEvents: "none",
                   }}
                 >
-                  <path d="M30 30C13.4315 30 0 16.5685 0 0V30H30Z" fill="white" />
+                  <path
+                    d="M30 30C13.4315 30 0 16.5685 0 0V30H30Z"
+                    fill="white"
+                  />
                   <path
                     d="M0 30H90C106.569 30 120 43.4315 120 60V150H0V30Z"
                     fill="white"
@@ -84,7 +100,7 @@ export default function Vision() {
                   />
                 </Box>
 
-                {/* Red box in bottom left */}
+                {/* Logo Box */}
                 <Box
                   sx={{
                     position: "absolute",

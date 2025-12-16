@@ -1,4 +1,3 @@
-import HappyclientSlider from "../Components/Common/HappyclientSlider";
 import HeroSection from "../Components/Packages/HeroSection";
 import NeedHelp from "../Components/Home/NeedHelp";
 import PackagesPlan from "../Components/Packages/PackagesPlan";
@@ -10,12 +9,11 @@ export default function Package() {
   return (
     <>
       <Navbar />
-      <HeroSection/>
+      <HeroSection />
       <PackagesPlan />
-      <HappyclientSlider />
       <NeedHelp />
       <Footer />
-      <ChatWoot/>
+      <ChatWoot />
     </>
   );
 }

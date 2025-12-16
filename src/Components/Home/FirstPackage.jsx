@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -8,36 +8,11 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import axios from "axios";
+import { DataContext } from "../../DataProcessing/DataProcessing";
 
 export default function FirstPackage() {
   const [imageLoaded, setImageLoaded] = useState(false);
-  // eslint-disable-next-line
-  const [packages, setPackages] = useState([]);
-  // eslint-disable-next-line
-  const [loading, setLoading] = useState(true);
-  const [lowestPackage, setLowestPackage] = useState(null);
-
-  useEffect(() => {
-    const fetchPackages = async () => {
-      try {
-        const res = await axios.get("/all-packages");
-        const data = res.data?.packages || [];
-
-        setPackages(data);
-        if (data.length > 0) {
-          const sorted = [...data].sort((a, b) => a.price - b.price);
-          setLowestPackage(sorted[0]);
-        }
-      } catch (error) {
-        console.error("Failed to load packages:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPackages();
-  }, []);
+  const { lowestPricePackage } = useContext(DataContext);
 
   return (
     <Container sx={{ pt: "64px", pb: "64px" }}>
@@ -65,7 +40,7 @@ export default function FirstPackage() {
                   </Typography>
                 </Box>
                 <Typography variant="h2" color="error">
-                  ৳{lowestPackage?.price || "Loading..."}
+                  ৳{lowestPricePackage?.price || "Loading..."}
                 </Typography>
               </Stack>
 
@@ -80,7 +55,7 @@ export default function FirstPackage() {
                         lineHeight: 1,
                       }}
                     >
-                      {lowestPackage?.maxDownloadSpeed || "--"}
+                      {lowestPricePackage?.maxDownloadSpeed || "--"}
                     </Box>
                     <Box
                       component="span"
@@ -144,7 +119,7 @@ export default function FirstPackage() {
 
             <img
               src={
-                lowestPackage?.image ||
+                lowestPricePackage?.image ||
                 "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753614181/website/section-images/first-package_sdcyhf.webp"
               }
               alt="first_package"

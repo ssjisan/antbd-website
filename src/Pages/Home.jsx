@@ -25,7 +25,7 @@ export default function Home() {
       <FaQ />
       <NeedHelp />
       <Footer />
-      <ChatWoot/>
+      <ChatWoot />
     </>
   );
 }

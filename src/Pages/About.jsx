@@ -7,8 +7,6 @@ import Footer from "../Layout/Footer/Footer";
 import MdMessage from "../Components/About/MdMessage";
 import NeedHelp from "../Components/Home/NeedHelp";
 import LicensingMemberships from "../Components/About/LicensingMemberships";
-import Timeline from "../Components/About/Timeline";
-import TechnicalDifferentiators from "../Components/About/TechnicalDifferentiators";
 import ChatWoot from "../Components/Common/ChatWoot";
 
 export default function About() {
@@ -16,16 +14,14 @@ export default function About() {
     <>
       <Navbar />
       <Herosection />
-      <Timeline/>
-      <TechnicalDifferentiators/>
       <MdMessage />
-      <HappyclientSlider />
       <Vision />
       <Mission />
-      <LicensingMemberships/>
+      <LicensingMemberships />
+      <HappyclientSlider />
       <NeedHelp />
       <Footer />
-      <ChatWoot/>
+      <ChatWoot />
     </>
   );
 }

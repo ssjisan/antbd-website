@@ -7,14 +7,19 @@ import {
   Stack,
   Box,
   IconButton,
+  Grid,
+  Divider,
+  useMediaQuery,
 } from "@mui/material";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { GPS } from "../../assets/Icons/Home/Icons";
 import { DataContext } from "../../DataProcessing/DataProcessing";
 import { useNavigate } from "react-router-dom";
-import { Search } from "../../assets/Icons/Common/Icons";
-import AnimatedSteps from "../Common/AnimatedSteps";
+import { ArrowRight, Search } from "../../assets/Icons/Common/Icons";
+import CoverageAreaHeader from "../Common/HomePageCoverage/CoverageAreaHeader";
+import CoverageAreaSteps from "../Common/HomePageCoverage/CoverageAreaSteps";
+import CoverageAreaPromotion from "../Common/HomePageCoverage/CoverageAreaPromotion";
 
 export default function CheckCoverage() {
   const { setArea } = useContext(DataContext);
@@ -30,6 +35,7 @@ export default function CheckCoverage() {
   const geocoderRef = useRef(null);
   const mapClickListenerRef = useRef(null);
   const [selectedLatLng, setSelectedLatLng] = useState(null);
+  const forBelow767 = useMediaQuery("(max-width:767px)");
   // ============================ Init Google Map and Services ============================
   useEffect(() => {
     const script = document.createElement("script");
@@ -267,165 +273,203 @@ export default function CheckCoverage() {
   };
 
   return (
-    <Container sx={{ pt: "64px", pb: "64px" }}>
-      <Stack alignItems="center" gap="24px">
-        <Stack gap={1} sx={{ my: 3, width: "100%" }} alignItems="center">
-          <Typography variant="h3">Check Coverage in your area</Typography>
-          <Typography variant="h6" color="text.secondary">
-            in easy 3 steps & get connected in minutes!
-          </Typography>
-          <AnimatedSteps />
-        </Stack>
-        <Stack
-          direction={{ xs: "column", sm: "column", md: "row" }}
-          spacing={3}
-          alignItems="stretch"
-          sx={{ width: "100%" }}
-        >
-          {/* GPS + Search Field - always in a row */}
+    <Container
+      sx={{
+        pt: "64px",
+        pb: "64px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "40px",
+      }}
+    >
+      <CoverageAreaHeader />
+      <CoverageAreaSteps />
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={12} md={5} lg={5}>
           <Stack
-            direction={{ xs: "column", sm: "column", md: "row" }}
-            spacing={3}
-            alignItems="center"
-            sx={{ flex: 1 }}
+            direction="column"
+            gap="20px"
+            sx={{
+              width: "100%",
+              border: "1px solid #ccc",
+              padding: "16px",
+              borderRadius: "16px",
+            }}
           >
-            {/* GPS Icon */}
-            <Stack
-              onClick={handleUseMyLocation}
-              flexDirection="row"
-              gap="8px"
-              alignItems="center"
-              style={{ cursor: "pointer" }}
-            >
-              <GPS size="24px" color="#ED1B24" />
-              <Stack flexDirection="column" alignItems="flex-start">
-                <Typography sx={{ fontSize: "14px", fontWeight: 700 }}>
-                  Use my location
-                </Typography>
-                <Typography
-                  sx={{ fontSize: "12px", fontWeight: 400 }}
-                  color="text.secondary"
-                >
-                  (Recomended on mobile)
-                </Typography>
-              </Stack>
-            </Stack>
-
-            {/* Search Field */}
-            <Box sx={{ flexGrow: 1, position: "relative", width: {xs:"100%", sm:"100%",md:"60%",lg:"70%"} }}>
-              <TextField
-                type="text"
-                placeholder="Search location (min 5 characters)..."
-                value={searchQuery}
-                fullWidth
-                onChange={handleSearchChange}
-                InputProps={{
-                  endAdornment: (
-                    <IconButton
-                      edge="end"
-                      onClick={() => {
-                        if (suggestions.length > 0) {
-                          handleSuggestionClick(suggestions[0]);
-                        }
-                      }}
-                      size="small"
-                    >
-                      <Search size="20px" color="#000" />
-                    </IconButton>
-                  ),
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    if (suggestions.length > 0) {
-                      handleSuggestionClick(suggestions[0]);
-                    }
-                  }
-                }}
-              />
-
-              {/* Spinner */}
-              {loadingSuggestions && (
-                <Box
-                  sx={{
-                    position: "absolute",
-                    right: 40,
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    width: 20,
-                    height: 20,
-                    border: "3px solid #ccc",
-                    borderTop: "3px solid #2196f3",
-                    borderRadius: "50%",
-                    animation: "spin 1s linear infinite",
-                  }}
-                />
-              )}
-
-              {/* Suggestions */}
-              {suggestions.length > 0 && (
-                <ul
-                  style={{
-                    position: "absolute",
-                    top: "calc(100% + 4px)",
-                    left: 0,
-                    right: 0,
-                    backgroundColor: "#fff",
-                    border: "1px solid #ccc",
-                    borderRadius: 4,
-                    maxHeight: 180,
-                    overflowY: "auto",
-                    zIndex: 1000,
-                    margin: 0,
-                    padding: 0,
-                    listStyle: "none",
-                  }}
-                >
-                  {suggestions.map((place) => (
-                    <li
-                      key={place.place_id}
-                      onClick={() => handleSuggestionClick(place)}
-                      onMouseDown={(e) => e.preventDefault()}
-                      style={{
-                        padding: "8px 12px",
-                        cursor: "pointer",
-                        borderBottom: "1px solid #eee",
-                      }}
-                    >
-                      {place.description}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </Box>
-          </Stack>
-
-          {/* Check Availability Button */}
-          <Box sx={{ width: { xs: "100%", sm: "auto" } }}>
+            <Typography variant="h5" fontWeight={700}>
+              Find your location
+            </Typography>
             <Button
-              variant="contained"
-              onClick={handleCheckAvailability}
+              fullWidth
+              onClick={handleUseMyLocation}
+              startIcon={<GPS size="24px" color="#fff" />}
               sx={{
-                height: "54px",
-                width: "100%",
-                whiteSpace: "nowrap",
+                backgroundColor: "#ed1b24",
+                color: "#fff",
+                textTransform: "none",
+                borderRadius: "8px",
+                "&:hover": {
+                  backgroundColor: "#af1018ff",
+                },
               }}
             >
-              Check Availability
+              Use current location
             </Button>
-          </Box>
-        </Stack>
-      </Stack>
-      <Box
-        ref={mapRef}
-        sx={{
-          mt: "48px",
-          width: "100%",
-          height: "480px",
-          border: "1px solid #ccc",
-          borderRadius: "20px",
-        }}
-      ></Box>
+            <Divider
+              sx={{
+                "&::before, &::after": {
+                  borderColor: "divider",
+                },
+                color: "text.secondary",
+              }}
+            >
+              Or enter manually
+            </Divider>{" "}
+            <Stack
+              direction={{ xs: "column", sm: "column", md: "row" }}
+              spacing={3}
+              alignItems="center"
+              sx={{ flex: 1 }}
+            >
+              {/* Search Field */}
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  position: "relative",
+                  width: { xs: "100%", sm: "100%", md: "60%", lg: "70%" },
+                }}
+              >
+                <TextField
+                  type="text"
+                  placeholder="Search location (min 5 characters)..."
+                  value={searchQuery}
+                  fullWidth
+                  onChange={handleSearchChange}
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton
+                        edge="end"
+                        onClick={() => {
+                          if (suggestions.length > 0) {
+                            handleSuggestionClick(suggestions[0]);
+                          }
+                        }}
+                        size="small"
+                      >
+                        <Search size="20px" color="#000" />
+                      </IconButton>
+                    ),
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      if (suggestions.length > 0) {
+                        handleSuggestionClick(suggestions[0]);
+                      }
+                    }
+                  }}
+                />
+
+                {/* Spinner */}
+                {loadingSuggestions && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      right: 40,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      width: 20,
+                      height: 20,
+                      border: "3px solid #ccc",
+                      borderTop: "3px solid #2196f3",
+                      borderRadius: "50%",
+                      animation: "spin 1s linear infinite",
+                    }}
+                  />
+                )}
+
+                {/* Suggestions */}
+                {suggestions.length > 0 && (
+                  <ul
+                    style={{
+                      position: "absolute",
+                      top: "calc(100% + 4px)",
+                      left: 0,
+                      right: 0,
+                      backgroundColor: "#fff",
+                      border: "1px solid #ccc",
+                      borderRadius: 4,
+                      maxHeight: 180,
+                      overflowY: "auto",
+                      zIndex: 1000,
+                      margin: 0,
+                      padding: 0,
+                      listStyle: "none",
+                    }}
+                  >
+                    {suggestions.map((place) => (
+                      <li
+                        key={place.place_id}
+                        onClick={() => handleSuggestionClick(place)}
+                        onMouseDown={(e) => e.preventDefault()}
+                        style={{
+                          padding: "8px 12px",
+                          cursor: "pointer",
+                          borderBottom: "1px solid #eee",
+                        }}
+                      >
+                        {place.description}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </Box>
+            </Stack>
+            <Button
+              fullWidth
+              onClick={handleCheckAvailability}
+              endIcon={<ArrowRight size="24px" color="#fff" />}
+              sx={{
+                backgroundColor: "#008641",
+                color: "#fff",
+                textTransform: "none",
+                borderRadius: "8px",
+                "&:hover": {
+                  backgroundColor: "#005a2cff",
+                },
+              }}
+            >
+              Check availability
+            </Button>
+          </Stack>
+          {!forBelow767 && <CoverageAreaPromotion />}
+        </Grid>
+        <Grid item xs={12} sm={12} md={7} lg={7}>
+          <Stack
+            sx={{
+              border: "1px solid #ccc",
+              padding: "16px",
+              borderRadius: "16px",
+              height: "100%",
+            }}
+          >
+            <Typography variant="h5" fontWeight={700} sx={{ mb: "20px" }}>
+              Coverage map
+            </Typography>
+            <Box
+              ref={mapRef}
+              sx={{
+                width: "100%",
+                height: forBelow767 ? "320px" : "100%",
+                border: "1px solid #ccc",
+                borderRadius: "12px",
+              }}
+            ></Box>
+          </Stack>
+        </Grid>
+      </Grid>
     </Container>
   );
 }

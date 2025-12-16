@@ -1,33 +1,49 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext } from "react";
+import { createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import AuthProvider from "./Components/AuthProvider";
 import OrderProcess from "./Components/OrderProcess";
+import Package from "./Components/Package";
 export const DataContext = createContext();
 
 export default function DataProcessing({ children }) {
-  const { auth, setAuth } = AuthProvider();
   // *************************************************** Axios Configuration *********************************************************** //
-  // eslint-disable-next-line
-  axios.defaults.baseURL = process.env.REACT_APP_SERVER_API;
-  axios.defaults.headers.common["Authorization"] = auth?.token;
+  axios.defaults.baseURL = import.meta.env.VITE_SERVER_API;
 
   const { area, setArea, packageId, setPackageId, formData, setFormData } =
     OrderProcess();
+  const { packages, loading, error, lowestPricePackage } = Package();
 
+  const [lang, setLang] = useState("en");
+
+  useEffect(() => {
+    const savedLang = localStorage.getItem("lang");
+    if (savedLang) setLang(savedLang);
+  }, []);
+
+  // Toggle language and store in localStorage
+  const toggleLang = () => {
+    setLang((prev) => {
+      const newLang = prev === "en" ? "bn" : "en";
+      localStorage.setItem("lang", newLang);
+      return newLang;
+    });
+  };
   return (
     <DataContext.Provider
       value={{
-        auth,
-        setAuth,
-        // Request
+        lang,
+        toggleLang,
         area,
         setArea,
         packageId,
         setPackageId,
         formData,
         setFormData,
+        packages,
+        loading,
+        error,
+        lowestPricePackage,
       }}
     >
       {children}

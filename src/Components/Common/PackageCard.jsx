@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 import { useContext } from "react";
 import { DataContext } from "../../DataProcessing/DataProcessing";
 import { useNavigate } from "react-router-dom";
+import TopBadge from "./TopBadge";
 
 export default function PackageCard({ pkg }) {
   const { setPackageId } = useContext(DataContext);
@@ -56,34 +57,7 @@ export default function PackageCard({ pkg }) {
           overflow: "visible",
         }}
       >
-        {/* Full SVG placed absolutely on top-left */}
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            width: "120px",
-            height: "56px",
-            pointerEvents: "none",
-            zIndex: -1,
-          }}
-          dangerouslySetInnerHTML={{
-            __html: `
-        <svg width="120" height="36" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M0 0H120V36H8C3.58172 36 0 32.4183 0 28V0Z" fill="url(#paint0_linear_714_1076)"/>
-<defs>
-<linearGradient id="paint0_linear_714_1076" x1="-20" y1="28" x2="120" y2="28" gradientUnits="userSpaceOnUse">
-<stop stop-color="#008641"/>
-<stop offset="1" stop-color="#18A25B"/>
-</linearGradient>
-</defs>
-</svg>
-
-      `,
-          }}
-        />
-
-        {/* Manually positioned title text */}
+        <TopBadge />
         <Box
           sx={{
             position: "relative", // relative to this Box container
@@ -94,6 +68,7 @@ export default function PackageCard({ pkg }) {
             userSelect: "none",
             pointerEvents: "none", // prevent interference with mouse
             whiteSpace: "nowrap",
+            zIndex: 12,
           }}
         >
           {pkg.packageName}

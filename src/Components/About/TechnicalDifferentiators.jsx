@@ -59,7 +59,7 @@ export default function TechnicalDifferentiators() {
     }, 5000);
 
     return () => clearInterval(interval); // cleanup on unmount
-  }, []); // ✅ run only once on mount
+  }, []);
 
   return (
     <Box

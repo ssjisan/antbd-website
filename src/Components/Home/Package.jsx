@@ -22,9 +22,6 @@ export default function Package() {
   const loadPackages = async () => {
     try {
       const res = await axios.get("/popup-packages");
-
-      console.log("Response from /popup-packages:", res.data);
-
       if (Array.isArray(res.data)) {
         setPackages(res.data);
       } else {

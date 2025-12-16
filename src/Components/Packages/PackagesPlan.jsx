@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useContext } from "react";
 import {
   Container,
   Grid,
@@ -9,25 +8,10 @@ import {
   Box,
 } from "@mui/material";
 import PackageCard from "../Common/PackageCard";
+import { DataContext } from "../../DataProcessing/DataProcessing";
 
 export default function PackagesPlan() {
-  const [packages, setPackages] = useState([]);
-  const [loading, setLoading] = useState(true); // optional: for showing loader
-
-  useEffect(() => {
-    const fetchPackages = async () => {
-      try {
-        const res = await axios.get("/all-packages"); // ✅ Update if full path needed
-        setPackages(res.data.packages || []);
-      } catch (error) {
-        console.error("Failed to load packages:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPackages();
-  }, []);
+  const { packages, loading } = useContext(DataContext);
 
   // Skeleton card component for loading state
   const PackageCardSkeleton = () => (
@@ -108,7 +92,7 @@ export default function PackagesPlan() {
             </Grid>
           ))
         ) : (
-          <Typography variant="body1" sx={{ mt:"48px" }}>
+          <Typography variant="body1" sx={{ mt: "48px" }}>
             No packages found.
           </Typography>
         )}

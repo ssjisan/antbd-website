@@ -1,144 +1,136 @@
-import { Box, Container, Grid, Stack, Typography } from "@mui/material";
-import Lottie from "lottie-react";
-import animation1 from "../../assets/incoming call.json";
-import animation2 from "../../assets/messenger.json";
-import animation3 from "../../assets/Chat.json";
+import { useContext } from "react";
+import { Button, Container, Grid, Stack, Typography } from "@mui/material";
+import { ChatBot, Messanger, Phone } from "../../assets/Icons/Footer/Icons";
+import { needHelpData } from "../../assets/JsonData/needHelpData";
+import { DataContext } from "../../DataProcessing/DataProcessing";
+
+const iconMap = {
+  phone: Phone,
+  messenger: Messanger,
+  chatbot: ChatBot,
+};
 
 export default function NeedHelp() {
+  const { lang } = useContext(DataContext);
+  const { title, subtitle, cards } = needHelpData[lang];
+  const handleAction = (card) => {
+    if (card.icon === "phone") {
+      window.location.href = "tel:09666121131";
+    }
+
+    if (card.icon === "messenger") {
+      window.open("https://m.me/AntarangaDotCom", "_blank");
+    }
+
+    if (card.icon === "chatbot") {
+      if (window.$chatwoot) {
+        window.$chatwoot.toggle("open");
+      }
+    }
+  };
   return (
     <Container sx={{ pt: "64px", pb: "64px" }}>
-      <Typography variant="h3" mb={8} sx={{ textAlign: "center" }}>
-        Need help?
-      </Typography>
+      {/* HEADER */}
+      <Stack maxWidth="672px" mx="auto" pb="64px" gap="16px">
+        <Typography variant="h3" textAlign="center">
+          {title}
+        </Typography>
+        <Typography variant="h6" textAlign="center" color="text.secondary">
+          {subtitle}
+        </Typography>
+      </Stack>
 
+      {/* CARDS */}
       <Grid container spacing={3}>
-        {/* 1️⃣ PHONE SUPPORT */}
-        <Grid item xs={12} sm={12} md={4}>
-          <Stack gap="36px" justifyContent="center" alignItems="center">
-            <Stack
-              sx={{
-                width: "150px",
-                height: "150px",
-                border: "1px solid #00000014",
-                boxShadow: "0px 0.86px 52.13px -8.57px #00000024",
-                p: "16px",
-                borderRadius: "8px",
-                overflow: "hidden",
-              }}
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Lottie
-                animationData={animation1}
-                loop
-                autoplay
-                style={{ width: "100%", height: "100%" }}
-              />
-            </Stack>
+        {cards.map((card) => {
+          const Icon = iconMap[card.icon];
 
-            <Stack gap="12px" justifyContent="center" sx={{ textAlign: "center" }}>
-              <Typography variant="h4">Need help getting connected?</Typography>
-              <Typography variant="h6" color="text.secondary">
-                Call us at{" "}
-                <Box
-                  component="a"
-                  href="tel:09666121131"
+          return (
+            <Grid item xs={12} md={4} key={card.id}>
+              <Stack
+                sx={{
+                  height: "100%",
+                  border: "1px solid #00000014",
+                  boxShadow: "0px 0.86px 52.13px -8.57px #59595924",
+                  p: "16px",
+                  borderRadius: "16px",
+                }}
+                alignItems="center"
+              >
+                {/* ICON */}
+                <Stack
                   sx={{
-                    textDecoration: "underline",
-                    color: "#008641",
-                    fontWeight: 600,
+                    width: "72px",
+                    height: "72px",
+                    background: card.gradient,
+                    borderRadius: "50%",
+                    flexShrink: 0,
+                    mb: "20px",
                   }}
+                  justifyContent="center"
+                  alignItems="center"
                 >
-                  09666 121 131
-                </Box>
-                <br />
-                for instant assistance.
-              </Typography>
-            </Stack>
-          </Stack>
-        </Grid>
+                  <Icon
+                    size={card.icon === "chatbot" ? "40px" : "32px"}
+                    color="#fff"
+                  />
+                </Stack>
 
-        {/* 2️⃣ FACEBOOK MESSENGER */}
-        <Grid item xs={12} sm={12} md={4}>
-          <Stack gap="36px" justifyContent="center" alignItems="center">
-            <Stack
-              sx={{
-                width: "150px",
-                height: "150px",
-                border: "1px solid #00000014",
-                boxShadow: "0px 0.86px 52.13px -8.57px #00000024",
-                p: "16px",
-                borderRadius: "8px",
-                overflow: "hidden",
-              }}
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Lottie
-                animationData={animation2}
-                loop
-                autoplay
-                style={{ width: "100%", height: "100%" }}
-              />
-            </Stack>
+                {/* CONTENT */}
+                <Stack textAlign="center" flexGrow={1} mb={2}>
+                  <Typography variant="h5" fontWeight={700}>
+                    {card.title}
+                  </Typography>
+                  <Typography color="text.secondary">
+                    {card.description}
+                  </Typography>
+                </Stack>
 
-            <Stack gap="12px" justifyContent="center" sx={{ textAlign: "center" }}>
-              <Typography variant="h4">Prefer live chat support?</Typography>
-              <Typography variant="h6" color="text.secondary">
-                Chat with us on{" "}
-                <Box
-                  component="a"
-                  href="https://m.me/AntarangaDotCom"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                {/* HIGHLIGHT */}
+                <Stack
                   sx={{
-                    textDecoration: "underline",
-                    color: "#008641",
-                    fontWeight: 600,
+                    background: card.lightBg,
+                    p: "12px 16px",
+                    borderRadius: "12px",
+                    width: "100%",
+                    textAlign: "center",
+                    my: "24px",
                   }}
+                  gap="4px"
                 >
-                  Facebook Messenger
-                </Box>
-                <br />
-                for quick help.
-              </Typography>
-            </Stack>
-          </Stack>
-        </Grid>
+                  <Typography
+                    variant="h4"
+                    fontWeight={700}
+                    sx={{ color: card.color }}
+                  >
+                    {card.highlightTitle}
+                  </Typography>
+                  <Typography
+                    fontSize="14px"
+                    fontWeight={500}
+                    sx={{ color: card.color }}
+                  >
+                    {card.highlightSubtitle}
+                  </Typography>
+                </Stack>
 
-        {/* 3️⃣ WEBSITE CHAT BOX */}
-        <Grid item xs={12} sm={12} md={4}>
-          <Stack gap="36px" justifyContent="center" alignItems="center">
-            <Stack
-              sx={{
-                width: "150px",
-                height: "150px",
-                border: "1px solid #00000014",
-                boxShadow: "0px 0.86px 52.13px -8.57px #00000024",
-                p: "16px",
-                borderRadius: "8px",
-                overflow: "hidden",
-              }}
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Lottie
-                animationData={animation3}
-                loop
-                autoplay
-                style={{ width: "100%", height: "100%" }}
-              />
-            </Stack>
-
-            <Stack gap="12px" justifyContent="center" sx={{ textAlign: "center" }}>
-              <Typography variant="h4">Looking for more answers?</Typography>
-              <Typography variant="h6" color="text.secondary">
-                Use the chat box in the bottom-left corner <br />
-                to talk with us.
-              </Typography>
-            </Stack>
-          </Stack>
-        </Grid>
+                {/* BUTTON */}
+                <Button
+                  fullWidth
+                  variant="contained"
+                  size="large"
+                  sx={{
+                    background: card.gradient,
+                    textTransform: "none",
+                  }}
+                  onClick={() => handleAction(card)}
+                >
+                  {card.buttonText}
+                </Button>
+              </Stack>
+            </Grid>
+          );
+        })}
       </Grid>
     </Container>
   );

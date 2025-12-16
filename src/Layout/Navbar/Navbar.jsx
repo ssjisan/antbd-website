@@ -10,16 +10,18 @@ import {
   useTheme,
 } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Logo from "../../assets/Logo";
 import { main } from "./NavConfig"; // Your menu list
 import { Menu } from "../../assets/Icons/Navbar/Icons";
+import { DataContext } from "../../DataProcessing/DataProcessing";
 
 export default function Navbar() {
   const location = useLocation();
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const [open, setOpen] = useState(false);
+  const { lang, toggleLang } = useContext(DataContext);
 
   const toggleDrawer = (open) => () => {
     setOpen(open);
@@ -129,7 +131,7 @@ export default function Navbar() {
                   }}
                 >
                   <Typography fontWeight={isActive ? 700 : 500}>
-                    {data.title}
+                    {lang === "en" ? data.title_en : data.title_bn}
                   </Typography>
                 </Box>
               );
@@ -138,6 +140,24 @@ export default function Navbar() {
 
           {/* Self Portal button for md and up */}
           <Box sx={{ display: { xs: "none", md: "block" } }}>
+            <Button
+              onClick={toggleLang}
+              sx={{
+                ml: 2,
+                px: 2,
+                py: "6px",
+                borderRadius: "8px",
+                textTransform: "none",
+                backgroundColor: "rgba(59, 130, 246, 0.12)",
+                color: "#3B82F6",
+                fontWeight: 600,
+                "&:hover": {
+                  backgroundColor: "rgba(59, 130, 246, 0.18)",
+                },
+              }}
+            >
+              {lang === "en" ? "বাংলা" : "English"}
+            </Button>
             <Button variant="contained" size={isMdUp ? "small" : "large"}>
               Self Portal
             </Button>

@@ -4,7 +4,7 @@ export default function Mission() {
   return (
     <Container sx={{ py: 8, position: "relative" }}>
       <Grid container spacing={4} alignItems="center">
-        {/* Image + SVG + Red Box */}
+        {/* Image + SVG Shape */}
         <Grid item xs={12} md={6}>
           <Box
             sx={{
@@ -12,6 +12,8 @@ export default function Mission() {
               maxWidth: 560,
               mx: "auto",
               position: "relative",
+              overflow: "hidden", // 🔥 important
+              borderRadius: "32px",
             }}
           >
             {/* Image */}
@@ -22,23 +24,25 @@ export default function Mission() {
               sx={{
                 width: "100%",
                 height: "auto",
-                borderRadius: "32px",
                 display: "block",
               }}
             />
 
-            {/* SVG in bottom right */}
+            {/* SVG Cut Shape (OVERLAPPED to remove seam) */}
             <Box
               component="svg"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 150 150"
               sx={{
                 position: "absolute",
-                bottom: 0,
-                right: 0,
+                bottom: "-1px", // 🔥 seam fix
+                right: "-1px", // 🔥 seam fix
                 width: "150px",
                 height: "150px",
                 zIndex: 2,
+                display: "block",
+                shapeRendering: "crispEdges",
+                pointerEvents: "none",
               }}
             >
               <path
@@ -55,7 +59,7 @@ export default function Mission() {
               />
             </Box>
 
-            {/* Red box in bottom right */}
+            {/* Logo Box */}
             <Box
               sx={{
                 position: "absolute",
@@ -84,8 +88,11 @@ export default function Mission() {
         {/* Text Section */}
         <Grid item xs={12} md={6}>
           <Stack
-            sx={{ pl: { md: "100px" }, mt: { xs: "32px", md: "0" } }}
             gap="24px"
+            sx={{
+              pl: { md: "100px" },
+              mt: { xs: "32px", md: 0 },
+            }}
           >
             <Typography variant="h2">Our Mission</Typography>
             <Typography variant="h5" color="text.secondary">
