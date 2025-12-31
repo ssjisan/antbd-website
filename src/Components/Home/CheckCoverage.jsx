@@ -14,7 +14,7 @@ import {
 import toast from "react-hot-toast";
 import axios from "axios";
 import { GPS } from "../../assets/Icons/Home/Icons";
-import { DataContext } from "../../DataProcessing/DataProcessing";
+import { DataContext } from "../../DataProcessing/DataContext";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Search } from "../../assets/Icons/Common/Icons";
 import CoverageAreaHeader from "../Common/HomePageCoverage/CoverageAreaHeader";
@@ -293,7 +293,7 @@ export default function CheckCoverage() {
             gap="20px"
             sx={{
               width: "100%",
-              border: "1px solid #ccc",
+              border: "1px solid #eaeaeaff",
               padding: "16px",
               borderRadius: "16px",
             }}
@@ -304,14 +304,14 @@ export default function CheckCoverage() {
             <Button
               fullWidth
               onClick={handleUseMyLocation}
-              startIcon={<GPS size="24px" color="#fff" />}
+              startIcon={<GPS size="24px" color="#ed1b24" />}
               sx={{
-                backgroundColor: "#ed1b24",
-                color: "#fff",
+                backgroundColor: "#ffe9eaff",
+                color: "#ed1b24",
                 textTransform: "none",
                 borderRadius: "8px",
                 "&:hover": {
-                  backgroundColor: "#af1018ff",
+                  backgroundColor: "#ffd3d5ff",
                 },
               }}
             >
@@ -449,7 +449,7 @@ export default function CheckCoverage() {
         <Grid item xs={12} sm={12} md={7} lg={7}>
           <Stack
             sx={{
-              border: "1px solid #ccc",
+              border: "1px solid #eaeaeaff",
               padding: "16px",
               borderRadius: "16px",
               height: "100%",
@@ -463,12 +463,17 @@ export default function CheckCoverage() {
               sx={{
                 width: "100%",
                 height: forBelow767 ? "320px" : "100%",
-                border: "1px solid #ccc",
+                border: "1px solid #eaeaeaff",
                 borderRadius: "12px",
               }}
             ></Box>
           </Stack>
         </Grid>
+        {forBelow767 && (
+          <Grid item xs={12} sm={12}>
+            <CoverageAreaPromotion />
+          </Grid>
+        )}
       </Grid>
     </Container>
   );

@@ -8,7 +8,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { DataContext } from "../../DataProcessing/DataProcessing";
+import { DataContext } from "../../DataProcessing/DataContext";
 
 export default function FirstPackage() {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -120,7 +120,7 @@ export default function FirstPackage() {
             <img
               src={
                 lowestPricePackage?.image ||
-                "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753614181/website/section-images/first-package_sdcyhf.webp"
+                "https://api.antbd.com/file-storage/first.jpg"
               }
               alt="first_package"
               style={{

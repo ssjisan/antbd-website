@@ -3,7 +3,7 @@ import { Box, Grid, Stack, Typography } from "@mui/material";
 import axios from "axios";
 import { ArrowRight } from "../../assets/Icons/Common/Icons";
 import PackageDetails from "./PackageDetails";
-import { DataContext } from "../../DataProcessing/DataProcessing";
+import { DataContext } from "../../DataProcessing/DataContext";
 
 export default function AvailablePackages() {
   const [packages, setPackages] = useState([]);

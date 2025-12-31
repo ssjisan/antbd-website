@@ -8,7 +8,7 @@ import {
   Box,
 } from "@mui/material";
 import PackageCard from "../Common/PackageCard";
-import { DataContext } from "../../DataProcessing/DataProcessing";
+import { DataContext } from "../../DataProcessing/DataContext";
 
 export default function PackagesPlan() {
   const { packages, loading } = useContext(DataContext);

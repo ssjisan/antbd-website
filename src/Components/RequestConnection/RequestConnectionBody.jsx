@@ -7,7 +7,7 @@ import RequestStepper from "./RequestStepper";
 import AvailablePackages from "./AvailablePackages";
 import Details from "./Details";
 import Review from "./Review";
-import { DataContext } from "../../DataProcessing/DataProcessing";
+import { DataContext } from "../../DataProcessing/DataContext";
 import toast from "react-hot-toast";
 
 const steps = [
@@ -145,7 +145,11 @@ export default function RequestConnectionBody() {
 
         {success ? (
           <Box textAlign="center" mt={8}>
-            <img src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753901430/website/section-images/done_slrps4.png" alt="success" width={280} />
+            <img
+              src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753901430/website/section-images/done_slrps4.png"
+              alt="success"
+              width={280}
+            />
             <Box mt={2} fontSize={24} fontWeight={700}>
               Your connection request has been submitted!
             </Box>

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { DataContext } from "../../DataProcessing/DataProcessing";
+import { DataContext } from "../../DataProcessing/DataContext";
 import { Button, Container, Stack, Typography } from "@mui/material";
 import axios from "axios";
 

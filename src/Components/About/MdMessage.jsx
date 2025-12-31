@@ -41,7 +41,7 @@ export default function MdMessage() {
               />
             )}
             <img
-              src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753614055/website/section-images/About/md_lxyxol.jpg"
+              src="https://api.antbd.com/file-storage/mdsir.jpeg"
               alt="Sujon"
               width="100%"
               height="100%"

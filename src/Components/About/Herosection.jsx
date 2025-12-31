@@ -31,7 +31,7 @@ export default function Herosection() {
           )}
 
           <img
-            src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753609185/website/section-images/About/about_tiv6ay.webp"
+            src="https://api.antbd.com/file-storage/aboutus.jpg"
             alt="bg"
             width="100%"
             height="100%"
@@ -42,18 +42,18 @@ export default function Herosection() {
             onLoad={() => setImgLoaded(true)}
           />
           <img
-    src="antbd.png"
-    alt="Overlay Icon"
-    style={{
-      position: "absolute",
-      bottom: "20px",
-      right: "20px",
-      width: "24px",
-      height: "24px",
-      opacity: 1,
-      pointerEvents: "none",
-    }}
-  />
+            src="antbd.png"
+            alt="Overlay Icon"
+            style={{
+              position: "absolute",
+              bottom: "20px",
+              right: "20px",
+              width: "24px",
+              height: "24px",
+              opacity: 1,
+              pointerEvents: "none",
+            }}
+          />
         </Box>
         <Matrix />
         <Typography variant="h4" sx={{ width: "100%", fontWeight: 500 }}>

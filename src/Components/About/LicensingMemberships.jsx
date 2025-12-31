@@ -4,28 +4,28 @@ import PropTypes from "prop-types";
 
 const logoList = [
   {
-    src: "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753901031/website/section-images/Partners/ispba_grzf6y.png",
+    src: "/ispab.png",
     alt: "ISPBA",
   },
   {
-    src: "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753901034/website/section-images/Partners/btrc_znxhnt.png",
+    src: "/btrc.png",
     alt: "BTRC",
   },
   {
-    src: "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753901032/website/section-images/Partners/bcs_him8ia.png",
+    src: "/bcs.png",
     alt: "BCS",
   },
   {
-    src: "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753901031/website/section-images/Partners/apnic_nhjvac.jpg",
+    src: "/apnic.png",
     alt: "APNIC",
   },
   {
-    src: "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753901032/website/section-images/Partners/bdix_cfv8o0.png",
+    src: "/bdix.png",
     alt: "bdix",
   },
   {
-    src: "https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753901033/website/section-images/Partners/cstf_y1wv1k.jpg",
-    alt: "jpg",
+    src: "/cstf.png",
+    alt: "cyber security task force",
   },
 ];
 

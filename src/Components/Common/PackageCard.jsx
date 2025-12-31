@@ -9,7 +9,7 @@ import {
 } from "../../assets/Icons/Package/Icons";
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { DataContext } from "../../DataProcessing/DataProcessing";
+import { DataContext } from "../../DataProcessing/DataContext";
 import { useNavigate } from "react-router-dom";
 import TopBadge from "./TopBadge";
 

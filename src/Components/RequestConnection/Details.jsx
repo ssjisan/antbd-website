@@ -1,6 +1,6 @@
 import { Container, Stack, Typography, TextField } from "@mui/material";
 import { useContext, useEffect } from "react";
-import { DataContext } from "../../DataProcessing/DataProcessing";
+import { DataContext } from "../../DataProcessing/DataContext";
 
 export default function Details() {
   const { formData, setFormData, area } = useContext(DataContext);

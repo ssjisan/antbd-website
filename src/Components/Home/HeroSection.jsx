@@ -144,7 +144,7 @@ export default function HeroSection() {
               }}
             >
               <source
-                src="https://res.cloudinary.com/dr0jcn0ds/video/upload/v1753629181/website/26619-359604050_small_wnrcju.mp4"
+                src="https://api.antbd.com/file-storage/hero-section.mp4"
                 type="video/mp4"
               />
               Your browser does not support the video tag.

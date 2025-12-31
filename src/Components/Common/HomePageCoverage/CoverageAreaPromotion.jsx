@@ -1,5 +1,10 @@
 import { Stack, Typography } from "@mui/material";
-import { ArrowDown } from "../../../assets/Icons/Common/Icons";
+import {
+  Flash,
+  PriceTag,
+  Support,
+  UpTime,
+} from "../../../assets/Icons/Common/Icons";
 
 export default function CoverageAreaPromotion() {
   return (
@@ -7,7 +12,7 @@ export default function CoverageAreaPromotion() {
       sx={{
         marginTop: "24px",
         width: "100%",
-        border: "1px solid #ccc",
+        border: "1px solid #eaeaeaff",
         padding: "16px",
         borderRadius: "16px",
       }}
@@ -21,13 +26,13 @@ export default function CoverageAreaPromotion() {
             sx={{
               width: "32px",
               height: "32px",
-              background: "#fff0efff",
+              background: "#ffe6e7ff",
               borderRadius: "8px",
             }}
             justifyContent="center"
             alignItems="center"
           >
-            <ArrowDown size="20px" color="#aa4a44" />
+            <Flash size="20px" color="#EF1115" />
           </Stack>
           <Typography>Fiber-optic connection</Typography>
         </Stack>
@@ -36,45 +41,45 @@ export default function CoverageAreaPromotion() {
             sx={{
               width: "32px",
               height: "32px",
-              background: "#fff0efff",
+              background: "#dffff4ff",
               borderRadius: "8px",
             }}
             justifyContent="center"
             alignItems="center"
           >
-            <ArrowDown size="20px" color="#aa4a44" />
+            <UpTime size="20px" color="#059669" />
           </Stack>
-          <Typography>Fiber-optic connection</Typography>
+          <Typography>99.9% uptime reliability</Typography>
         </Stack>
         <Stack alignItems="center" direction="row" gap="12px">
           <Stack
             sx={{
               width: "32px",
               height: "32px",
-              background: "#fff0efff",
+              background: "#e6eeffff",
               borderRadius: "8px",
             }}
             justifyContent="center"
             alignItems="center"
           >
-            <ArrowDown size="20px" color="#aa4a44" />
+            <Support size="20px" color="#3876FF" />
           </Stack>
-          <Typography>Fiber-optic connection</Typography>
+          <Typography>24/7 expert support</Typography>
         </Stack>
         <Stack alignItems="center" direction="row" gap="12px">
           <Stack
             sx={{
               width: "32px",
               height: "32px",
-              background: "#fff0efff",
+              background: "#f4eeffff",
               borderRadius: "8px",
             }}
             justifyContent="center"
             alignItems="center"
           >
-            <ArrowDown size="20px" color="#aa4a44" />
+            <PriceTag size="20px" color="#7C3AED" />
           </Stack>
-          <Typography>Fiber-optic connection</Typography>
+          <Typography>Trasnparent pricing, no surprise</Typography>
         </Stack>
       </Stack>
     </Stack>

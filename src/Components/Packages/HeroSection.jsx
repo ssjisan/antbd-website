@@ -1,7 +1,7 @@
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { DataContext } from "../../DataProcessing/DataProcessing";
+import { DataContext } from "../../DataProcessing/DataContext";
 
 export default function HeroSection() {
   const { lowestPricePackage } = useContext(DataContext);
@@ -144,7 +144,7 @@ export default function HeroSection() {
           >
             <Box
               component="img"
-              src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753612728/website/section-images/bg_payment_wmfau9.webp"
+              src="https://api.antbd.com/file-storage/package-page.png"
               alt="Hero Image"
               sx={{
                 width: "100%",

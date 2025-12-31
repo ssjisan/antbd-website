@@ -8,6 +8,7 @@ import Coverage from "../Pages/Coverage";
 import RequestConnection from "../Pages/RequestConnection";
 import TestCoverage from "../Components/Coverage/TestCoverage";
 import HelpAndSupportPage from "../Pages/HelpAndSupportPage";
+import SilverJubilee from "../Pages/SilverJubilee";
 
 export default function MainRoute() {
   return (
@@ -44,6 +45,7 @@ export default function MainRoute() {
         <Route path="/test" element={<TestCoverage />} />
         <Route path="/request-connection" element={<RequestConnection />} />
         <Route path="/help-support" element={<HelpAndSupportPage />} />
+        <Route path="/silver-jubilee" element={<SilverJubilee />} />
         <Route path="*" element={<Error404 />} /> {/* 404 Catch-All Route */}
       </Routes>
     </>

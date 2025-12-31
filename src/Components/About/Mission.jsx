@@ -19,7 +19,7 @@ export default function Mission() {
             {/* Image */}
             <Box
               component="img"
-              src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753685268/website/section-images/About/mission_wfx9au.webp"
+              src="https://api.antbd.com/file-storage/mision.jpg"
               alt="Mission"
               sx={{
                 width: "100%",

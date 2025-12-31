@@ -18,7 +18,7 @@ import toast from "react-hot-toast";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { GPS } from "../../assets/Icons/Home/Icons";
-import { DataContext } from "../../DataProcessing/DataProcessing";
+import { DataContext } from "../../DataProcessing/DataContext";
 import { Search } from "../../assets/Icons/Common/Icons";
 const Area = forwardRef(({ initialArea }, ref) => {
   const { setArea } = useContext(DataContext);

@@ -37,11 +37,16 @@ export default function usePackages() {
     return packages.filter((pkg) => pkg._id !== lowestPricePackage._id);
   }, [packages, lowestPricePackage]);
 
+  const specialPackages = useMemo(() => {
+    return packages.filter((pkg) => pkg.specialPackages === true);
+  }, [packages]);
+
   return {
     packages,
     lowestPricePackage,
     otherPackages,
     loading,
     error,
+    specialPackages,
   };
 }

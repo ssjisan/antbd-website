@@ -57,7 +57,7 @@ export default function Vision() {
             {/* Image */}
             <Box
               component="img"
-              src="https://res.cloudinary.com/dr0jcn0ds/image/upload/v1753685268/website/section-images/About/vision_odqcwk.webp"
+              src="https://api.antbd.com/file-storage/vision.jpg"
               alt="Vision"
               onLoad={() => setImageLoaded(true)}
               sx={{

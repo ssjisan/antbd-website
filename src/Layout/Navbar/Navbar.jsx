@@ -14,7 +14,7 @@ import { useContext, useState } from "react";
 import Logo from "../../assets/Logo";
 import { main } from "./NavConfig"; // Your menu list
 import { Menu } from "../../assets/Icons/Navbar/Icons";
-import { DataContext } from "../../DataProcessing/DataProcessing";
+import { DataContext } from "../../DataProcessing/DataContext";
 
 export default function Navbar() {
   const location = useLocation();
@@ -31,35 +31,142 @@ export default function Navbar() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const renderMenuItem = (data) => {
+    const isActive = location.pathname === data.link;
+
+    return (
+      <Box
+        key={data.id}
+        component={Link}
+        to={data.link}
+        onClick={goToTop}
+        sx={{
+          position: "relative",
+          p: "8px 16px",
+          borderRadius: "8px",
+          textDecoration: "none",
+          backgroundColor: isActive ? "primary.light" : "transparent",
+          color: isActive ? "primary.main" : "text.primary",
+          transition: "all 0.2s ease-in-out",
+          "&:hover": {
+            backgroundColor: "background.onHover",
+            color: "text.primary",
+          },
+        }}
+      >
+        <Typography fontWeight={isActive ? 700 : 500}>
+          {lang === "en" ? data.title_en : data.title_bn}
+        </Typography>
+
+        {/* Chip badge */}
+        {data.chip && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              transform: "translate(50%, -50%)",
+              bgcolor: "#FFD700", // bright yellow
+              color: "#000", // black text for contrast
+              px: "4px",
+              py: "1px",
+              borderRadius: "4px",
+              fontSize: "0.625rem",
+              fontWeight: 600,
+              animation: "pulseGlow 1.5s infinite ease-in-out",
+              "@keyframes pulseGlow": {
+                "0%": {
+                  backgroundColor: "#FFD700",
+                  boxShadow: "0 0 0px #FFD700",
+                },
+                "50%": {
+                  backgroundColor: "#FFE066",
+                  boxShadow: "0 0 8px #FFE066",
+                },
+                "100%": {
+                  backgroundColor: "#FFD700",
+                  boxShadow: "0 0 0px #FFD700",
+                },
+              },
+            }}
+          >
+            {data.chip}
+          </Box>
+        )}
+      </Box>
+    );
+  };
+
   const drawerContent = (
     <Box sx={{ width: 250, p: 2 }}>
       <Stack spacing={2}>
-        {main.map((data) => {
-          const isActive = location.pathname === data.link;
-          return (
-            <Box
-              key={data.id}
-              component={Link}
-              to={data.link}
-              onClick={() => {
-                goToTop();
-                setOpen(false);
-              }}
-              sx={{
-                p: "8px 12px",
-                borderRadius: "8px",
-                textDecoration: "none",
-                backgroundColor: isActive ? "primary.light" : "transparent",
-                color: isActive ? "primary.main" : "text.primary",
-                transition: "all 0.2s ease-in-out",
-              }}
+        {main.map((data) => (
+          <Box
+            key={data.id}
+            component={Link}
+            to={data.link}
+            onClick={() => {
+              goToTop();
+              setOpen(false);
+            }}
+            sx={{
+              position: "relative",
+              p: "8px 12px",
+              borderRadius: "8px",
+              textDecoration: "none",
+              backgroundColor:
+                location.pathname === data.link
+                  ? "primary.light"
+                  : "transparent",
+              color:
+                location.pathname === data.link
+                  ? "primary.main"
+                  : "text.primary",
+              transition: "all 0.2s ease-in-out",
+            }}
+          >
+            <Typography
+              fontWeight={location.pathname === data.link ? 700 : 500}
             >
-              <Typography fontWeight={isActive ? 700 : 500}>
-                {data.title}
-              </Typography>
-            </Box>
-          );
-        })}
+              {lang === "en" ? data.title_en : data.title_bn}
+            </Typography>
+
+            {data.chip && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  transform: "translate(50%, -50%)",
+                  bgcolor: "#FFD700", // bright yellow
+                  color: "#000", // black text for contrast
+                  px: "4px",
+                  py: "1px",
+                  borderRadius: "4px",
+                  fontSize: "0.625rem",
+                  fontWeight: 600,
+                  animation: "pulseGlow 1.5s infinite ease-in-out",
+                  "@keyframes pulseGlow": {
+                    "0%": {
+                      backgroundColor: "#FFD700",
+                      boxShadow: "0 0 0px #FFD700",
+                    },
+                    "50%": {
+                      backgroundColor: "#FFE066",
+                      boxShadow: "0 0 8px #FFE066",
+                    },
+                    "100%": {
+                      backgroundColor: "#FFD700",
+                      boxShadow: "0 0 0px #FFD700",
+                    },
+                  },
+                }}
+              >
+                {data.chip}
+              </Box>
+            )}
+          </Box>
+        ))}
         <Button variant="contained" size="small">
           Self Portal
         </Button>
@@ -103,67 +210,23 @@ export default function Navbar() {
             <Logo green="#008641" red="#ED1B24" black="#000" size="48px" />
           </Box>
 
-          {/* Menu items for md and up */}
+          {/* Menu items for md+ */}
           <Stack
             flexDirection="row"
             gap={isMdUp ? "8px" : "16px"}
             sx={{ display: { xs: "none", md: "flex" } }}
           >
-            {main.map((data) => {
-              const isActive = location.pathname === data.link;
-              return (
-                <Box
-                  key={data.id}
-                  component={Link}
-                  to={data.link}
-                  onClick={goToTop}
-                  sx={{
-                    p: "8px 16px",
-                    borderRadius: "8px",
-                    textDecoration: "none",
-                    backgroundColor: isActive ? "primary.light" : "transparent",
-                    color: isActive ? "primary.main" : "text.primary",
-                    transition: "all 0.2s ease-in-out",
-                    "&:hover": {
-                      backgroundColor: "background.onHover",
-                      color: "text.primary",
-                    },
-                  }}
-                >
-                  <Typography fontWeight={isActive ? 700 : 500}>
-                    {lang === "en" ? data.title_en : data.title_bn}
-                  </Typography>
-                </Box>
-              );
-            })}
+            {main.map(renderMenuItem)}
           </Stack>
 
-          {/* Self Portal button for md and up */}
+          {/* Self Portal button for md+ */}
           <Box sx={{ display: { xs: "none", md: "block" } }}>
-            <Button
-              onClick={toggleLang}
-              sx={{
-                ml: 2,
-                px: 2,
-                py: "6px",
-                borderRadius: "8px",
-                textTransform: "none",
-                backgroundColor: "rgba(59, 130, 246, 0.12)",
-                color: "#3B82F6",
-                fontWeight: 600,
-                "&:hover": {
-                  backgroundColor: "rgba(59, 130, 246, 0.18)",
-                },
-              }}
-            >
-              {lang === "en" ? "বাংলা" : "English"}
-            </Button>
             <Button variant="contained" size={isMdUp ? "small" : "large"}>
               Self Portal
             </Button>
           </Box>
 
-          {/* Hamburger for xs-sm only */}
+          {/* Hamburger for xs-sm */}
           <Box sx={{ display: { xs: "block", md: "none" } }}>
             <IconButton
               onClick={toggleDrawer(true)}

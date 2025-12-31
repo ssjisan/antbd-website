@@ -1,10 +1,9 @@
-/* eslint-disable react-refresh/only-export-components */
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import OrderProcess from "./Components/OrderProcess";
 import Package from "./Components/Package";
-export const DataContext = createContext();
+import { DataContext } from "./DataContext";
 
 export default function DataProcessing({ children }) {
   // *************************************************** Axios Configuration *********************************************************** //
@@ -12,7 +11,8 @@ export default function DataProcessing({ children }) {
 
   const { area, setArea, packageId, setPackageId, formData, setFormData } =
     OrderProcess();
-  const { packages, loading, error, lowestPricePackage } = Package();
+  const { packages, loading, error, lowestPricePackage, specialPackages } =
+    Package();
 
   const [lang, setLang] = useState("en");
 
@@ -44,6 +44,7 @@ export default function DataProcessing({ children }) {
         loading,
         error,
         lowestPricePackage,
+        specialPackages,
       }}
     >
       {children}

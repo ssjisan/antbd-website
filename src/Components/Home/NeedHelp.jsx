@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Button, Container, Grid, Stack, Typography } from "@mui/material";
 import { ChatBot, Messanger, Phone } from "../../assets/Icons/Footer/Icons";
 import { needHelpData } from "../../assets/JsonData/needHelpData";
-import { DataContext } from "../../DataProcessing/DataProcessing";
+import { DataContext } from "../../DataProcessing/DataContext";
 
 const iconMap = {
   phone: Phone,
