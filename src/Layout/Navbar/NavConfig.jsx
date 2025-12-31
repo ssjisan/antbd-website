@@ -5,13 +5,13 @@ const main = [
     title_bn: "হোম",
     link: "/",
   },
-  // {
-  //   id: 2,
-  //   title_en: "Silver Jubilee",
-  //   title_bn: "আমাদের সম্পর্কে",
-  //   link: "/silver-jubilee",
-  //   chip: "NEW",
-  // },
+  {
+    id: 2,
+    title_en: "Silver Jubilee",
+    title_bn: "আমাদের সম্পর্কে",
+    link: "/silver-jubilee",
+    chip: "NEW",
+  },
   {
     id: 3,
     title_en: "About",

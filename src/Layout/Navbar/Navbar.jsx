@@ -15,13 +15,14 @@ import Logo from "../../assets/Logo";
 import { main } from "./NavConfig"; // Your menu list
 import { Menu } from "../../assets/Icons/Navbar/Icons";
 import { DataContext } from "../../DataProcessing/DataContext";
+import SilverJubilee2 from "../../assets/SilverJubilee2";
 
 export default function Navbar() {
   const location = useLocation();
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const [open, setOpen] = useState(false);
-  const { lang, toggleLang } = useContext(DataContext);
+  const { lang } = useContext(DataContext);
 
   const toggleDrawer = (open) => () => {
     setOpen(open);
@@ -138,27 +139,50 @@ export default function Navbar() {
                   top: 0,
                   right: 0,
                   transform: "translate(50%, -50%)",
-                  bgcolor: "#FFD700", // bright yellow
-                  color: "#000", // black text for contrast
+                  bgcolor: "#E53935", // rich red
+                  color: "#fff",
                   px: "4px",
                   py: "1px",
                   borderRadius: "4px",
                   fontSize: "0.625rem",
                   fontWeight: 600,
-                  animation: "pulseGlow 1.5s infinite ease-in-out",
+                  overflow: "hidden",
+
+                  animation: "pulseGlow 1.6s infinite ease-in-out",
+
+                  /* Pulse glow */
                   "@keyframes pulseGlow": {
                     "0%": {
-                      backgroundColor: "#FFD700",
-                      boxShadow: "0 0 0px #FFD700",
+                      backgroundColor: "#E53935",
+                      boxShadow: "0 0 0px rgba(229, 57, 53, 0.6)",
                     },
                     "50%": {
-                      backgroundColor: "#FFE066",
-                      boxShadow: "0 0 8px #FFE066",
+                      backgroundColor: "#EF5350",
+                      boxShadow: "0 0 10px rgba(239, 83, 80, 0.9)",
                     },
                     "100%": {
-                      backgroundColor: "#FFD700",
-                      boxShadow: "0 0 0px #FFD700",
+                      backgroundColor: "#E53935",
+                      boxShadow: "0 0 0px rgba(229, 57, 53, 0.6)",
                     },
+                  },
+
+                  /* Glassy shine */
+                  "&::after": {
+                    content: '""',
+                    position: "absolute",
+                    top: 0,
+                    left: "-120%",
+                    width: "120%",
+                    height: "100%",
+                    background:
+                      "linear-gradient(120deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 70%)",
+                    animation: "shine 2.8s infinite",
+                  },
+
+                  "@keyframes shine": {
+                    "0%": { left: "-120%" },
+                    "60%": { left: "120%" },
+                    "100%": { left: "120%" },
                   },
                 }}
               >
@@ -205,9 +229,11 @@ export default function Navbar() {
               "& svg": {
                 transition: "all 0.3s ease-in-out",
               },
+              height: "48px",
             }}
           >
-            <Logo green="#008641" red="#ED1B24" black="#000" size="48px" />
+            {/* <Logo green="#008641" red="#ED1B24" black="#000" size="48px" /> */}
+            <SilverJubilee2 />
           </Box>
 
           {/* Menu items for md+ */}

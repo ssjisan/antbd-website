@@ -14,7 +14,7 @@ export default function HeroSection() {
       }}
     >
       <Container>
-        <Stack sx={{ pt: "140px" }} justifyContent="center" alignItems="center">
+        <Stack sx={{ pt: "8%" }} justifyContent="center" alignItems="center">
           <Stack
             gap="16px"
             justifyContent="center"
