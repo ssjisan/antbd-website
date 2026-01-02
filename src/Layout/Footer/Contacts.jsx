@@ -12,7 +12,7 @@ export default function Contacts() {
             <Stack>
               <Hotline size="20px" color="#000" />
             </Stack>
-            <Typography fontWeight="700">Hotline - Dhaka</Typography>
+            <Typography fontWeight="700">Hotline</Typography>
           </Stack>
           <Typography color="text.secondary"> 09666-121-131</Typography>
         </Stack>
@@ -21,9 +21,9 @@ export default function Contacts() {
             <Stack>
               <Hotline size="20px" color="#000" />
             </Stack>
-            <Typography fontWeight="700">Hotline - Chittagong</Typography>
+            <Typography fontWeight="700">Hotline</Typography>
           </Stack>
-          <Typography color="text.secondary"> 09666-131-131</Typography>
+          <Typography color="text.secondary"> 09613-131-131</Typography>
         </Stack>
         <Stack>
           <Stack gap="8px" flexDirection="row">

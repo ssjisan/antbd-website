@@ -88,14 +88,14 @@ export default function SelfPortal() {
                 </Stack>
               </Stack>
             </Stack>
-            <Button
+            {/* <Button
               sx={{ width: "fit-content" }}
               variant="contained"
               component="a"
               href="https://my.antbd.com/"
             >
               Login to self portal
-            </Button>
+            </Button> */}
           </Stack>
         </Grid>
         <Grid item xs={12} md={6}>

@@ -11,8 +11,8 @@ import {
 } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import { useContext, useState } from "react";
-import Logo from "../../assets/Logo";
-import { main } from "./NavConfig"; // Your menu list
+// import Logo from "../../assets/Logo";
+import { main } from "./NavConfig";
 import { Menu } from "../../assets/Icons/Navbar/Icons";
 import { DataContext } from "../../DataProcessing/DataContext";
 import SilverJubilee2 from "../../assets/SilverJubilee2";
