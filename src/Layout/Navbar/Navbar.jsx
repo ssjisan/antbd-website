@@ -15,7 +15,8 @@ import { useContext, useState } from "react";
 import { main } from "./NavConfig";
 import { Menu } from "../../assets/Icons/Navbar/Icons";
 import { DataContext } from "../../DataProcessing/DataContext";
-import SilverJubilee2 from "../../assets/SilverJubilee2";
+// import SilverJubilee2 from "../../assets/SilverJubilee2";
+import Logo from "../../assets/Logo";
 
 export default function Navbar() {
   const location = useLocation();
@@ -191,9 +192,9 @@ export default function Navbar() {
             )}
           </Box>
         ))}
-        <Button variant="contained" size="small">
+        {/* <Button variant="contained" size="small">
           Self Portal
-        </Button>
+        </Button> */}
       </Stack>
     </Box>
   );
@@ -232,8 +233,8 @@ export default function Navbar() {
               height: "48px",
             }}
           >
-            {/* <Logo green="#008641" red="#ED1B24" black="#000" size="48px" /> */}
-            <SilverJubilee2 />
+            <Logo green="#008641" red="#ED1B24" black="#000" size="48px" />
+            {/* <SilverJubilee2 /> */}
           </Box>
 
           {/* Menu items for md+ */}
@@ -247,9 +248,9 @@ export default function Navbar() {
 
           {/* Self Portal button for md+ */}
           <Box sx={{ display: { xs: "none", md: "block" } }}>
-            <Button variant="contained" size={isMdUp ? "small" : "large"}>
+            {/* <Button variant="contained" size={isMdUp ? "small" : "large"}>
               Self Portal
-            </Button>
+            </Button> */}
           </Box>
 
           {/* Hamburger for xs-sm */}

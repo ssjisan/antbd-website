@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Inter", sans-serif;
+  font-family: "Manrope", sans-serif;
 }
 .hero {
   position: relative;
@@ -137,9 +137,9 @@ body {
   width: 80px;
   height: 80px;
   border-radius: 152.5px;
-  border: 3.05px solid #FCFFFE;
-  background: #F5F5F5;
-  box-shadow: inset 0px 6.1px 12.2px 0px #0000001F;
+  border: 3.05px solid #fcfffe;
+  background: #f5f5f5;
+  box-shadow: inset 0px 6.1px 12.2px 0px #0000001f;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -194,8 +194,6 @@ body {
   width: 24px;
   margin-right: 8px;
 }
-
-
 
 .gmnoprint button {
   width: 48px;

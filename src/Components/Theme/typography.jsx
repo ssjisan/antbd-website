@@ -29,7 +29,7 @@ export function responsiveFontSizes({
 }
 
 // ----------------------------------------------------------------------
-export const primaryFont = "Inter , sans-serif ";
+export const primaryFont = "Manrope , sans-serif ";
 
 export const typography = {
   fontFamily: primaryFont,
@@ -60,13 +60,13 @@ export const typography = {
     ...responsiveFontSizes({ sm: 20, md: 24, lg: 32 }),
   },
   h4: {
-    fontWeight: 700,
+    fontWeight: 500,
     lineHeight: "150%",
     fontSize: pxToRem(16),
     ...responsiveFontSizes({ sm: 16, md: 18, lg: 24 }),
   },
   h5: {
-    fontWeight: 500,
+    fontWeight: 400,
     lineHeight: "140%",
     fontSize: pxToRem(16),
     ...responsiveFontSizes({ sm: 16, md: 18, lg: 18 }),
@@ -101,6 +101,13 @@ export const typography = {
     fontSize: pxToRem(14),
     ...responsiveFontSizes({ sm: 14, md: 14, lg: 14 }),
   },
+  header: {
+    fontWeight: 600,
+    lineHeight: "150%",
+    fontSize: pxToRem(14),
+    ...responsiveFontSizes({ sm: 14, md: 14, lg: 14 }),
+  },
+
   button: {
     fontWeight: 700,
     lineHeight: "24px",

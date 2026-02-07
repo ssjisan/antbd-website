@@ -1,33 +1,8 @@
 import { Container, Grid, Stack, Typography, Skeleton } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-
-const logoList = [
-  {
-    src: "/ispab.png",
-    alt: "ISPBA",
-  },
-  {
-    src: "/btrc.png",
-    alt: "BTRC",
-  },
-  {
-    src: "/bcs.png",
-    alt: "BCS",
-  },
-  {
-    src: "/apnic.png",
-    alt: "APNIC",
-  },
-  {
-    src: "/bdix.png",
-    alt: "bdix",
-  },
-  {
-    src: "/cstf.png",
-    alt: "cyber security task force",
-  },
-];
+import axios from "axios";
+import toast from "react-hot-toast";
 
 // Image with skeleton wrapper
 const LogoWithSkeleton = ({ src, alt }) => {
@@ -52,6 +27,21 @@ const LogoWithSkeleton = ({ src, alt }) => {
 };
 
 export default function LicensingMemberships() {
+  const [memberships, setMemberships] = useState([]);
+
+  useEffect(() => {
+    const fetchMemberships = async () => {
+      try {
+        const res = await axios.get("/memberships");
+        setMemberships(res.data || []);
+      } catch (err) {
+        toast.error("Failed to load memberships", err);
+      }
+    };
+
+    fetchMemberships();
+  }, []);
+
   return (
     <Container sx={{ pt: "64px", pb: "64px" }}>
       <Typography variant="h3" mb={8} sx={{ textAlign: "center" }}>
@@ -59,8 +49,8 @@ export default function LicensingMemberships() {
       </Typography>
 
       <Grid container spacing={3}>
-        {logoList.map((logo, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
+        {memberships.map((membership) => (
+          <Grid item xs={12} sm={6} md={4} lg={4} key={membership._id}>
             <Stack
               justifyContent="center"
               alignItems="center"
@@ -71,7 +61,10 @@ export default function LicensingMemberships() {
                 height: "100%",
               }}
             >
-              <LogoWithSkeleton src={logo.src} alt={logo.alt} />
+              <LogoWithSkeleton
+                src={membership.image?.url}
+                alt={membership.name}
+              />
             </Stack>
           </Grid>
         ))}
@@ -79,6 +72,7 @@ export default function LicensingMemberships() {
     </Container>
   );
 }
+
 LogoWithSkeleton.propTypes = {
   src: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,

@@ -18,7 +18,7 @@ export default function About() {
       <Vision />
       <Mission />
       <LicensingMemberships />
-      <HappyclientSlider />
+      {/* <HappyclientSlider /> */}
       <NeedHelp />
       <Footer />
       <ChatWoot />

@@ -3,7 +3,6 @@ import Navbar from "../Layout/Navbar/Navbar";
 import Package from "../Components/Home/Package";
 import FirstPackage from "../Components/Home/FirstPackage";
 import Matrix from "../Components/Common/Matrix";
-import SwitchingRequest from "../Components/Home/SwitchingRequest";
 import CheckCoverage from "../Components/Home/CheckCoverage";
 import HappyclientSlider from "../Components/Common/HappyclientSlider";
 import NeedHelp from "../Components/Home/NeedHelp";
@@ -21,7 +20,6 @@ export default function Home() {
       <Matrix />
       <FirstPackage />
       <Package />
-      <SwitchingRequest />
       <HappyclientSlider />
       <FaQ />
       <NeedHelp />

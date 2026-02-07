@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
 const navItems = [
@@ -35,6 +35,13 @@ export default function Company() {
           </Link>
         ))}
       </Stack>
+      <Box sx={{ width: "140px", height: "140px" }}>
+        <img
+          src="ISO.png"
+          alt="ISO 9001:2015"
+          style={{ width: "100%", height: "100%" }}
+        />
+      </Box>
     </Stack>
   );
 }

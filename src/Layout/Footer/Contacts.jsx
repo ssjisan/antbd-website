@@ -1,48 +1,80 @@
 import { Stack, Typography } from "@mui/material";
-import { Email, Hotline, Phone } from "../../assets/Icons/Footer/Icons";
-// import { LocationBasic } from "../../assets/Icons";
+import { Email, Hotline } from "../../assets/Icons/Footer/Icons";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function Contacts() {
+  const [emails, setEmails] = useState([]);
+  const [phones, setPhones] = useState([]);
+
+  useEffect(() => {
+    const fetchContactInfo = async () => {
+      try {
+        const { data } = await axios.get("/contact-info");
+
+        if (data?.length > 0) {
+          const contact = data[0];
+
+          setEmails(contact.emails || []);
+          setPhones(contact.phoneNumbers || []);
+        }
+      } catch (err) {
+        toast.error("Failed to load contact info", err.message);
+      }
+    };
+
+    fetchContactInfo();
+  }, []);
+
   return (
     <Stack gap="24px">
       <Typography variant="h6">Contacts</Typography>
+
       <Stack gap="16px" flexDirection="column">
-        <Stack>
-          <Stack gap="8px" flexDirection="row">
-            <Stack>
+        {/* Phone Numbers */}
+        {phones.length > 0 && (
+          <Stack>
+            <Stack gap="8px" flexDirection="row">
               <Hotline size="20px" color="#000" />
+              <Typography fontWeight="700">Hotline</Typography>
             </Stack>
-            <Typography fontWeight="700">Hotline</Typography>
-          </Stack>
-          <Typography color="text.secondary"> 09666-121-131</Typography>
-        </Stack>
-        <Stack>
-          <Stack gap="8px" flexDirection="row">
-            <Stack>
-              <Hotline size="20px" color="#000" />
+
+            <Stack gap="4px" mt={0.5}>
+              {phones.map((phone, index) => (
+                <Typography
+                  key={index}
+                  color="text.secondary"
+                  sx={{ cursor: "pointer" }}
+                >
+                  {phone}
+                </Typography>
+              ))}
             </Stack>
-            <Typography fontWeight="700">Hotline</Typography>
           </Stack>
-          <Typography color="text.secondary"> 09613-131-131</Typography>
-        </Stack>
-        <Stack>
-          <Stack gap="8px" flexDirection="row">
-            <Stack>
-              <Phone size="20px" color="#000" />
-            </Stack>
-            <Typography fontWeight="700">Phone</Typography>
-          </Stack>
-          <Typography color="text.secondary"> 01711-669900</Typography>
-        </Stack>
-        <Stack>
-          <Stack gap="8px" flexDirection="row">
-            <Stack>
+        )}
+
+        {/* Emails */}
+        {emails.length > 0 && (
+          <Stack>
+            <Stack gap="8px" flexDirection="row">
               <Email size="20px" color="#000" />
+              <Typography fontWeight="700">Email</Typography>
             </Stack>
-            <Typography fontWeight="700">Email</Typography>
+
+            <Stack gap="4px" mt={0.5}>
+              {emails.map((email, index) => (
+                <Typography
+                  key={index}
+                  color="text.secondary"
+                  sx={{ cursor: "pointer" }}
+                >
+                  {email}
+                </Typography>
+              ))}
+            </Stack>
           </Stack>
-          <Typography color="text.secondary"> info@antbd.com</Typography>
-        </Stack>
+        )}
       </Stack>
     </Stack>
   );
