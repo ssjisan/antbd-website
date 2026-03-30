@@ -192,9 +192,16 @@ export default function Navbar() {
             )}
           </Box>
         ))}
-        {/* <Button variant="contained" size="small">
+        <Button
+          variant="contained"
+          size="small"
+          component="a"
+          href="https://my.antbd.com/login"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Self Portal
-        </Button> */}
+        </Button>
       </Stack>
     </Box>
   );
@@ -248,9 +255,16 @@ export default function Navbar() {
 
           {/* Self Portal button for md+ */}
           <Box sx={{ display: { xs: "none", md: "block" } }}>
-            {/* <Button variant="contained" size={isMdUp ? "small" : "large"}>
+            <Button
+              variant="contained"
+              size={isMdUp ? "small" : "large"}
+              component="a"
+              href="https://my.antbd.com/login"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Self Portal
-            </Button> */}
+            </Button>
           </Box>
 
           {/* Hamburger for xs-sm */}

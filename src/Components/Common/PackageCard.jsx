@@ -1,17 +1,9 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
-import HalfRadialBarChart from "./HalfRadialBarChart";
-import {
-  ConnectionType,
-  Download,
-  Installation,
-  Setup,
-  Upload,
-} from "../../assets/Icons/Package/Icons";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { DataContext } from "../../DataProcessing/DataContext";
 import { useNavigate } from "react-router-dom";
-import TopBadge from "./TopBadge";
+import ArrowPointer from "../../assets/Icons/ArrowPointer";
 
 export default function PackageCard({ pkg }) {
   const { setPackageId } = useContext(DataContext);
@@ -24,14 +16,17 @@ export default function PackageCard({ pkg }) {
     <Box
       sx={{
         position: "relative",
-        p: "24px",
+        p: "16px",
         border: "1px solid #918EAF3D",
         overflow: "hidden",
         borderRadius: "12px",
         textAlign: "center",
         width: "100%",
         maxWidth: "348px",
-        background: "#FFF",
+        background: "#F1FFF2",
+        display: "flex",
+        flexDirection: "column",
+        gap: "24px",
         transition: "all 0.3s ease-in-out",
         "&:hover": {
           boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.12)",
@@ -43,167 +38,154 @@ export default function PackageCard({ pkg }) {
         },
       }}
     >
-      {/* Top-right Title Badge with full SVG on top-left and manually positioned text */}
-      <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          height: "56px", // match SVG height
-          width: "140px", // match SVG width
-          color: "#fff",
-          zIndex: 1,
-          borderBottomLeftRadius: "12px",
-          overflow: "visible",
-        }}
-      >
-        <TopBadge />
-        <Box
-          sx={{
-            position: "relative", // relative to this Box container
-            top: "8px", // adjust vertical position
-            left: "12px", // adjust horizontal position
-            fontSize: "14px",
-            fontWeight: 600,
-            userSelect: "none",
-            pointerEvents: "none", // prevent interference with mouse
-            whiteSpace: "nowrap",
-            zIndex: 12,
-          }}
-        >
-          {pkg.packageName}
-        </Box>
-      </Box>
+      <Typography variant="h5" sx={{ fontWeight: 700, color: "#247940" }}>
+        {pkg.packageName}
+      </Typography>
 
       {/* Title & Price */}
-      <Stack gap="16px" mb={4}>
-        <Typography sx={{ textAlign: "left" }} color="text.primary">
-          <Box component="span" fontSize="20px" fontWeight={400}>
-            Up to
-          </Box>
-          <br />
-          <Box component="span" fontSize="24px" fontWeight={700}>
-            {pkg.maxDownloadSpeed} Mbps
-          </Box>
-        </Typography>
-        <Typography sx={{ textAlign: "left" }} color="primary">
-          <Box component="span" fontSize="32px" fontWeight={700}>
-            ৳{pkg.price}
-          </Box>
-          <Box
-            component="span"
-            fontSize="14px"
-            fontWeight={400}
-            color="text.secondary"
-            sx={{ ml: 0.5 }}
-          >
-            /month
-          </Box>
-        </Typography>
-      </Stack>
-
-      {/* Chart */}
-      <HalfRadialBarChart speed={pkg.maxDownloadSpeed} />
-
-      {/* Upload/Download */}
       <Stack
-        flexDirection="row"
-        gap="24px"
-        justifyContent="space-between"
-        sx={{ p: "32px 64px" }}
+        flexDirection={"row"}
+        sx={{
+          background: "#247940",
+          height: "140px",
+          borderRadius: "16px",
+        }}
       >
-        <Stack justifyContent="center" alignItems="center" gap="8px">
-          <Download size="24px" color="#292D32" />
-          <Typography variant="body1">{pkg.maxDownloadSpeed} Mbps</Typography>
-        </Stack>
-        <Stack justifyContent="center" alignItems="center" gap="8px">
-          <Upload size="24px" color="#292D32" />
-          <Typography variant="body1">{pkg.maxUploadSpeed} Mbps</Typography>
-        </Stack>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <p
+            style={{
+              fontSize: "64px",
+              lineHeight: "56px",
+              fontWeight: 700,
+              color: "#fff",
+              margin: 0,
+            }}
+          >
+            {pkg.maxDownloadSpeed}
+          </p>
+          <p
+            style={{
+              fontSize: "24px",
+              lineHeight: "20px",
+              color: "#C4F50D",
+              margin: 0,
+              marginTop: "-2px", // controlled overlap
+            }}
+          >
+            Mbps
+          </p>
+        </Box>
+        <Box
+          sx={{
+            background:
+              "linear-gradient(0deg, #247940 6.6%, #C4F50D 49.06%, #247940 91.51%)",
+            width: "4px",
+            height: "100%",
+          }}
+        />
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <p
+            style={{
+              fontSize: "24px",
+              lineHeight: "20px",
+              color: "#ffffff",
+              margin: 0,
+              transform: "translateX(-40px)", // move left
+            }}
+          >
+            BDT
+          </p>
+
+          <p
+            style={{
+              fontSize: "48px",
+              lineHeight: "56px",
+              fontWeight: 700,
+              color: "#C4F50D",
+              margin: 0,
+              textAlign: "center",
+            }}
+          >
+            {pkg.price}
+          </p>
+
+          <p
+            style={{
+              fontSize: "24px",
+              lineHeight: "20px",
+              color: "#ffffff",
+              margin: 0,
+              transform: "translateX(40px)", // move right
+              marginTop: "2px",
+            }}
+          >
+            Tk
+          </p>
+        </Box>
       </Stack>
 
-      <Stack flexDirection="column" gap="16px" mb={4}>
+      <Stack flexDirection="column" gap="16px" mb={2}>
         <Stack flexDirection="row">
-          <Stack
-            justifyContent="center"
-            alignItems="center"
-            sx={{ width: "40px", height: "40px" }}
-          >
-            <ConnectionType size="24px" />
-          </Stack>
+          <ArrowPointer size="24px" />
           <Stack
             justifyContent="flex-start"
             alignItems="flex-start"
             sx={{ ml: 2 }}
           >
-            <Typography variant="subtitle1" color="text.secondary">
-              Connection Type
-            </Typography>
-            <Typography variant="h6" fontWeight={700}>
-              {Array.isArray(pkg.connectionType)
-                ? pkg.connectionType.includes(0) &&
-                  pkg.connectionType.includes(1)
-                  ? "CAT-5 / Fiber"
-                  : pkg.connectionType.includes(0)
-                  ? "CAT-5"
-                  : pkg.connectionType.includes(1)
-                  ? "Fiber"
-                  : "Unknown"
-                : pkg.connectionType === 0
-                ? "CAT-5"
-                : pkg.connectionType === 1
-                ? "Fiber"
-                : "Unknown"}
+            <Typography variant="body" fontWeight={700}>
+              Optical Fiber Connection
             </Typography>
           </Stack>
         </Stack>
         <Stack flexDirection="row">
-          <Stack
-            justifyContent="center"
-            alignItems="center"
-            sx={{ width: "40px", height: "40px" }}
-          >
-            <Setup size="24px" />
-          </Stack>
+          <ArrowPointer size="24px" />
           <Stack
             justifyContent="flex-start"
             alignItems="flex-start"
             sx={{ ml: 2 }}
           >
-            <Typography variant="subtitle1" color="text.secondary">
-              Setup charge
-            </Typography>
-            <Typography variant="h6" fontWeight={700}>
-              {Array.isArray(pkg.connectionType)
-                ? pkg.connectionType.includes(1)
-                  ? `${pkg.setupCharge} tk/ Fiber`
-                  : "Free setup"
-                : pkg.connectionType === 1
-                ? `${pkg.setupCharge} tk/ Fiber`
-                : pkg.connectionType === 0
-                ? "Free setup"
-                : "Free setup"}
+            <Typography variant="body" fontWeight={700}>
+              Bufferless Connection
             </Typography>
           </Stack>
         </Stack>
         <Stack flexDirection="row">
-          <Stack
-            justifyContent="center"
-            alignItems="center"
-            sx={{ width: "40px", height: "40px" }}
-          >
-            <Installation size="24px" />
-          </Stack>
+          <ArrowPointer size="24px" />
           <Stack
             justifyContent="flex-start"
             alignItems="flex-start"
             sx={{ ml: 2 }}
           >
-            <Typography variant="subtitle1" color="text.secondary">
-              Free installation
+            <Typography variant="body" fontWeight={700}>
+              Superfast BDIX speed
             </Typography>
-            <Typography variant="h6" fontWeight={700}>
-              Wifi router, TV
+          </Stack>
+        </Stack>
+        <Stack flexDirection="row">
+          <ArrowPointer size="24px" />
+          <Stack
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            sx={{ ml: 2 }}
+          >
+            <Typography variant="body" fontWeight={700}>
+              24/7 Support
             </Typography>
           </Stack>
         </Stack>
