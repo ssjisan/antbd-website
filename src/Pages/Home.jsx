@@ -1,5 +1,4 @@
 import Navbar from "../Layout/Navbar/Navbar";
-// import HeroSection from "../Components/Home/HeroSection";
 import Package from "../Components/Home/Package";
 import FirstPackage from "../Components/Home/FirstPackage";
 import Matrix from "../Components/Common/Matrix";
@@ -10,6 +9,7 @@ import Footer from "../Layout/Footer/Footer";
 import FaQ from "../Components/Common/FaQ";
 import ChatWoot from "../Components/Common/ChatWoot";
 import HeroSection2nd from "../Components/Home/HeroSection2nd";
+import WhatsAppWidget from "../Components/Common/WhatsApp";
 
 export default function Home() {
   return (
@@ -25,6 +25,7 @@ export default function Home() {
       <NeedHelp />
       <Footer />
       <ChatWoot />
+      <WhatsAppWidget />
     </>
   );
 }
