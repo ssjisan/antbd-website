@@ -1,13 +1,6 @@
 "use client";
 import { useState } from "react";
-import {
-  Box,
-  Paper,
-  Typography,
-  IconButton,
-  Button,
-  Stack,
-} from "@mui/material";
+import { Box, Paper, Typography, Button, Stack } from "@mui/material";
 import { WhatsappIcon } from "../../assets/Icons/Home/Icons";
 import { Close } from "../../assets/Icons/Common/Icons";
 
