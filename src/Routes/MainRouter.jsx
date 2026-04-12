@@ -9,10 +9,14 @@ import RequestConnection from "../Pages/RequestConnection";
 import TestCoverage from "../Components/Coverage/TestCoverage";
 import HelpAndSupportPage from "../Pages/HelpAndSupportPage";
 import SilverJubilee from "../Pages/SilverJubilee";
+import SuccessStories from "../Pages/SuccessStories";
+import SuccessStoriesReadPage from "../Pages/SuccessStoriesReadPage";
+import ScrollToTop from "../lib/ScrollToTop";
 
 export default function MainRoute() {
   return (
     <>
+      <ScrollToTop />
       <Toaster
         toastOptions={{
           success: {
@@ -39,6 +43,11 @@ export default function MainRoute() {
       />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/success-stories" element={<SuccessStories />} />
+        <Route
+          path="/success-stories/:id"
+          element={<SuccessStoriesReadPage />}
+        />
         <Route path="/package" element={<Package />} />
         <Route path="/about" element={<About />} />
         <Route path="/coverage" element={<Coverage />} />

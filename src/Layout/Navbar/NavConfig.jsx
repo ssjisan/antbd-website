@@ -10,7 +10,6 @@ const main = [
     title_en: "Silver Jubilee",
     title_bn: "আমাদের সম্পর্কে",
     link: "/silver-jubilee",
-    chip: "NEW",
   },
   {
     id: 3,

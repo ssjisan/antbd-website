@@ -9,6 +9,7 @@ import FaQ from "../Components/Common/FaQ";
 import ChatWoot from "../Components/Common/ChatWoot";
 import WhatsAppWidget from "../Components/Common/WhatsApp";
 import HeroSection3rd from "../Components/Home/HeroSection3rd";
+import SuccessStories from "../Components/Home/SuccessStories";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <Matrix />
       <Package />
       <HappyclientSlider />
+      <SuccessStories />
       <FaQ />
       <NeedHelp />
       <Footer />
