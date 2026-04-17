@@ -38,7 +38,7 @@ export default function PackageCard({ pkg }) {
         },
       }}
     >
-      <Typography variant="h5" sx={{ fontWeight: 700, color: "#247940" }}>
+      <Typography variant="h5" sx={{ fontWeight: 700, color: "#008641" }}>
         {pkg.packageName}
       </Typography>
 
@@ -75,7 +75,7 @@ export default function PackageCard({ pkg }) {
             style={{
               fontSize: "24px",
               lineHeight: "20px",
-              color: "#C4F50D",
+              color: "#FFD700",
               margin: 0,
               marginTop: "-2px", // controlled overlap
             }}
@@ -86,7 +86,7 @@ export default function PackageCard({ pkg }) {
         <Box
           sx={{
             background:
-              "linear-gradient(0deg, #247940 6.6%, #C4F50D 49.06%, #247940 91.51%)",
+              "linear-gradient(0deg, #247940 6.6%, #FFD700 49.06%, #247940 91.51%)",
             width: "4px",
             height: "100%",
           }}
@@ -117,7 +117,7 @@ export default function PackageCard({ pkg }) {
               fontSize: "48px",
               lineHeight: "56px",
               fontWeight: 700,
-              color: "#C4F50D",
+              color: "#FFD700",
               margin: 0,
               textAlign: "center",
             }}

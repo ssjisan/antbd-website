@@ -29,12 +29,12 @@ const main = [
     title_bn: "কভারেজ",
     link: "/coverage",
   },
-  {
-    id: 6,
-    title_en: "Help & Support",
-    title_bn: "সহায়তা ও সাপোর্ট",
-    link: "/help-support",
-  },
+  // {
+  //   id: 6,
+  //   title_en: "Help & Support",
+  //   title_bn: "সহায়তা ও সাপোর্ট",
+  //   link: "/help-support",
+  // },
 ];
 
 export { main };

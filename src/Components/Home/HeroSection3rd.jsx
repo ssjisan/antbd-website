@@ -87,7 +87,7 @@ export default function HeroSection3rd() {
         ))}
 
         {/* 🌑 overlay */}
-        <Box
+        {/* <Box
           sx={{
             position: "absolute",
             inset: 0,
@@ -95,10 +95,9 @@ export default function HeroSection3rd() {
               "linear-gradient(to right, rgba(0,0,0,0.3), rgba(0,0,0,0.05))",
             pointerEvents: "none",
           }}
-        />
+        /> */}
 
-        {/* 🎛 Bottom Controls */}
-        <Box
+        {/* <Box
           sx={{
             position: "absolute",
             bottom: { xs: 16, sm: 24 },
@@ -111,7 +110,6 @@ export default function HeroSection3rd() {
             color: "#fff",
           }}
         >
-          {/* 🔢 Slide Counter */}
           <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
             {slides.map((_, i) => (
               <Box
@@ -128,7 +126,6 @@ export default function HeroSection3rd() {
             ))}
           </Box>
 
-          {/* ⏳ Progress Bar */}
           <Box
             sx={{
               flex: 1,
@@ -149,7 +146,6 @@ export default function HeroSection3rd() {
             />
           </Box>
 
-          {/* ⬅️➡️ Arrows */}
           <Box sx={{ display: "flex", gap: 1 }}>
             <IconButton
               onClick={prevSlide}
@@ -187,7 +183,7 @@ export default function HeroSection3rd() {
               <ArrowRight color="#000000" size="24px" />
             </IconButton>
           </Box>
-        </Box>
+        </Box> */}
       </Box>
     </Container>
   );
