@@ -144,7 +144,7 @@ export default function HeroSection2nd() {
                 position: "relative",
               }}
             >
-              <source src="silver_jubilee_white.mp4" type="video/mp4" />
+              {/* <source src="silver_jubilee_white.mp4" type="video/mp4" /> */}
               Your browser does not support the video tag.
             </Box>
 

@@ -5,7 +5,8 @@ import { LocationPin } from "../../assets/Icons/Footer/Icons";
 export default function Location() {
   return (
     <Stack gap="24px">
-      <Typography variant="h6">Contacts</Typography>
+      <Typography variant="h6">Locations</Typography>
+
       <Stack gap="16px" flexDirection="column">
         <Stack>
           <Stack gap="8px" flexDirection="row">
@@ -14,7 +15,10 @@ export default function Location() {
             </Stack>
             <Typography fontWeight="700">Corporate Office - Dhaka</Typography>
           </Stack>
-          <Typography color="text.secondary">
+          <Typography
+            color="text.secondary"
+            // sx={{ width: "100%", maxWidth: "320px" }}
+          >
             24/1, Shan Tower(3rd floor), Shantinagar More, Polton, Dhaka- 1217,
             Dhaka
           </Typography>

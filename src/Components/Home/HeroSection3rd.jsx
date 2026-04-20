@@ -1,7 +1,6 @@
-import { Box, Container, IconButton } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { ArrowLeft, ArrowRight } from "../../assets/Icons/Common/Icons";
 
 export default function HeroSection3rd() {
   const [slides, setSlides] = useState([]);
@@ -42,15 +41,6 @@ export default function HeroSection3rd() {
     };
   }, [index, slides]);
 
-  // ⬅️➡️ controls
-  const prevSlide = () => {
-    setIndex((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-  const nextSlide = () => {
-    setIndex((prev) => (prev + 1) % slides.length);
-  };
-
   if (!slides.length) return null;
 
   return (
@@ -67,7 +57,6 @@ export default function HeroSection3rd() {
           background: "#000",
         }}
       >
-        {/* 🖼 Slides */}
         {slides.map((slide, i) => (
           <Box
             key={slide._id}
@@ -85,105 +74,6 @@ export default function HeroSection3rd() {
             }}
           />
         ))}
-
-        {/* 🌑 overlay */}
-        {/* <Box
-          sx={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(to right, rgba(0,0,0,0.3), rgba(0,0,0,0.05))",
-            pointerEvents: "none",
-          }}
-        /> */}
-
-        {/* <Box
-          sx={{
-            position: "absolute",
-            bottom: { xs: 16, sm: 24 },
-            left: { xs: 16, sm: 24 },
-            right: { xs: 16, sm: 24 },
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            zIndex: 5,
-            color: "#fff",
-          }}
-        >
-          <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-            {slides.map((_, i) => (
-              <Box
-                key={i}
-                sx={{
-                  fontSize: 14,
-                  fontWeight: i === index ? 700 : 400,
-                  opacity: i === index ? 1 : 0.4,
-                  transition: "0.3s",
-                }}
-              >
-                {String(i + 1).padStart(2, "0")}
-              </Box>
-            ))}
-          </Box>
-
-          <Box
-            sx={{
-              flex: 1,
-              mx: 3,
-              height: 3,
-              background: "rgba(255,255,255,0.2)",
-              borderRadius: 5,
-              overflow: "hidden",
-            }}
-          >
-            <Box
-              sx={{
-                width: `${progress}%`,
-                height: "100%",
-                background: "#fff",
-                transition: "width 0.1s linear",
-              }}
-            />
-          </Box>
-
-          <Box sx={{ display: "flex", gap: 1 }}>
-            <IconButton
-              onClick={prevSlide}
-              sx={{
-                backgroundColor: "rgba(255,255,255,0.9)",
-                color: "#000",
-                transition: "all 0.25s ease",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-
-                "&:hover": {
-                  backgroundColor: "rgba(255,255,255,0.9)",
-                  color: "#fff",
-                  transform: "scale(1.1)",
-                },
-              }}
-            >
-              <ArrowLeft color="#000000" size="24px" />
-            </IconButton>
-
-            <IconButton
-              onClick={nextSlide}
-              sx={{
-                backgroundColor: "rgba(255,255,255,0.9)",
-                color: "#000",
-                transition: "all 0.25s ease",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-
-                "&:hover": {
-                  backgroundColor: "rgba(255,255,255,0.9)",
-                  color: "#fff",
-                  transform: "scale(1.1)",
-                },
-              }}
-            >
-              <ArrowRight color="#000000" size="24px" />
-            </IconButton>
-          </Box>
-        </Box> */}
       </Box>
     </Container>
   );

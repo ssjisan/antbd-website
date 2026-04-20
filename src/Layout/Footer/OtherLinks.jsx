@@ -9,7 +9,17 @@ export default function OtherLinks() {
 
   return (
     <Stack gap="24px">
-      <Typography variant="h6">Useful links</Typography>
+      <Typography
+        variant="h6"
+        sx={{
+          textAlign: {
+            xs: "right",
+            sm: "left",
+          },
+        }}
+      >
+        Useful links
+      </Typography>
 
       <Stack gap="8px" flexDirection="column">
         {navItems.map((item) => (
@@ -21,6 +31,10 @@ export default function OtherLinks() {
             <Typography
               color="text.secondary"
               sx={{
+                textAlign: {
+                  xs: "right",
+                  sm: "left",
+                },
                 transition: "all 0.3s ease",
                 "&:hover": {
                   transform: "translateX(10px)",

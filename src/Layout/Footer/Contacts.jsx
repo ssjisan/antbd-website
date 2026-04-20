@@ -29,7 +29,7 @@ export default function Contacts() {
 
   return (
     <Stack gap="24px">
-      <Typography variant="h6">Contacts</Typography>
+      <Typography variant="h6">Support</Typography>
 
       <Stack gap="16px" flexDirection="column">
         {/* Phone Numbers */}

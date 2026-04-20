@@ -24,6 +24,7 @@ export default function Footer() {
     gap: "24px",
     p: "16px",
     borderRadius: "16px",
+    textAlign: "center",
   };
   const currentYear = new Date().getFullYear();
 
@@ -43,17 +44,35 @@ export default function Footer() {
                 <img src="/amar_internet_antbd.png" />
               </Box>
             </Grid>
-            <Grid item xs={12} sm={6} md={2} lg={2}>
+            <Grid item xs={6} sm={4} md={2} lg={2}>
               <Company />
             </Grid>
-            <Grid item xs={12} sm={6} md={2} lg={2}>
+            <Grid item xs={6} sm={4} md={2} lg={2}>
               <OtherLinks />
             </Grid>
-            <Grid item xs={12} sm={12} md={3} lg={3}>
+            <Grid item xs={12} sm={4} md={4} lg={2}>
               <Contacts />
             </Grid>
-            <Grid item xs={12} sm={12} md={5} lg={5}>
+            <Grid item xs={12} sm={6} md={4} lg={4}>
               <Location />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3} lg={2}>
+              <Box
+                sx={{
+                  width: {
+                    xs: "160px",
+                    sm: "160px",
+                    md: "160px",
+                    lg: "160px",
+                  },
+                }}
+              >
+                <img
+                  src="ISO.png"
+                  alt="ISO 9001:2015"
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </Box>
             </Grid>
           </Grid>
         </Box>

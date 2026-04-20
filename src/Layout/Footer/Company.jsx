@@ -35,13 +35,6 @@ export default function Company() {
           </Link>
         ))}
       </Stack>
-      <Box sx={{ width: "140px", height: "140px" }}>
-        <img
-          src="ISO.png"
-          alt="ISO 9001:2015"
-          style={{ width: "100%", height: "100%" }}
-        />
-      </Box>
     </Stack>
   );
 }
