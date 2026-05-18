@@ -7,9 +7,9 @@ export default function HeroSection3rd() {
   const [index, setIndex] = useState(0);
   const [progress, setProgress] = useState(0);
 
-  const DURATION = 5000; // 5s
+  const DURATION = 5000;
 
-  // 📡 fetch slides
+  // fetch slides
   useEffect(() => {
     const fetchSlides = async () => {
       const { data } = await axios.get("/all-sliders");
