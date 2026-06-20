@@ -33,6 +33,10 @@ export default function SuccessStories() {
     if (!text) return "";
     return text.length > max ? text.slice(0, max) + "..." : text;
   };
+  if (!stories?.length) {
+    return null;
+  }
+
   return (
     <Container sx={{ pt: 8, pb: 8 }}>
       {/* 🏷 Section Title */}
